@@ -1,12 +1,38 @@
-*.class
+# Numerous always-ignore extensions
+*.diff
+*.err
+*.orig
+*.log
+*.rej
+*.swo
+*.swp
+*.vi
+*~
+*.sass-cache
+*.htaccess
 
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
+# OS or Editor folders
+.DS_Store
+.cache
+.project
+.settings
+.tmproj
+nbproject
+Thumbs.db
 
-# Package Files #
-*.jar
-*.war
-*.ear
+#Webstorm folder
+.idea/
+atlassian-ide-plugin.xml
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
+# Ignore Node Modules.
+node_modules/
+bower_components/
+
+# Ignore target
+target/
+dist/
+public/
+.tmp/
+
+.metadata/*
+demo/src/main/resources/public/dist/*
