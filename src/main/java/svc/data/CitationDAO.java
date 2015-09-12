@@ -5,7 +5,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -86,19 +85,19 @@ public class CitationDAO
 	{
 		try 
 		{
-			List<String> fixedMunicipalities = new ArrayList<String>();
+			String sql = "SELECT * FROM citations WHERE date_of_birth = \'" +
+			             new java.sql.Date(date_of_birth.getTime()).toString() + "\' AND LOWER(first_name) = \'" +
+					     first_name.toLowerCase() + "\' AND LOWER(last_name) = \'" + 
+			             last_name.toLowerCase() + "\' AND LOWER(court_location) IN (";
 			for (String municipality:municipalities)
 			{
-				fixedMunicipalities.add(municipality.toUpperCase());
+				sql += "\'" + municipality.toLowerCase() + "\',";
 			}
-			
-			String sql = "SELECT * FROM citations WHERE date_of_birth = ? AND first_name = ? AND last_name = ? AND court_location IN ?";
+			sql = sql.substring(0, sql.length() - 1);
+			sql += ")";
+			LogSystem.LogEvent("Running query: " + sql);
 			List<Citation> citations = jdbcTemplate.query(sql,
-												   		  new CitationSQLMapper(),
-												   		  date_of_birth, 
-												   		  first_name,
-												   		  last_name,
-												   		  fixedMunicipalities);
+												   		  new CitationSQLMapper());
 			
 			return citations;
 		}

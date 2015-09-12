@@ -72,5 +72,4 @@ public class CitationManager
 		LogSystem.LogEvent("Not enough information was passed as crtieria to find citations");
 		return null;
 	}
-
 }
