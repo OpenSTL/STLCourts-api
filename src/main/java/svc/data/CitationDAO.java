@@ -95,7 +95,6 @@ public class CitationDAO
 			}
 			sql = sql.substring(0, sql.length() - 1);
 			sql += ")";
-			LogSystem.LogEvent("Running query: " + sql);
 			List<Citation> citations = jdbcTemplate.query(sql,
 												   		  new CitationSQLMapper());
 			

@@ -53,26 +53,22 @@ public class CitationController
 		CitationSearchCriteria criteria = new CitationSearchCriteria();
 		if (citationNumber != null)
 		{
-			LogSystem.LogEvent("Received citation number: " + citationNumber);
 			criteria.citation_number = citationNumber;
 		}
 		
 		if (dob != null)
 		{
-			LogSystem.LogEvent("Received D.O.B. information.");
 			criteria.date_of_birth = dob;
 		}
 		
 		if (licenseNumber != null && licenseState != null)
 		{
-			LogSystem.LogEvent("Received license information");
 			criteria.drivers_license_number = licenseNumber;
 			criteria.drivers_license_state = licenseState;
 		}
 		
 		if (firstName != null && lastName != null && municipalityNames != null && municipalityNames.size() != 0)
 		{
-			LogSystem.LogEvent("Received name/location criteria");
 			criteria.first_name = firstName;
 			criteria.last_name = lastName;
 			criteria.municipalities = municipalityNames;
