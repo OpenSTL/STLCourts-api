@@ -7,24 +7,30 @@ import org.springframework.context.annotation.Bean;
 import java.net.URI;
 
 import org.apache.commons.dbcp.BasicDataSource;
+import svc.logging.LogSystem;
 
 @SpringBootApplication
 public class Application {
 
 	@Bean
-    public BasicDataSource dataSource() {
+    public BasicDataSource dataSource()
+	{
 		String url = System.getenv("DATABASE_URL");
-		url = "postgres://globalhack:12345@localhost:5432/globalhack";
+	
+		if (url == null)
+		{
+			LogSystem.LogEvent("No system database URL set. Defaulting to Development Heroku URL.");
+			url = "postgres://jcxzcbknwtgjwy:G1QxBLE7RvEqyBKW-1CaSeXlBQ@ec2-50-19-208-138.compute-1.amazonaws.com:5432/d8t45kme7cf49c";
+		}
 		
         URI dbUri = null;
-        try {
+        try
+        {
         	dbUri = new URI(url);
         }
         catch (Exception e)
         {
-        	System.out.println("DataSource");
-  	        System.out.println("Exception");
-  	        System.out.println(e.getMessage());
+        	LogSystem.LogEvent("DataSource Exception - " + e.getMessage());
         }
 
         String username = dbUri.getUserInfo().split(":")[0];
@@ -35,9 +41,11 @@ public class Application {
         basicDataSource.setUrl(dbUrl);
         basicDataSource.setUsername(username);
         basicDataSource.setPassword(password);
+        basicDataSource.addConnectionProperty("ssl", "true");
+        basicDataSource.addConnectionProperty("sslfactory", "org.postgresql.ssl.NonValidatingFactory");
 
-        System.out.println("DataSource Configuration:");
-        System.out.println(basicDataSource.getUrl());
+        LogSystem.LogEvent("DataSource Configuration:");
+        LogSystem.LogEvent("  " + basicDataSource.getUrl());
         
         return basicDataSource;
     }
