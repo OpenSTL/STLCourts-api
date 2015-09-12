@@ -51,8 +51,10 @@ public class ViolationDAO
 		return violations;
 	}
 	
-	private class ViolationSQLMapper implements RowMapper<Violation> {
-		public Violation mapRow(ResultSet rs, int i) throws SQLException {
+	private class ViolationSQLMapper implements RowMapper<Violation>
+	{
+		public Violation mapRow(ResultSet rs, int i) throws SQLException
+		{
 			Violation violation = new Violation();
 			try
 			{	

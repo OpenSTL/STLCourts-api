@@ -5,6 +5,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import org.springframework.jdbc.core.RowMapper;
 
@@ -39,6 +42,73 @@ public class CitationDAO
 		}
 	}
 	
+	public Citation getByCitationNumber(String citation_number)
+	{
+		try 
+		{
+			String sql = "SELECT * FROM citations WHERE citation_number = ?";
+			Citation citation = jdbcTemplate.queryForObject(sql,
+															new CitationSQLMapper(),
+															citation_number);
+			
+			return citation;
+		}
+		catch (Exception e)
+		{
+			LogSystem.LogDBException(e);
+			return null;
+		}
+	}
+	
+	public List<Citation> getByDOBAndLicense(Date date_of_birth, String drivers_license_number)
+	{
+		try 
+		{
+			String sql = "SELECT * FROM citations WHERE date_of_birth = ? AND drivers_license_number = ?";
+			List<Citation> citations = jdbcTemplate.query(sql,
+												   		  new CitationSQLMapper(),
+												   		  date_of_birth, 
+												   		  drivers_license_number);
+			
+			return citations;
+		}
+		catch (Exception e)
+		{
+			LogSystem.LogDBException(e);
+			return null;
+		}
+	}
+	
+	public List<Citation> getByDOBAndNameAndMunicipalities(Date date_of_birth,
+														   String first_name,
+														   String last_name,
+														   List<String> municipalities)
+	{
+		try 
+		{
+			List<String> fixedMunicipalities = new ArrayList<String>();
+			for (String municipality:municipalities)
+			{
+				fixedMunicipalities.add(municipality.toUpperCase());
+			}
+			
+			String sql = "SELECT * FROM citations WHERE date_of_birth = ? AND first_name = ? AND last_name = ? AND court_location IN ?";
+			List<Citation> citations = jdbcTemplate.query(sql,
+												   		  new CitationSQLMapper(),
+												   		  date_of_birth, 
+												   		  first_name,
+												   		  last_name,
+												   		  fixedMunicipalities);
+			
+			return citations;
+		}
+		catch (Exception e)
+		{
+			LogSystem.LogDBException(e);
+			return null;
+		}
+	}
+	
 	private class CitationSQLMapper implements RowMapper<Citation>
 	{
 		public Citation mapRow(ResultSet rs, int i)
@@ -59,6 +129,7 @@ public class CitationDAO
 				citation.court_date = rs.getDate("court_date");
 				citation.court_location = rs.getString("court_location");
 				citation.court_address = rs.getString("court_address");
+				citation.court_id = rs.getInt("court_id");
 			}
 			catch (Exception e)
 			{

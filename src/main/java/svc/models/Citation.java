@@ -20,4 +20,5 @@ public class Citation
 	public String court_address;
 	
 	public List<Violation> violations;
+	public int court_id;
 }

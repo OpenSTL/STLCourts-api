@@ -2,16 +2,21 @@ package svc.managers;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import org.springframework.stereotype.Component;
+
 import svc.data.ViolationDAO;
 import svc.models.Violation;
 
+@Component
 public class ViolationManager
 {
-	private ViolationDAO _violationDAO = null;
+	@Inject
+	private ViolationDAO _violationDAO;
 	
-	public ViolationManager(ViolationDAO violationDAO)
+	public ViolationManager()
 	{
-		_violationDAO = violationDAO;
 	}
 	
 	public Violation GetViolationById(int violationId)
