@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import svc.dto.CitationSearchCriteria;
+import svc.dto.CitationsDTO;
 import svc.logging.LogSystem;
 import svc.managers.*;
 import svc.models.*;
@@ -41,7 +42,7 @@ public class CitationController
 	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET)
-	List<Citation> FindCitations(@RequestParam(value = "citationNumber", required = false) String citationNumber,
+	CitationsDTO FindCitations(@RequestParam(value = "citationNumber", required = false) String citationNumber,
 			                     @RequestParam(value = "licenseNumber", required = false) String licenseNumber,
 			                     @RequestParam(value = "licenseState", required = false) String licenseState,
 			                     @RequestParam(value = "firstName", required = false) String firstName,
@@ -77,6 +78,6 @@ public class CitationController
 			criteria.municipalities = municipalityNames;
 		}
 		
-		return _citationManager.FindCitations(criteria);
+		return new CitationsDTO(_citationManager.FindCitations(criteria));
 	}
 }
