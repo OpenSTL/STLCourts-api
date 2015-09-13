@@ -14,7 +14,7 @@ public class OpportunityNeed {
 	
 	public BigDecimal violationFineLimit;
 	
-	public int desired_count;
+	public int desiredCount;
 	
 	public List<Integer> opportunityPairingIds;
 }

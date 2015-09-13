@@ -16,7 +16,6 @@ import svc.logging.LogSystem;
 import svc.managers.*;
 import svc.models.*;
 
-
 @RestController
 @EnableAutoConfiguration
 @RequestMapping("inveo-api/opportunities")
@@ -66,5 +65,24 @@ public class OpportunityController
 		}
 		
 		return _opportunityManager.createOpportunity(newOpportunity);
+	}
+	
+	@ResponseBody
+	@RequestMapping(method = RequestMethod.POST, value="/{id}/needs")
+	OpportunityNeed CreateOpportunityNeed(@RequestBody OpportunityNeed need)
+	{
+		if (need == null)
+		{
+			LogSystem.LogEvent("Null opportunity need passed to post.");
+			return null;
+		}
+		
+		if (need.id != 0)
+		{
+			LogSystem.LogEvent("Opportunity need with id was passed to post.");
+			return null;
+		}
+		
+		return _opportunityManager.addNeedToOpportunity(need);
 	}
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import svc.data.OpportunityDAO;
 import svc.models.Opportunity;
+import svc.models.OpportunityNeed;
 
 @Component
 public class OpportunityManager
@@ -30,4 +31,8 @@ public class OpportunityManager
 		return _opportunityDAO.createOpportunity(newOpportunity);
 	}
 
+	public OpportunityNeed addNeedToOpportunity(OpportunityNeed need) 
+	{
+		return _opportunityDAO.createOpportunityNeed(need);
+	}
 }
