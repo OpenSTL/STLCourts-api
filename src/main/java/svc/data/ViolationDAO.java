@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.jdbc.core.RowMapper;
@@ -48,6 +49,10 @@ public class ViolationDAO
 		List<Violation> violations = jdbcTemplate.query(sql,
 														new ViolationSQLMapper(),
 														citationNumber);
+		if (violations == null)
+		{
+			violations = new ArrayList<Violation>();
+		}
 		return violations;
 	}
 	
