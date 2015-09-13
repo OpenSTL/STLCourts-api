@@ -4,7 +4,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.util.List;
 
@@ -23,16 +22,32 @@ public class OpportunityDAO
 	@Autowired
 	public void setDataSource(DataSource dataSource) { OpportunityDAO.jdbcTemplate = new JdbcTemplate(dataSource); }
 	
-	public Court getByCourtId(int courtId)
+	public Opportunity getByOpportunityId(int opportunityId)
 	{
 		try 
 		{
-			String sql = "SELECT * FROM courts WHERE id = ?";
-			Court court = jdbcTemplate.queryForObject(sql,
-													 new CourtSQLMapper(),
-													 courtId);
-			
-			return court;
+			String sql = "SELECT * FROM opportunities WHERE id = ?";
+			Opportunity opportunity = jdbcTemplate.queryForObject(sql,
+													 			  new OpportunitySQLMapper(),
+													 			  opportunityId);
+			return opportunity;
+		}
+		catch (Exception e)
+		{
+			LogSystem.LogDBException(e);
+			return null;
+		}
+	}
+
+	public List<Opportunity> LoadOpportunitiesForSponsor(Integer sponsorId) 
+	{
+		try 
+		{
+			String sql = "SELECT * FROM opportunities WHERE sponsor_id = ?";
+			List<Opportunity> opportunities = jdbcTemplate.query(sql,
+																 new OpportunitySQLMapper(),
+																 sponsorId);
+			return opportunities;
 		}
 		catch (Exception e)
 		{
@@ -41,36 +56,58 @@ public class OpportunityDAO
 		}
 	}
 	
-	public List<Court> getAllCourts()
+	public Opportunity createOpportunity(Opportunity newOpportunity) 
 	{
+		newOpportunity.id = GetNextOpportunityId();
+		
+		String sql = "INSERT INTO opportunities (id, sponsor_id, name, short_description, full_description)" +
+		             "VALUES (?, ?, ?, ?, ?)";
 		try 
 		{
-			String sql = "SELECT * FROM courts";
-			List<Court> courts = jdbcTemplate.query(sql, new CourtSQLMapper());
-			return courts;
+			int affectedRows = jdbcTemplate.update(sql,
+									 			  newOpportunity.id,
+									 			  newOpportunity.sponsorId,
+									 			  newOpportunity.name,
+									 			  newOpportunity.shortDescription,
+									 			  newOpportunity.fullDescription);
+			if (affectedRows != 0)
+			{
+				return newOpportunity;
+			}
 		}
 		catch (Exception e)
 		{
 			LogSystem.LogDBException(e);
 			return null;
 		}
+		
+		return null;
 	}
 	
-	private class CourtSQLMapper implements RowMapper<Court>
+	private int GetNextOpportunityId()
 	{
-		public Court mapRow(ResultSet rs, int i)
+		int nextId = 0;
+		String sql = "SELECT MAX(id) FROM opportunities";
+		Integer biggestId = jdbcTemplate.queryForObject(sql, Integer.class);
+		if (biggestId != null)
 		{
-			Court court = new Court();
+			nextId = biggestId + 1;
+		}
+		return nextId;
+	}
+	
+	private class OpportunitySQLMapper implements RowMapper<Opportunity>
+	{
+		public Opportunity mapRow(ResultSet rs, int i)
+		{
+			Opportunity opportunity = new Opportunity();
 			try
 			{	
-				court.id = rs.getInt("id");
-				court.latitude = new BigDecimal(rs.getString("latitude"));
-				court.longitude = new BigDecimal(rs.getString("longitude"));
-				court.municipality = rs.getString("municipality");
-				court.address = rs.getString("address");
-				court.city = rs.getString("city");
-				court.state = rs.getString("state");
-				court.zip_code = rs.getString("zip_code");
+				opportunity.id = rs.getInt("id");
+				opportunity.sponsorId = rs.getInt("sponsor_id");
+				opportunity.name = rs.getString("name");
+				opportunity.shortDescription = rs.getString("short_description");
+				opportunity.fullDescription = rs.getString("full_description");
 			}
 			catch (Exception e)
 			{
@@ -78,7 +115,7 @@ public class OpportunityDAO
 				return null;
 			}
 			
-			return court;
+			return opportunity;
 		}
 	}
 }
