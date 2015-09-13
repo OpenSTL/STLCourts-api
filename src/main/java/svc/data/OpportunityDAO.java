@@ -16,12 +16,12 @@ import svc.models.*;
 import javax.sql.DataSource;
 
 @Repository
-public class CourtDAO
+public class OpportunityDAO
 {
 	private static JdbcTemplate jdbcTemplate;
 	
 	@Autowired
-	public void setDataSource(DataSource dataSource) { CourtDAO.jdbcTemplate = new JdbcTemplate(dataSource); }
+	public void setDataSource(DataSource dataSource) { OpportunityDAO.jdbcTemplate = new JdbcTemplate(dataSource); }
 	
 	public Court getByCourtId(int courtId)
 	{
