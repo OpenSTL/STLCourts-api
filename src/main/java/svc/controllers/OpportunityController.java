@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import svc.dto.OpportunitiesDTO;
 import svc.dto.OpportunityNeedsDTO;
+import svc.dto.OpportunityPairingsDTO;
 import svc.logging.LogSystem;
 import svc.managers.*;
 import svc.models.*;
@@ -105,7 +106,14 @@ public class OpportunityController
 	}
 	
 	@ResponseBody
-	@RequestMapping(method = RequestMethod.POST, value = "/{id}/needs/pairings")
+	@RequestMapping(method = RequestMethod.GET, value = "/{id}/needs/{needId}/pairings")
+	OpportunityPairingsDTO GetOpportunityPairingsForNeed(@PathVariable("needId") int needId)
+	{
+		return new OpportunityPairingsDTO(_opportunityManager.getOpportunityPairingsForNeed(needId));
+	}
+	
+	@ResponseBody
+	@RequestMapping(method = RequestMethod.POST, value = "/{opId}/needs/{needId}/pairings")
 	OpportunityPairing CreateOpportunityPairing(@RequestBody OpportunityPairing pairing)
 	{
 		if (pairing == null)

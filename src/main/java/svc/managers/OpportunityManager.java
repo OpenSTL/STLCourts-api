@@ -51,4 +51,8 @@ public class OpportunityManager
 	{
 		return _opportunityDAO.getOpportunityNeedsForOpportunity(opportunityId);
 	}
+
+	public List<OpportunityPairing> getOpportunityPairingsForNeed(int needId) {
+		return _opportunityDAO.getOpportunityPairingsForNeed(needId);
+	}
 }

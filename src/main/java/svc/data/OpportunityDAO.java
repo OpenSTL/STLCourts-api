@@ -181,13 +181,32 @@ public class OpportunityDAO
 		return nextId;
 	}
 	
+	public List<OpportunityPairing> getOpportunityPairingsForNeed(int needId)
+	{
+		try 
+		{
+			String sql = "SELECT * FROM opportunity_need_pairings WHERE opportunity_need_id = ?";
+			List<OpportunityPairing> opportunityPairings = jdbcTemplate.query(sql,
+																        new OpportunityPairingSQLMapper(),
+																        needId);
+			return opportunityPairings;
+		}
+		catch (Exception e)
+		{
+			LogSystem.LogDBException(e);
+			return null;
+		}
+	}
+	
 	public OpportunityPairing createOpportunityPairing(OpportunityPairing pairing)
 	{
-		String sql = "INSERT INTO opportunity_need_pairings (opportunity_need_id, violation_id, status) " +
-	             	 "VALUES (?, ?, ?)";
+		pairing.id = GetNextOpportunityPairingId();
+		String sql = "INSERT INTO opportunity_need_pairings (id, opportunity_need_id, violation_id, status) " +
+	             	 "VALUES (?, ?, ?, ?)";
 		try 
 		{
 			int affectedRows = jdbcTemplate.update(sql,
+												   pairing.id,
 												   pairing.opportunityNeedId,
 												   pairing.violationId,
 												   pairing.status);
@@ -210,6 +229,18 @@ public class OpportunityDAO
 		return null;
 	}
 	
+	private int GetNextOpportunityPairingId()
+	{
+		int nextId = 1;
+		String sql = "SELECT MAX(id) FROM opportunity_need_pairings";
+		Integer biggestId = jdbcTemplate.queryForObject(sql, Integer.class);
+		if (biggestId != null)
+		{
+			nextId = biggestId + 1;
+		}
+		return nextId;
+	}
+	
 	private class OpportunitySQLMapper implements RowMapper<Opportunity>
 	{
 		public Opportunity mapRow(ResultSet rs, int i)
@@ -222,6 +253,7 @@ public class OpportunityDAO
 				opportunity.name = rs.getString("name");
 				opportunity.shortDescription = rs.getString("short_description");
 				opportunity.fullDescription = rs.getString("full_description");
+				opportunity.courtId = rs.getInt("court_id");
 			}
 			catch (Exception e)
 			{
@@ -254,6 +286,28 @@ public class OpportunityDAO
 			}
 			
 			return opportunityNeed;
+		}
+	}
+	
+	private class OpportunityPairingSQLMapper implements RowMapper<OpportunityPairing>
+	{
+		public OpportunityPairing mapRow(ResultSet rs, int i)
+		{
+			OpportunityPairing opportunityPairing = new OpportunityPairing();
+			try
+			{	
+				opportunityPairing.id = rs.getInt("id");
+				opportunityPairing.opportunityNeedId = rs.getInt("opportunity_need_id");
+				opportunityPairing.violationId = rs.getInt("violation_id");
+				opportunityPairing.status = rs.getString("status");
+			}
+			catch (Exception e)
+			{
+				LogSystem.LogDBException(e);
+				return null;
+			}
+			
+			return opportunityPairing;
 		}
 	}
 }
