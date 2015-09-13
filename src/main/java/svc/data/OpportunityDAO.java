@@ -56,6 +56,23 @@ public class OpportunityDAO
 		}
 	}
 	
+	public List<Opportunity> LoadOpportunitiesForCourt(int courtId) 
+	{
+		try 
+		{
+			String sql = "SELECT * FROM opportunities WHERE court_id = ?";
+			List<Opportunity> opportunities = jdbcTemplate.query(sql,
+																 new OpportunitySQLMapper(),
+																 courtId);
+			return opportunities;
+		}
+		catch (Exception e)
+		{
+			LogSystem.LogDBException(e);
+			return null;
+		}
+	}
+	
 	public Opportunity createOpportunity(Opportunity newOpportunity) 
 	{
 		newOpportunity.id = GetNextOpportunityId();

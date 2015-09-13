@@ -17,7 +17,7 @@ public class OpportunityManager
 	@Inject
 	private OpportunityDAO _opportunityDAO;
 
-	public List<Opportunity> GetOpportunitiesForSponsor(Integer sponsorId) 
+	public List<Opportunity> GetOpportunitiesForSponsor(int sponsorId) 
 	{
 		return _opportunityDAO.LoadOpportunitiesForSponsor(sponsorId);
 	}
@@ -40,5 +40,10 @@ public class OpportunityManager
 	public OpportunityPairing createPairingForNeed(OpportunityPairing pairing)
 	{
 		return _opportunityDAO.createOpportunityPairing(pairing);
+	}
+
+	public List<Opportunity> GetOpportunitiesForCourt(int courtId)
+	{
+		return _opportunityDAO.LoadOpportunitiesForCourt(courtId);
 	}
 }

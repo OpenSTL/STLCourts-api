@@ -26,14 +26,24 @@ public class OpportunityController
 	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET)
-	OpportunitiesDTO GetOpportunitiesForSponsor(@RequestParam("sponsorId") Integer sponsorId)
+	OpportunitiesDTO FindOpportunities(@RequestParam(value = "sponsorId", required = false) Integer sponsorId,
+									   @RequestParam(value = "courtId", required = false) Integer courtId)
 	{
-		if (sponsorId == null)
+		if (sponsorId == null && courtId == null)
 		{
-			LogSystem.LogEvent("Null id passed to controller");
+			LogSystem.LogEvent("Null ids passed to controller::find");
 		}
 		
-		return new OpportunitiesDTO(_opportunityManager.GetOpportunitiesForSponsor(sponsorId));
+		if (sponsorId != null)
+		{
+			return new OpportunitiesDTO(_opportunityManager.GetOpportunitiesForSponsor(sponsorId));
+		}
+		else if (courtId != null)
+		{
+			return new OpportunitiesDTO(_opportunityManager.GetOpportunitiesForCourt(courtId));
+		}
+		
+		return null;
 	}
 	
 	@ResponseBody
