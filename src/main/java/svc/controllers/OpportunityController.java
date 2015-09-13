@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import svc.dto.OpportunitiesDTO;
+import svc.dto.OpportunityNeedsDTO;
 import svc.logging.LogSystem;
 import svc.managers.*;
 import svc.models.*;
@@ -75,6 +76,13 @@ public class OpportunityController
 		}
 		
 		return _opportunityManager.createOpportunity(newOpportunity);
+	}
+	
+	@ResponseBody
+	@RequestMapping(method = RequestMethod.GET, value="/{id}/needs")
+	OpportunityNeedsDTO GetNeedsForOpportunity(@PathVariable("id") int opportunityId)
+	{
+		return new OpportunityNeedsDTO(_opportunityManager.getOpportunityNeedsForOpportunity(opportunityId));
 	}
 	
 	@ResponseBody

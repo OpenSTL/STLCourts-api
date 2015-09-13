@@ -241,6 +241,11 @@ public class OpportunityDAO
 			try
 			{	
 				opportunityNeed.id = rs.getInt("id");
+				opportunityNeed.opportunityId = rs.getInt("opportunity_id");
+				opportunityNeed.startTime = rs.getTimestamp("start_time");
+				opportunityNeed.endTime = rs.getTimestamp("end_time");
+				opportunityNeed.violationFineLimit = rs.getBigDecimal("violation_fine_limit");
+				opportunityNeed.desiredCount = rs.getInt("desired_count");
 			}
 			catch (Exception e)
 			{

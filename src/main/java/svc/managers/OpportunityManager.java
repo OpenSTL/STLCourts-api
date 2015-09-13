@@ -46,4 +46,9 @@ public class OpportunityManager
 	{
 		return _opportunityDAO.LoadOpportunitiesForCourt(courtId);
 	}
+
+	public List<OpportunityNeed> getOpportunityNeedsForOpportunity(int opportunityId)
+	{
+		return _opportunityDAO.getOpportunityNeedsForOpportunity(opportunityId);
+	}
 }
