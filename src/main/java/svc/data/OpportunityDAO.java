@@ -164,6 +164,35 @@ public class OpportunityDAO
 		return nextId;
 	}
 	
+	public OpportunityPairing createOpportunityPairing(OpportunityPairing pairing)
+	{
+		String sql = "INSERT INTO opportunity_need_pairings (opportunity_need_id, violation_id, status) " +
+	             	 "VALUES (?, ?, ?)";
+		try 
+		{
+			int affectedRows = jdbcTemplate.update(sql,
+												   pairing.opportunityNeedId,
+												   pairing.violationId,
+												   pairing.status);
+			
+			if (affectedRows != 0)
+			{
+				return pairing;
+			}
+			else
+			{
+				LogSystem.LogEvent("Unable to add opportunity need.");
+			}
+		}
+		catch (Exception e)
+		{
+			LogSystem.LogDBException(e);
+			return null;
+		}
+		
+		return null;
+	}
+	
 	private class OpportunitySQLMapper implements RowMapper<Opportunity>
 	{
 		public Opportunity mapRow(ResultSet rs, int i)

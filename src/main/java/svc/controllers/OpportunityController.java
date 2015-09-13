@@ -85,4 +85,29 @@ public class OpportunityController
 		
 		return _opportunityManager.addNeedToOpportunity(need);
 	}
+	
+	@ResponseBody
+	@RequestMapping(method = RequestMethod.POST, value = "/{id}/needs/pairings")
+	OpportunityPairing CreateOpportunityPairing(@RequestBody OpportunityPairing pairing)
+	{
+		if (pairing == null)
+		{
+			LogSystem.LogEvent("Null opportunity pairing passed to post.");
+			return null;
+		}
+		
+		if (pairing.opportunityNeedId == 0)
+		{
+			LogSystem.LogEvent("Opportunity pairing with no need id was passed to post.");
+			return null;
+		}
+		
+		if (pairing.violationId == 0)
+		{
+			LogSystem.LogEvent("Opportunity pairing with no violation id was passed to post.");
+			return null;
+		}
+		
+		return _opportunityManager.createPairingForNeed(pairing);
+	}
 }
