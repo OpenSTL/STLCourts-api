@@ -79,15 +79,13 @@ public class CitationDAO
 	}
 	
 	public List<Citation> getByDOBAndNameAndMunicipalities(Date date_of_birth,
-														   String first_name,
 														   String last_name,
 														   List<String> municipalities)
 	{
 		try 
 		{
 			String sql = "SELECT * FROM citations WHERE date_of_birth = \'" +
-			             new java.sql.Date(date_of_birth.getTime()).toString() + "\' AND LOWER(first_name) = \'" +
-					     first_name.toLowerCase() + "\' AND LOWER(last_name) = \'" + 
+			             new java.sql.Date(date_of_birth.getTime()).toString() + "\' AND LOWER(last_name) = \'" + 
 			             last_name.toLowerCase() + "\' AND LOWER(court_location) IN (";
 			for (String municipality:municipalities)
 			{

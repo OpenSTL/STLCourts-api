@@ -59,12 +59,11 @@ public class CitationManager
 		}
 		
 		// DOB & Name & Municipality
-		if (criteria.date_of_birth != null && criteria.first_name != null &&
+		if (criteria.date_of_birth != null &&
 			criteria.last_name != null && criteria.municipalities != null && criteria.municipalities.size() != 0)
 		{
 			LogSystem.LogEvent("Searching for citations by DOB & Name & Municipality...");
 			return _citationDAO.getByDOBAndNameAndMunicipalities(criteria.date_of_birth,
-																 criteria.first_name,
 																 criteria.last_name,
 																 criteria.municipalities);
 		}

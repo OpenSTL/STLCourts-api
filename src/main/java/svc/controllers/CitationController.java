@@ -48,7 +48,7 @@ public class CitationController
 			                     @RequestParam(value = "firstName", required = false) String firstName,
 			                     @RequestParam(value = "lastName", required = false) String lastName,
 			                     @RequestParam(value = "municipalityNames", required = false) List<String> municipalityNames,
-			                     @RequestParam(value = "dob", required = false) @DateTimeFormat(pattern="MM-dd-yyyy") Date dob)
+			                     @RequestParam(value = "dob", required = false) @DateTimeFormat(pattern="MM/dd/yyyy") Date dob)
 	{
 		CitationSearchCriteria criteria = new CitationSearchCriteria();
 		if (citationNumber != null)
@@ -67,9 +67,8 @@ public class CitationController
 			criteria.drivers_license_state = licenseState;
 		}
 		
-		if (firstName != null && lastName != null && municipalityNames != null && municipalityNames.size() != 0)
+		if (lastName != null && municipalityNames != null && municipalityNames.size() != 0)
 		{
-			criteria.first_name = firstName;
 			criteria.last_name = lastName;
 			criteria.municipalities = municipalityNames;
 		}
