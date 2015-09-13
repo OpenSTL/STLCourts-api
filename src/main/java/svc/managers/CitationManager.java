@@ -41,7 +41,6 @@ public class CitationManager
 		// Search by citation number
 		if (criteria.citation_number != null)
 		{
-			LogSystem.LogEvent("Searching for citations by citation number...");
 			List<Citation> citations = new ArrayList<Citation>();
 			Citation citation = _citationDAO.getByCitationNumber(criteria.citation_number);
 			if (citation != null)
@@ -54,7 +53,6 @@ public class CitationManager
 		// DOB & License No
 		if (criteria.date_of_birth != null && criteria.drivers_license_number != null)
 		{
-			LogSystem.LogEvent("Searching for citations by DOB & license number...");
 			List<Citation> citations = _citationDAO.getByDOBAndLicense(criteria.date_of_birth, criteria.drivers_license_number);
 			return PopulateViolations(citations);
 		}
@@ -63,7 +61,6 @@ public class CitationManager
 		if (criteria.date_of_birth != null &&
 			criteria.last_name != null && criteria.municipalities != null && criteria.municipalities.size() != 0)
 		{
-			LogSystem.LogEvent("Searching for citations by DOB & Name & Municipality...");
 			List<Citation> citations =  _citationDAO.getByDOBAndNameAndMunicipalities(criteria.date_of_birth,
 																 criteria.last_name,
 																 criteria.municipalities);
