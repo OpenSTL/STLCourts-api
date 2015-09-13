@@ -48,14 +48,15 @@ public class CitationManager
 			{
 				citations.add(citation);
 			}
-			return citations;
+			return PopulateViolations(citations);
 		}
 		
 		// DOB & License No
 		if (criteria.date_of_birth != null && criteria.drivers_license_number != null)
 		{
 			LogSystem.LogEvent("Searching for citations by DOB & license number...");
-			return _citationDAO.getByDOBAndLicense(criteria.date_of_birth, criteria.drivers_license_number);
+			List<Citation> citations = _citationDAO.getByDOBAndLicense(criteria.date_of_birth, criteria.drivers_license_number);
+			return PopulateViolations(citations);
 		}
 		
 		// DOB & Name & Municipality
@@ -63,12 +64,29 @@ public class CitationManager
 			criteria.last_name != null && criteria.municipalities != null && criteria.municipalities.size() != 0)
 		{
 			LogSystem.LogEvent("Searching for citations by DOB & Name & Municipality...");
-			return _citationDAO.getByDOBAndNameAndMunicipalities(criteria.date_of_birth,
+			List<Citation> citations =  _citationDAO.getByDOBAndNameAndMunicipalities(criteria.date_of_birth,
 																 criteria.last_name,
 																 criteria.municipalities);
+			
+			citations = PopulateViolations(citations);
+			return citations;
 		}
 		
 		LogSystem.LogEvent("Not enough information was passed as crtieria to find citations");
 		return null;
+	}
+	
+	private List<Citation> PopulateViolations(List<Citation> citations)
+	{
+		if (citations == null)
+		{
+			return null;
+		}
+		
+		for (Citation citation:citations)
+		{
+			citation.violations = _violationManager.getViolationsByCitationNumber(citation.citation_number);
+		}
+		return citations;
 	}
 }
