@@ -1,5 +1,7 @@
 package svc.models;
 
+// States? - Accepted, Completed, Paid
+
 public class OpportunityPairing
 {
 	public int opportunityNeedId;

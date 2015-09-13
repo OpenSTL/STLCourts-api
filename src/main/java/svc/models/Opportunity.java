@@ -7,7 +7,7 @@ public class Opportunity {
 	public String name;
 	public String shortDescription;
 	public String fullDescription;
-	
-	
+
 	public int sponsorId;
+	public int courtId;
 }
