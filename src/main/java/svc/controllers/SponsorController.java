@@ -1,6 +1,7 @@
 package svc.controllers;
 
 import javax.inject.Inject;
+import javax.security.sasl.AuthenticationException;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,9 +26,15 @@ public class SponsorController
 	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST, value="/login")
-	Sponsor Login(@RequestBody Credentials credentials)
+	Sponsor Login(@RequestBody Credentials credentials) throws AuthenticationException
 	{
-		return _sponsorManager.Login(credentials.userId, credentials.password);
+		Sponsor sponsor = _sponsorManager.Login(credentials.userId, credentials.password);
+		if (sponsor == null)
+		{
+			throw new AuthenticationException();
+		}
+		
+		return sponsor;
 	}
 	
 	@ResponseBody
