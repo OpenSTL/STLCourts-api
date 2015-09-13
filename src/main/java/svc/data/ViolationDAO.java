@@ -71,8 +71,21 @@ public class ViolationDAO
 				violation.warrant_number = rs.getString("warrant_number");
 				violation.status = rs.getString("status");
 				violation.status_date = rs.getDate("status_date");
-				violation.fine_amount = new BigDecimal(rs.getString("fine_amount").replace('$', ' ').trim());
-				violation.court_cost = new BigDecimal(rs.getString("court_cost").replace('$', ' ').trim());
+				String fineAmountStr = rs.getString("fine_amount");
+				if (fineAmountStr != null)
+				{
+					violation.fine_amount = new BigDecimal(fineAmountStr.replace('$', ' ').trim());
+				}
+				String courtCostStr = rs.getString("court_cost");
+				if (courtCostStr != null)
+				{
+					violation.court_cost = new BigDecimal(courtCostStr.replace('$', ' ').trim());
+				}
+			}
+			catch (NullPointerException e)
+			{
+				LogSystem.LogEvent("Null Pointer while processing DB rows - " + e.getMessage() + ":" + e.getCause().toString());
+				return null;
 			}
 			catch (Exception e)
 			{
