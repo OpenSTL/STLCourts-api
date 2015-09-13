@@ -140,8 +140,8 @@ public class OpportunityDAO
 		newOpportunityNeed.id = GetNextOpportunityNeedId();
 		
 		String sql = "INSERT INTO opportunity_needs (id, opportunity_id, start_time, end_time, " +
-				     " violation_fine_limit, desired_count)" +
-		             "VALUES (?, ?, ?, ?, ?, ?)";
+				     " violation_fine_limit, desired_count, description)" +
+		             "VALUES (?, ?, ?, ?, ?, ?, ?)";
 		try 
 		{
 			int affectedRows = jdbcTemplate.update(sql,
@@ -150,7 +150,8 @@ public class OpportunityDAO
 									 			   newOpportunityNeed.startTime,
 									 			   newOpportunityNeed.endTime,
 									 			   newOpportunityNeed.violationFineLimit,
-									 			   newOpportunityNeed.desiredCount);
+									 			   newOpportunityNeed.desiredCount,
+									 			   newOpportunityNeed.description);
 			if (affectedRows != 0)
 			{
 				return newOpportunityNeed;
@@ -278,6 +279,7 @@ public class OpportunityDAO
 				opportunityNeed.endTime = rs.getTimestamp("end_time");
 				opportunityNeed.violationFineLimit = rs.getBigDecimal("violation_fine_limit");
 				opportunityNeed.desiredCount = rs.getInt("desired_count");
+				opportunityNeed.description = rs.getString("description");
 			}
 			catch (Exception e)
 			{
