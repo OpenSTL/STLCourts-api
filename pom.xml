@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.inveo</groupId>
+	<groupId>com.civtechstl</groupId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
@@ -158,5 +158,5 @@
 
 	<artifactId>web-services</artifactId>
 	<name>Web-Services</name>
-	<description>Spring Boot Web Service Starter</description>
+	<description>Spring Boot Web Services for yourstlcourts.com</description>
 </project>

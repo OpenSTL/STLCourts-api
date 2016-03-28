@@ -16,8 +16,8 @@ public class EmailManager extends JavaMailSenderImpl {
     
     public void SendEmail(Email mail)
     {
-	    final String username = "teaminveo@gmail.com";
-		final String password = "inveowins";
+	    final String username = "...@....com";
+		final String password = "somepassword";
 	
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
