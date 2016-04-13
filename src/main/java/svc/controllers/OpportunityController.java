@@ -20,7 +20,7 @@ import svc.models.*;
 
 @RestController
 @EnableAutoConfiguration
-@RequestMapping("inveo-api/opportunities")
+@RequestMapping("api/opportunities")
 public class OpportunityController
 {	
 	@Inject

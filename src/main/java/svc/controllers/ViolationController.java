@@ -14,7 +14,7 @@ import svc.models.*;
 
 @RestController
 @EnableAutoConfiguration
-@RequestMapping("inveo-api/violations")
+@RequestMapping("api/violations")
 public class ViolationController {
 	
 	@Inject

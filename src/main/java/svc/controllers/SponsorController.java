@@ -18,7 +18,7 @@ import svc.models.*;
 
 @RestController
 @EnableAutoConfiguration
-@RequestMapping("inveo-api/sponsors")
+@RequestMapping("api/sponsors")
 public class SponsorController
 {	
 	@Inject

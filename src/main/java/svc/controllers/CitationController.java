@@ -22,7 +22,7 @@ import svc.models.*;
 
 @RestController
 @EnableAutoConfiguration
-@RequestMapping("inveo-api/citations")
+@RequestMapping("api/citations")
 public class CitationController
 {	
 	@Inject
