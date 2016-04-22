@@ -3,7 +3,7 @@ VOLUME /tmp
 
 RUN curl http://central.maven.org/maven2/mysql/mysql-connector-java/5.1.38/mysql-connector-java-5.1.38.jar -o $CATALINA_HOME/lib/mysql-connector-java-5.1.38.jar
 
-RUN apt-get install maven
+RUN apt-get update && apt-get install -y maven
 RUN mvn package && java -jar target/stlcourts-api.jar
 
 ADD stlcourts-api.jar app.jar
