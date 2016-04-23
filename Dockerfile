@@ -1,4 +1,4 @@
-FROM java:8
+FROM oracle-java8
 VOLUME /tmp
 
 RUN curl http://central.maven.org/maven2/mysql/mysql-connector-java/5.1.38/mysql-connector-java-5.1.38.jar -o $CATALINA_HOME/lib/mysql-connector-java-5.1.38.jar
