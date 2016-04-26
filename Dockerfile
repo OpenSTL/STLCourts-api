@@ -8,4 +8,4 @@ WORKDIR /usr/src/app
 ADD . /usr/src/app
 
 RUN mvn install
-CMD ["java","-jar","target/stlcourts-api.jar"]
+CMD ["java","-jar","/usr/src/app/target/stlcourts-api.jar"]
