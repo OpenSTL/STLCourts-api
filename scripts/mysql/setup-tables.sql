@@ -79,7 +79,7 @@ CREATE TABLE violations (
     citation_number text,
     violation_number text,
     violation_description text,
-    warrant_status boolean DEFAULT false,
+    warrant_status TINYINT(1) DEFAULT 0,
     warrant_number text,
     status text,
     status_date TIMESTAMP,

@@ -1,6 +1,6 @@
 TRUNCATE citations;
 
-LOAD DATA INFILE '/Users/WJS0617/yourstlcourts/pgexport/citations.csv' INTO TABLE citations
+LOAD DATA INFILE '/Users/WJS0617/yourstlcourts/gh-spring-svc/scripts/hackathon-data/citations.csv' INTO TABLE citations
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
