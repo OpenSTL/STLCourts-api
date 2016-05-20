@@ -72,7 +72,12 @@ public class CitationController
 			criteria.last_name = lastName;
 			criteria.municipalities = municipalityNames;
 		}
-		
+		if (firstName != null && lastName != null &&  licenseNumber != null)//for the text/phone system
+		{
+			criteria.first_name = firstName;
+			criteria.last_name = lastName;
+			criteria.liscense_number = licenseNumber;
+		}
 		return new CitationsDTO(_citationManager.FindCitations(criteria));
 	}
 }
