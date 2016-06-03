@@ -1,4 +1,4 @@
-DROP TABLE citations;
+DROP TABLE IF EXISTS citations;
 CREATE TABLE citations (
     id integer DEFAULT 0 NOT NULL,
     citation_number text NULL,
@@ -16,7 +16,7 @@ CREATE TABLE citations (
     court_id integer NULL
 );
 
-DROP TABLE courts;
+DROP TABLE IF EXISTS courts;
 CREATE TABLE courts (
     id integer NOT NULL,
     latitude double precision,
@@ -28,7 +28,7 @@ CREATE TABLE courts (
     zip_code text
 );
 
-DROP TABLE opportunities;
+DROP TABLE IF EXISTS opportunities;
 CREATE TABLE opportunities (
     id integer NOT NULL,
     sponsor_id integer NOT NULL,
@@ -38,7 +38,7 @@ CREATE TABLE opportunities (
     court_id integer NOT NULL
 );
 
-DROP TABLE opportunity_need_pairings;
+DROP TABLE IF EXISTS opportunity_need_pairings;
 CREATE TABLE opportunity_need_pairings (
     opportunity_need_id integer,
     violation_id integer,
@@ -46,7 +46,7 @@ CREATE TABLE opportunity_need_pairings (
     id integer
 );
 
-DROP TABLE opportunity_needs;
+DROP TABLE IF EXISTS opportunity_needs;
 CREATE TABLE opportunity_needs (
     id integer NOT NULL,
     opportunity_id integer,
@@ -57,14 +57,14 @@ CREATE TABLE opportunity_needs (
     description text
 );
 
-DROP TABLE sponsor_login;
+DROP TABLE IF EXISTS sponsor_login;
 CREATE TABLE sponsor_login (
     id integer NOT NULL,
     userid text,
     pwd text
 );
 
-DROP TABLE sponsors;
+DROP TABLE IF EXISTS sponsors;
 CREATE TABLE sponsors (
     id integer NOT NULL,
     name text,
@@ -73,7 +73,7 @@ CREATE TABLE sponsors (
     contact_phonenumber text
 );
 
-DROP TABLE violations;
+DROP TABLE IF EXISTS violations;
 CREATE TABLE violations (
     id integer DEFAULT 0 NOT NULL,
     citation_number text,
