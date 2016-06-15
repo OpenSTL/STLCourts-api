@@ -42,7 +42,7 @@ public class CitationManager
 		if (criteria.date_of_birth != null && criteria.citation_number != null)
 		{
 			List<Citation> citations = new ArrayList<Citation>();
-			Citation citation = _citationDAO.getByCitationNumber(criteria.date_of_birth, criteria.citation_number);
+			Citation citation = _citationDAO.getByCitationNumberAndDOB(criteria.citation_number, criteria.date_of_birth);
 			if (citation != null)
 			{
 				citations.add(citation);

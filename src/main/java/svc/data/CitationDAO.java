@@ -59,6 +59,25 @@ public class CitationDAO
 		}
 	}
 	
+	public Citation getByCitationNumberAndDOB(String citation_number, Date date_of_birth)
+	{
+		try 
+		{
+			String sql = "SELECT * FROM citations WHERE citation_number = ? AND date_of_birth = ?";
+			Citation citation = jdbcTemplate.queryForObject(sql,
+															new CitationSQLMapper(),
+															citation_number,
+															date_of_birth);
+			
+			return citation;
+		}
+		catch (Exception e)
+		{
+			LogSystem.LogDBException(e);
+			return null;
+		}
+	}
+	
 	public List<Citation> getByDOBAndLicense(Date date_of_birth, String drivers_license_number)
 	{
 		try 

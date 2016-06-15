@@ -76,7 +76,7 @@ public class CitationController
 		{
 			criteria.first_name = firstName;
 			criteria.last_name = lastName;
-			criteria.liscense_number = licenseNumber;
+			criteria.drivers_license_number = licenseNumber;
 		}
 		return new CitationsDTO(_citationManager.FindCitations(criteria));
 	}
