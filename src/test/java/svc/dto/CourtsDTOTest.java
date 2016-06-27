@@ -19,6 +19,6 @@ public class CourtsDTOTest extends BaseTest {
 		
 		CourtsDTO dto = new CourtsDTO(courts);
 
-		Assert.assertEquals(dto.courts.size(), 2);
+		Assert.assertEquals(dto.courts.size(), 1);
 	}
 }
