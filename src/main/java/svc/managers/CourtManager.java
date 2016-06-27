@@ -10,23 +10,15 @@ import svc.data.CourtDAO;
 import svc.models.Court;
 
 @Component
-public class CourtManager
-{
+public class CourtManager {
 	@Inject
-	private CourtDAO _courtDAO;
+	private CourtDAO courtDAO;
 	
-	public CourtManager()
-	{
-	}
-	
-	public Court GetCourtById(int courtId)
-	{
-		return _courtDAO.getByCourtId(courtId);
+	public Court GetCourtById(int courtId) {
+		return courtDAO.getByCourtId(courtId);
 	}
 
-	public List<Court> GetAllCourts()
-	{
-		return _courtDAO.getAllCourts();
+	public List<Court> GetAllCourts() {
+		return courtDAO.getAllCourts();
 	}
-
 }

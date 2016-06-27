@@ -7,6 +7,7 @@ WORKDIR /usr/src/app
 
 ADD . /usr/src/app
 
+RUN mvn test
 RUN mvn install
 RUN ln -sfn target/$(ls target | grep stlcourts-api-* | grep -v original) stlcourts-api.jar
 

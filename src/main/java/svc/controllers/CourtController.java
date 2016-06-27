@@ -18,27 +18,23 @@ import svc.models.*;
 @RestController
 @EnableAutoConfiguration
 @RequestMapping("api/courts")
-public class CourtController
-{	
+public class CourtController {	
 	@Inject
-	CourtManager _courtManager;
+	CourtManager courtManager;
 	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET)
-	CourtsDTO GetCourts()
-	{
-		return new CourtsDTO(_courtManager.GetAllCourts());
+	CourtsDTO GetCourts() {
+		return new CourtsDTO(courtManager.GetAllCourts());
 	}
 	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET, value="/{id}")
-	Court GetCourt(@PathVariable("id") Integer id)
-	{
-		if (id == null)
-		{
+	Court GetCourt(@PathVariable("id") Integer id) {
+		if (id == null) {
 			LogSystem.LogEvent("Null id passed to controller");
 		}
 		
-		return _courtManager.GetCourtById(id);
+		return courtManager.GetCourtById(id);
 	}
 }
