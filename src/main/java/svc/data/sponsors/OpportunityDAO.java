@@ -1,4 +1,4 @@
-package svc.data;
+package svc.data.sponsors;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -20,7 +20,7 @@ public class OpportunityDAO
 	private static JdbcTemplate jdbcTemplate;
 	
 	@Autowired
-	public void setDataSource(DataSource dataSource) { OpportunityDAO.jdbcTemplate = new JdbcTemplate(dataSource); }
+	public void setDataSource(DataSource municipalDataSource) { OpportunityDAO.jdbcTemplate = new JdbcTemplate(municipalDataSource); }
 	
 	public Opportunity getByOpportunityId(int opportunityId)
 	{

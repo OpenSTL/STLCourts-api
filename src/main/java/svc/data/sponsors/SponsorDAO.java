@@ -1,4 +1,4 @@
-package svc.data;
+package svc.data.sponsors;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -19,7 +19,7 @@ public class SponsorDAO
 	private static JdbcTemplate jdbcTemplate;
 	
 	@Autowired
-	public void setDataSource(DataSource dataSource) { SponsorDAO.jdbcTemplate = new JdbcTemplate(dataSource); }
+	public void setDataSource(DataSource municipalDataSource) { SponsorDAO.jdbcTemplate = new JdbcTemplate(municipalDataSource); }
 	
 	public Sponsor checkSponsorLogin(String userId, String pwd)
 	{

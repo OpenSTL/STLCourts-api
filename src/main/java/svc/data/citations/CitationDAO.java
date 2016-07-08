@@ -1,4 +1,4 @@
-package svc.data;
+package svc.data.citations;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.JdbcTemplate;

@@ -1,4 +1,4 @@
-package svc.data;
+package svc.data.municipal;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,7 +21,7 @@ public class CourtDAO
 	private static JdbcTemplate jdbcTemplate;
 	
 	@Autowired
-	public void setDataSource(DataSource dataSource) { CourtDAO.jdbcTemplate = new JdbcTemplate(dataSource); }
+	public void setDataSource(DataSource municipalDataSource) { CourtDAO.jdbcTemplate = new JdbcTemplate(municipalDataSource); }
 	
 	public Court getByCourtId(int courtId)
 	{

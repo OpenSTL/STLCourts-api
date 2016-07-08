@@ -4,7 +4,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Component;
 
-import svc.data.SponsorDAO;
+import svc.data.sponsors.SponsorDAO;
 import svc.models.Sponsor;
 
 @Component

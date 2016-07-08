@@ -1,4 +1,4 @@
-package svc.data;
+package svc.data.citations;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -23,7 +23,7 @@ public class ViolationDAO
 	private static JdbcTemplate jdbcTemplate;
 	
 	@Autowired
-	public void setDataSource(DataSource dataSource) { ViolationDAO.jdbcTemplate = new JdbcTemplate(dataSource); }
+	public void setDataSource(DataSource citationDataSource) { ViolationDAO.jdbcTemplate = new JdbcTemplate(citationDataSource); }
 	
 	public Violation getViolationDataById(int violationId)
 	{

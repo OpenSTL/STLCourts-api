@@ -7,7 +7,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Component;
 
-import svc.data.CitationDAO;
+import svc.data.citations.CitationDAO;
 import svc.dto.CitationSearchCriteria;
 import svc.logging.LogSystem;
 import svc.models.Citation;

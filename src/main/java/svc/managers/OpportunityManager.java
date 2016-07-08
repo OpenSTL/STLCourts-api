@@ -6,7 +6,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Component;
 
-import svc.data.OpportunityDAO;
+import svc.data.sponsors.OpportunityDAO;
 import svc.models.Opportunity;
 import svc.models.OpportunityNeed;
 import svc.models.OpportunityPairing;
