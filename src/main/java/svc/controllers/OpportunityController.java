@@ -20,7 +20,7 @@ import svc.models.*;
 
 @RestController
 @EnableAutoConfiguration
-@RequestMapping("api/opportunities")
+@RequestMapping("/opportunities")
 public class OpportunityController
 {	
 	@Inject

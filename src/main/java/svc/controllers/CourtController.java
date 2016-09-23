@@ -17,7 +17,7 @@ import svc.models.*;
 
 @RestController
 @EnableAutoConfiguration
-@RequestMapping("api/courts")
+@RequestMapping("/courts")
 public class CourtController {	
 	@Inject
 	CourtManager courtManager;

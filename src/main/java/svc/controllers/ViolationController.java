@@ -14,7 +14,7 @@ import svc.models.*;
 
 @RestController
 @EnableAutoConfiguration
-@RequestMapping("api/violations")
+@RequestMapping("/violations")
 public class ViolationController {
 	
 	@Inject

@@ -18,7 +18,7 @@ import svc.models.*;
 
 @RestController
 @EnableAutoConfiguration
-@RequestMapping("api/sponsors")
+@RequestMapping("/sponsors")
 public class SponsorController
 {	
 	@Inject

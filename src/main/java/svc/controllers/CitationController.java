@@ -22,7 +22,7 @@ import svc.models.*;
 
 @RestController
 @EnableAutoConfiguration
-@RequestMapping("api/citations")
+@RequestMapping("/citations")
 public class CitationController
 {	
 	@Inject
