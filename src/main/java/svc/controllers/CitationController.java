@@ -23,21 +23,18 @@ import svc.models.*;
 @RestController
 @EnableAutoConfiguration
 @RequestMapping("/citations")
-public class CitationController
-{	
+public class CitationController {	
 	@Inject
-	CitationManager _citationManager;
+	CitationManager citationManager;
 	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET, value="/{id}")
-	Citation GetCitation(@PathVariable("id") Integer id)
-	{
-		if (id == null)
-		{
+	Citation GetCitation(@PathVariable("id") Long id) {
+		if (id == null) {
 			LogSystem.LogEvent("Null id passed to controller");
 		}
 		
-		return _citationManager.GetCitationById(id);
+		return citationManager.GetCitationById(id);
 	}
 	
 	@ResponseBody
@@ -48,36 +45,32 @@ public class CitationController
 			                     @RequestParam(value = "firstName", required = false) String firstName,
 			                     @RequestParam(value = "lastName", required = false) String lastName,
 			                     @RequestParam(value = "municipalityNames", required = false) List<String> municipalityNames,
-			                     @RequestParam(value = "dob", required = false) @DateTimeFormat(pattern="MM/dd/yyyy") Date dob)
-	{
+			                     @RequestParam(value = "dob", required = false) @DateTimeFormat(pattern="MM/dd/yyyy") Date dob) {
 		CitationSearchCriteria criteria = new CitationSearchCriteria();
-		if (citationNumber != null)
-		{
+		if (citationNumber != null) {
 			criteria.citation_number = citationNumber;
 		}
 		
-		if (dob != null)
-		{
+		if (dob != null) {
 			criteria.date_of_birth = dob;
 		}
 		
-		if (licenseNumber != null && licenseState != null)
-		{
+		if (licenseNumber != null && licenseState != null) {
 			criteria.drivers_license_number = licenseNumber;
 			criteria.drivers_license_state = licenseState;
 		}
 		
-		if (lastName != null && municipalityNames != null && municipalityNames.size() != 0)
-		{
+		if (lastName != null && municipalityNames != null && municipalityNames.size() != 0) {
 			criteria.last_name = lastName;
 			criteria.municipalities = municipalityNames;
 		}
-		if (firstName != null && lastName != null &&  licenseNumber != null)//for the text/phone system
-		{
+		
+		if (firstName != null && lastName != null &&  licenseNumber != null) { //for the text/phone system
 			criteria.first_name = firstName;
 			criteria.last_name = lastName;
 			criteria.drivers_license_number = licenseNumber;
 		}
-		return new CitationsDTO(_citationManager.FindCitations(criteria));
+		
+		return new CitationsDTO(citationManager.FindCitations(criteria));
 	}
 }

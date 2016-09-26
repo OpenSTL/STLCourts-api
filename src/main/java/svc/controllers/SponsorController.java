@@ -19,18 +19,15 @@ import svc.models.*;
 @RestController
 @EnableAutoConfiguration
 @RequestMapping("/sponsors")
-public class SponsorController
-{	
+public class SponsorController {	
 	@Inject
-	SponsorManager _sponsorManager;
+	SponsorManager sponsorManager;
 	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST, value="/login")
-	Sponsor Login(@RequestBody Credentials credentials) throws AuthenticationException
-	{
-		Sponsor sponsor = _sponsorManager.Login(credentials.userId, credentials.password);
-		if (sponsor == null)
-		{
+	Sponsor Login(@RequestBody Credentials credentials) throws AuthenticationException {
+		Sponsor sponsor = sponsorManager.Login(credentials.userId, credentials.password);
+		if (sponsor == null) {
 			throw new AuthenticationException();
 		}
 		
@@ -39,13 +36,11 @@ public class SponsorController
 	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET, value="/{id}")
-	Sponsor GetSponsor(@PathVariable("id") Integer id)
-	{
-		if (id == null)
-		{
+	Sponsor GetSponsor(@PathVariable("id") Long id) {
+		if (id == null) {
 			LogSystem.LogEvent("Null id passed to controller");
 		}
 		
-		return _sponsorManager.GetSponsorById(id);
+		return sponsorManager.GetSponsorById(id);
 	}
 }

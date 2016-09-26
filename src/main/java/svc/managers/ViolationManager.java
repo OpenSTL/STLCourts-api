@@ -10,22 +10,15 @@ import svc.data.citations.ViolationDAO;
 import svc.models.Violation;
 
 @Component
-public class ViolationManager
-{
+public class ViolationManager {
 	@Inject
-	private ViolationDAO _violationDAO;
+	private ViolationDAO violationDAO;
 	
-	public ViolationManager()
-	{
-	}
-	
-	public Violation GetViolationById(int violationId)
-	{
-		return _violationDAO.getViolationDataById(violationId);
+	public Violation GetViolationById(int violationId) {
+		return violationDAO.getViolationDataById(violationId);
 	}
 
-	public List<Violation> getViolationsByCitationNumber(String citationNumber) 
-	{
-		return _violationDAO.getViolationsByCitationNumber(citationNumber);
+	public List<Violation> getViolationsByCitationNumber(String citationNumber) {
+		return violationDAO.getViolationsByCitationNumber(citationNumber);
 	}
 }

@@ -8,18 +8,15 @@ import svc.data.sponsors.SponsorDAO;
 import svc.models.Sponsor;
 
 @Component
-public class SponsorManager
-{
+public class SponsorManager {
 	@Inject
-	private SponsorDAO _sponsorDAO;
+	private SponsorDAO sponsorDAO;
 	
-	public Sponsor Login(String userId, String pwd)
-	{
-		return _sponsorDAO.checkSponsorLogin(userId, pwd);
+	public Sponsor Login(String userId, String pwd) {
+		return sponsorDAO.checkSponsorLogin(userId, pwd);
 	}
 	
-	public Sponsor GetSponsorById(int sponsorId)
-	{
-		return _sponsorDAO.getBySponsorId(sponsorId);
+	public Sponsor GetSponsorById(Long sponsorId) {
+		return sponsorDAO.getBySponsorId(sponsorId);
 	}
 }

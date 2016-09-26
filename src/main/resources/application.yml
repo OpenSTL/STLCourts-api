@@ -4,14 +4,6 @@ server:
 ---
 spring:
   profiles.active: local
-spring.datasource: #TODO: Don't hard-code this, but rather use in-memory DB
-  driverClassName: com.mysql.jdbc.Driver
-  url: jdbc:mysql://104.131.71.212:3316/your-stl-courts-test?useUnicode=true&amp;characterEncoding=UTF-8
-  username: yourstlcourtsapi
-  password: TiaYSTLCTSdbpwd!
-  testWhileIdle: true
-  timeBetweenEvictionRunsMillis: 60000
-  validationQuery: SELECT 1
 ---
 spring:
   profiles: qa

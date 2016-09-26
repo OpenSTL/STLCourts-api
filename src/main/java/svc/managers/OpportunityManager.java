@@ -12,47 +12,39 @@ import svc.models.OpportunityNeed;
 import svc.models.OpportunityPairing;
 
 @Component
-public class OpportunityManager
-{
+public class OpportunityManager {
 	@Inject
-	private OpportunityDAO _opportunityDAO;
+	private OpportunityDAO opportunityDAO;
 
-	public List<Opportunity> GetOpportunitiesForSponsor(int sponsorId) 
-	{
-		return _opportunityDAO.LoadOpportunitiesForSponsor(sponsorId);
+	public List<Opportunity> GetOpportunitiesForSponsor(Long sponsorId) {
+		return opportunityDAO.LoadOpportunitiesForSponsor(sponsorId);
 	}
 
-	public Opportunity getOpportunity(Integer opportunityId) 
-	{
-		return _opportunityDAO.getByOpportunityId(opportunityId);
+	public Opportunity getOpportunity(Long opportunityId) {
+		return opportunityDAO.getByOpportunityId(opportunityId);
 	}
 
-	public Opportunity createOpportunity(Opportunity newOpportunity) 
-	{
-		return _opportunityDAO.createOpportunity(newOpportunity);
+	public Opportunity createOpportunity(Opportunity newOpportunity) {
+		return opportunityDAO.createOpportunity(newOpportunity);
 	}
 
-	public OpportunityNeed addNeedToOpportunity(OpportunityNeed need) 
-	{
-		return _opportunityDAO.createOpportunityNeed(need);
+	public OpportunityNeed addNeedToOpportunity(OpportunityNeed need) {
+		return opportunityDAO.createOpportunityNeed(need);
 	}
 
-	public OpportunityPairing createPairingForNeed(OpportunityPairing pairing)
-	{
-		return _opportunityDAO.createOpportunityPairing(pairing);
+	public OpportunityPairing createPairingForNeed(OpportunityPairing pairing) {
+		return opportunityDAO.createOpportunityPairing(pairing);
 	}
 
-	public List<Opportunity> GetOpportunitiesForCourt(int courtId)
-	{
-		return _opportunityDAO.LoadOpportunitiesForCourt(courtId);
+	public List<Opportunity> GetOpportunitiesForCourt(Long courtId){
+		return opportunityDAO.LoadOpportunitiesForCourt(courtId);
 	}
 
-	public List<OpportunityNeed> getOpportunityNeedsForOpportunity(int opportunityId)
-	{
-		return _opportunityDAO.getOpportunityNeedsForOpportunity(opportunityId);
+	public List<OpportunityNeed> getOpportunityNeedsForOpportunity(Long opportunityId) {
+		return opportunityDAO.getOpportunityNeedsForOpportunity(opportunityId);
 	}
 
-	public List<OpportunityPairing> getOpportunityPairingsForNeed(int needId) {
-		return _opportunityDAO.getOpportunityPairingsForNeed(needId);
+	public List<OpportunityPairing> getOpportunityPairingsForNeed(Long needId) {
+		return opportunityDAO.getOpportunityPairingsForNeed(needId);
 	}
 }

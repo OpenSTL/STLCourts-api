@@ -11,9 +11,17 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 @Configuration
 @Profile("local")
 public class LocalProfile {
-//	@Bean
-//	public DataSource dataSource() {
-//		EmbeddedDatabaseBuilder dbBuilder = new EmbeddedDatabaseBuilder();
-//		return dbBuilder.setType(EmbeddedDatabaseType.HSQL).addScript("schema-tables.sql").addScript("data.sql").build();
-//	}
+	@Bean
+	public DataSource dataSource() {
+		EmbeddedDatabaseBuilder dbBuilder = new EmbeddedDatabaseBuilder();
+		return dbBuilder.setType(EmbeddedDatabaseType.HSQL)
+				.addScript("hsql/schema-tables.sql")
+				.addScript("hsql/courts.sql")
+				.addScript("hsql/opportunities.sql")
+				.addScript("hsql/opportunity-needs.sql")
+				.addScript("hsql/sponsor-login.sql")
+				.addScript("hsql/sponsors.sql")
+				.addScript("hsql/violations.sql")
+				.build();
+	}
 }

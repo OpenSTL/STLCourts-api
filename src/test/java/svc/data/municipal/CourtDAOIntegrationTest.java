@@ -22,7 +22,7 @@ public class CourtDAOIntegrationTest {
 	public void GetByCourtIdSuccessful() {
 		CourtDAO dao = new CourtDAO();
 
-		Court court = dao.getByCourtId(1);
+		Court court = dao.getByCourtId(1L);
 
 		assertThat(court, is(notNullValue()));
 		assertThat(court.municipality, is("Ballwin"));

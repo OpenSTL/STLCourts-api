@@ -16,14 +16,12 @@ import svc.models.*;
 @EnableAutoConfiguration
 @RequestMapping("/violations")
 public class ViolationController {
-	
 	@Inject
-	ViolationManager _violationManager;
+	ViolationManager violationManager;
 	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET)
-	Violation GetViolations()
-	{
-		return _violationManager.GetViolationById(1);
+	Violation GetViolations() {
+		throw new UnsupportedOperationException();
 	}
 }

@@ -1,263 +1,180 @@
 package svc.data.sponsors;
 
-import org.springframework.stereotype.Repository;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.List;
-
-import org.springframework.jdbc.core.RowMapper;
-
-import svc.logging.LogSystem;
-import svc.models.*;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
+
+import svc.data.jdbc.BaseJdbcDao;
+import svc.logging.LogSystem;
+import svc.models.Opportunity;
+import svc.models.OpportunityNeed;
+import svc.models.OpportunityPairing;
+
 @Repository
-public class OpportunityDAO
-{
-	private static JdbcTemplate jdbcTemplate;
-	
-	@Autowired
-	public void setDataSource(DataSource municipalDataSource) { OpportunityDAO.jdbcTemplate = new JdbcTemplate(municipalDataSource); }
-	
-	public Opportunity getByOpportunityId(int opportunityId)
-	{
-		try 
-		{
-			String sql = "SELECT * FROM opportunities WHERE id = ?";
-			Opportunity opportunity = jdbcTemplate.queryForObject(sql,
-													 			  new OpportunitySQLMapper(),
-													 			  opportunityId);
+public class OpportunityDAO extends BaseJdbcDao {
+	private SimpleJdbcInsert opportunityInsert;
+	private SimpleJdbcInsert opportunityNeedInsert;
+	private SimpleJdbcInsert opportunityNeedPairingInsert;
+
+    @Override
+	protected void createSimpleJdbcInserts(DataSource dataSource) {
+    	opportunityInsert = new SimpleJdbcInsert(dataSource)
+                .withTableName("opportunity_needs")
+                .usingGeneratedKeyColumns("id")
+                .usingColumns("sponsor_id", "court_id", "name", "short_description", "full_description");
+    	
+    	opportunityNeedInsert = new SimpleJdbcInsert(dataSource)
+                .withTableName("opportunities")
+                .usingGeneratedKeyColumns("id")
+                .usingColumns("opportunity_id", "start_time", "end_time", "violation_fine_limit", "desired_count", "description");
+    	
+    	opportunityNeedPairingInsert = new SimpleJdbcInsert(dataSource)
+                .withTableName("opportunity_need_pairings")
+                .usingGeneratedKeyColumns("id")
+                .usingColumns("opportunity_need_id", "violation_id", "status");
+    }
+    
+	public Opportunity getByOpportunityId(Long opportunityId) {
+		try  {
+			Map<String, Object> parameterMap = new HashMap<String, Object>();
+			parameterMap.put("opportunityId", opportunityId);
+			String sql = "SELECT * FROM opportunities WHERE id = :opportunityId";
+			Opportunity opportunity = jdbcTemplate.queryForObject(sql, parameterMap, new OpportunitySQLMapper());
 			return opportunity;
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			LogSystem.LogDBException(e);
 			return null;
 		}
 	}
 
-	public List<Opportunity> LoadOpportunitiesForSponsor(Integer sponsorId) 
-	{
-		try 
-		{
-			String sql = "SELECT * FROM opportunities WHERE sponsor_id = ?";
-			List<Opportunity> opportunities = jdbcTemplate.query(sql,
-																 new OpportunitySQLMapper(),
-																 sponsorId);
+	public List<Opportunity> LoadOpportunitiesForSponsor(Long sponsorId) {
+		try {
+			Map<String, Object> parameterMap = new HashMap<String, Object>();
+			parameterMap.put("sponsorId", sponsorId);
+			String sql = "SELECT * FROM opportunities WHERE sponsor_id = :sponsorId";
+			List<Opportunity> opportunities = jdbcTemplate.query(sql, new OpportunitySQLMapper());
 			return opportunities;
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			LogSystem.LogDBException(e);
 			return null;
 		}
 	}
 	
-	public List<Opportunity> LoadOpportunitiesForCourt(int courtId) 
-	{
-		try 
-		{
-			String sql = "SELECT * FROM opportunities WHERE court_id = ?";
-			List<Opportunity> opportunities = jdbcTemplate.query(sql,
-																 new OpportunitySQLMapper(),
-																 courtId);
+	public List<Opportunity> LoadOpportunitiesForCourt(Long courtId) {
+		try {
+			Map<String, Object> parameterMap = new HashMap<String, Object>();
+			parameterMap.put("courtId", courtId);
+			String sql = "SELECT * FROM opportunities WHERE court_id = :courtId";
+			List<Opportunity> opportunities = jdbcTemplate.query(sql, new OpportunitySQLMapper());
 			return opportunities;
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			LogSystem.LogDBException(e);
 			return null;
 		}
 	}
 	
-	public Opportunity createOpportunity(Opportunity newOpportunity) 
-	{
-		newOpportunity.id = GetNextOpportunityId();
-		
-		String sql = "INSERT INTO opportunities (id, sponsor_id, court_id, name, short_description, full_description)" +
-		             "VALUES (?, ?, ?, ?, ?, ?)";
-		try 
-		{
-			int affectedRows = jdbcTemplate.update(sql,
-									 			  newOpportunity.id,
-									 			  newOpportunity.sponsorId,
-									 			  newOpportunity.courtId,
-									 			  newOpportunity.name,
-									 			  newOpportunity.shortDescription,
-									 			  newOpportunity.fullDescription);
-			if (affectedRows != 0)
-			{
-				return newOpportunity;
-			}
-			else
-			{
-				LogSystem.LogEvent("Unable to add opportunity.");
-			}
-		}
-		catch (Exception e)
-		{
-			LogSystem.LogDBException(e);
-			return null;
-		}
-		
-		return null;
-	}
-	
-	private int GetNextOpportunityId()
-	{
-		int nextId = 1;
-		String sql = "SELECT MAX(id) FROM opportunities";
-		Integer biggestId = jdbcTemplate.queryForObject(sql, Integer.class);
-		if (biggestId != null)
-		{
-			nextId = biggestId + 1;
-		}
-		return nextId;
-	}
-	
-	public List<OpportunityNeed> getOpportunityNeedsForOpportunity(int opportunityId)
-	{
-		try 
-		{
-			String sql = "SELECT * FROM opportunity_needs WHERE opportunity_id = ?";
-			List<OpportunityNeed> opportunityNeeds = jdbcTemplate.query(sql,
-																        new OpportunityNeedSQLMapper(),
-																        opportunityId);
-			return opportunityNeeds;
-		}
-		catch (Exception e)
-		{
-			LogSystem.LogDBException(e);
-			return null;
-		}
-	}
-	
-	public OpportunityNeed createOpportunityNeed(OpportunityNeed newOpportunityNeed)
-	{
-		newOpportunityNeed.id = GetNextOpportunityNeedId();
-		
-		String sql = "INSERT INTO opportunity_needs (id, opportunity_id, start_time, end_time, " +
-				     " violation_fine_limit, desired_count, description)" +
-		             "VALUES (?, ?, ?, ?, ?, ?, ?)";
-		try 
-		{
-			int affectedRows = jdbcTemplate.update(sql,
-									 			   newOpportunityNeed.id,
-									 			   newOpportunityNeed.opportunityId,
-									 			   newOpportunityNeed.startTime,
-									 			   newOpportunityNeed.endTime,
-									 			   newOpportunityNeed.violationFineLimit,
-									 			   newOpportunityNeed.desiredCount,
-									 			   newOpportunityNeed.description);
-			if (affectedRows != 0)
-			{
-				return newOpportunityNeed;
-			}
-			else
-			{
-				LogSystem.LogEvent("Unable to add opportunity need.");
-			}
-		}
-		catch (Exception e)
-		{
-			LogSystem.LogDBException(e);
-			return null;
-		}
-		
-		return null;
-	}
-	
-	private int GetNextOpportunityNeedId()
-	{
-		int nextId = 1;
-		String sql = "SELECT MAX(id) FROM opportunity_needs";
-		Integer biggestId = jdbcTemplate.queryForObject(sql, Integer.class);
-		if (biggestId != null)
-		{
-			nextId = biggestId + 1;
-		}
-		return nextId;
-	}
-	
-	public List<OpportunityPairing> getOpportunityPairingsForNeed(int needId)
-	{
-		try 
-		{
-			String sql = "SELECT * FROM opportunity_need_pairings WHERE opportunity_need_id = ?";
-			List<OpportunityPairing> opportunityPairings = jdbcTemplate.query(sql,
-																        new OpportunityPairingSQLMapper(),
-																        needId);
-			return opportunityPairings;
-		}
-		catch (Exception e)
-		{
-			LogSystem.LogDBException(e);
-			return null;
-		}
-	}
-	
-	public OpportunityPairing createOpportunityPairing(OpportunityPairing pairing)
-	{
-		pairing.id = GetNextOpportunityPairingId();
-		String sql = "INSERT INTO opportunity_need_pairings (id, opportunity_need_id, violation_id, status) " +
-	             	 "VALUES (?, ?, ?, ?)";
-		try 
-		{
-			int affectedRows = jdbcTemplate.update(sql,
-												   pairing.id,
-												   pairing.opportunityNeedId,
-												   pairing.violationId,
-												   pairing.status);
+	public Opportunity createOpportunity(Opportunity newOpportunity) {
+		try {
+			final SqlParameterSource parameterSource = new MapSqlParameterSource()
+	                .addValue("sponsor_id", newOpportunity.sponsorId)
+	                .addValue("court_id", newOpportunity.courtId)
+	                .addValue("name", newOpportunity.name)
+	                .addValue("short_description", newOpportunity.shortDescription)
+	                .addValue("full_description", newOpportunity.fullDescription);
 			
-			if (affectedRows != 0)
-			{
-				return pairing;
-			}
-			else
-			{
-				LogSystem.LogEvent("Unable to add opportunity need.");
-			}
-		}
-		catch (Exception e)
-		{
+			Number key = opportunityInsert.executeAndReturnKey(parameterSource);
+			newOpportunity.id = key.longValue();
+
+			return newOpportunity;
+		} catch (Exception e) {
 			LogSystem.LogDBException(e);
 			return null;
 		}
-		
-		return null;
 	}
 	
-	private int GetNextOpportunityPairingId()
-	{
-		int nextId = 1;
-		String sql = "SELECT MAX(id) FROM opportunity_need_pairings";
-		Integer biggestId = jdbcTemplate.queryForObject(sql, Integer.class);
-		if (biggestId != null)
-		{
-			nextId = biggestId + 1;
+	public List<OpportunityNeed> getOpportunityNeedsForOpportunity(Long opportunityId){
+		try {
+			Map<String, Object> parameterMap = new HashMap<String, Object>();
+			parameterMap.put("opportunityId", opportunityId);
+			String sql = "SELECT * FROM opportunity_needs WHERE opportunity_id = :opportunityId";
+			List<OpportunityNeed> opportunityNeeds = jdbcTemplate.query(sql, parameterMap, new OpportunityNeedSQLMapper());
+			return opportunityNeeds;
+		} catch (Exception e) {
+			LogSystem.LogDBException(e);
+			return null;
 		}
-		return nextId;
 	}
 	
-	private class OpportunitySQLMapper implements RowMapper<Opportunity>
-	{
-		public Opportunity mapRow(ResultSet rs, int i)
-		{
+	public OpportunityNeed createOpportunityNeed(OpportunityNeed newOpportunityNeed) {
+		try {
+			final SqlParameterSource parameterSource = new MapSqlParameterSource()
+	                .addValue("opportunity_id", newOpportunityNeed.opportunityId)
+	                .addValue("start_time", newOpportunityNeed.startTime)
+	                .addValue("end_time", newOpportunityNeed.endTime)
+	                .addValue("violation_fine_limit", newOpportunityNeed.violationFineLimit)
+	                .addValue("desired_count", newOpportunityNeed.desiredCount)
+	                .addValue("description", newOpportunityNeed.description);
+			
+			Number key = opportunityNeedInsert.executeAndReturnKey(parameterSource);
+			newOpportunityNeed.id = key.longValue();
+
+			return newOpportunityNeed;
+		} catch (Exception e) {
+			LogSystem.LogDBException(e);
+			return null;
+		}
+	}
+	
+	public List<OpportunityPairing> getOpportunityPairingsForNeed(Long needId) {
+		try  {
+			Map<String, Object> parameterMap = new HashMap<String, Object>();
+			parameterMap.put("needId", needId);
+			String sql = "SELECT * FROM opportunity_need_pairings WHERE opportunity_need_id = :needId";
+			List<OpportunityPairing> opportunityPairings = jdbcTemplate.query(sql, parameterMap, new OpportunityPairingSQLMapper());
+			return opportunityPairings;
+		} catch (Exception e) {
+			LogSystem.LogDBException(e);
+			return null;
+		}
+	}
+	
+	public OpportunityPairing createOpportunityPairing(OpportunityPairing pairing) {
+		try {
+			final SqlParameterSource parameterSource = new MapSqlParameterSource()
+	                .addValue("opportunity_need_id", pairing.opportunityNeedId)
+	                .addValue("violation_id", pairing.violationId)
+	                .addValue("status", pairing.status);
+			
+			Number key = opportunityNeedPairingInsert.executeAndReturnKey(parameterSource);
+			pairing.id = key.longValue();
+	
+			return pairing;
+		} catch (Exception e) {
+			LogSystem.LogDBException(e);
+			return null;
+		}
+	}
+	
+	private class OpportunitySQLMapper implements RowMapper<Opportunity> {
+		public Opportunity mapRow(ResultSet rs, int i) {
 			Opportunity opportunity = new Opportunity();
-			try
-			{	
-				opportunity.id = rs.getInt("id");
+			try {	
+				opportunity.id = rs.getLong("id");
 				opportunity.sponsorId = rs.getInt("sponsor_id");
 				opportunity.name = rs.getString("name");
 				opportunity.shortDescription = rs.getString("short_description");
 				opportunity.fullDescription = rs.getString("full_description");
 				opportunity.courtId = rs.getInt("court_id");
-			}
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 				LogSystem.LogDBException(e);
 				return null;
 			}
@@ -266,23 +183,18 @@ public class OpportunityDAO
 		}
 	}
 	
-	private class OpportunityNeedSQLMapper implements RowMapper<OpportunityNeed>
-	{
-		public OpportunityNeed mapRow(ResultSet rs, int i)
-		{
+	private class OpportunityNeedSQLMapper implements RowMapper<OpportunityNeed> {
+		public OpportunityNeed mapRow(ResultSet rs, int i) {
 			OpportunityNeed opportunityNeed = new OpportunityNeed();
-			try
-			{	
-				opportunityNeed.id = rs.getInt("id");
-				opportunityNeed.opportunityId = rs.getInt("opportunity_id");
+			try {	
+				opportunityNeed.id = rs.getLong("id");
+				opportunityNeed.opportunityId = rs.getLong("opportunity_id");
 				opportunityNeed.startTime = rs.getTimestamp("start_time");
 				opportunityNeed.endTime = rs.getTimestamp("end_time");
 				opportunityNeed.violationFineLimit = rs.getBigDecimal("violation_fine_limit");
 				opportunityNeed.desiredCount = rs.getInt("desired_count");
 				opportunityNeed.description = rs.getString("description");
-			}
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 				LogSystem.LogDBException(e);
 				return null;
 			}
@@ -291,20 +203,15 @@ public class OpportunityDAO
 		}
 	}
 	
-	private class OpportunityPairingSQLMapper implements RowMapper<OpportunityPairing>
-	{
-		public OpportunityPairing mapRow(ResultSet rs, int i)
-		{
+	private class OpportunityPairingSQLMapper implements RowMapper<OpportunityPairing> {
+		public OpportunityPairing mapRow(ResultSet rs, int i) {
 			OpportunityPairing opportunityPairing = new OpportunityPairing();
-			try
-			{	
-				opportunityPairing.id = rs.getInt("id");
-				opportunityPairing.opportunityNeedId = rs.getInt("opportunity_need_id");
-				opportunityPairing.violationId = rs.getInt("violation_id");
+			try {	
+				opportunityPairing.id = rs.getLong("id");
+				opportunityPairing.opportunityNeedId = rs.getLong("opportunity_need_id");
+				opportunityPairing.violationId = rs.getLong("violation_id");
 				opportunityPairing.status = rs.getString("status");
-			}
-			catch (Exception e)
-			{
+			} catch (Exception e) {
 				LogSystem.LogDBException(e);
 				return null;
 			}

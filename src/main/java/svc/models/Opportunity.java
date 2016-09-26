@@ -2,7 +2,7 @@ package svc.models;
 
 public class Opportunity {
 	
-	public int id;
+	public Long id;
 	
 	public String name;
 	public String shortDescription;

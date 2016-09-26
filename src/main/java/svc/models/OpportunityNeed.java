@@ -6,8 +6,8 @@ import java.util.List;
 
 public class OpportunityNeed {
 
-	public int id;
-	public int opportunityId;
+	public Long id;
+	public Long opportunityId;
 	
 	public String description;
 	

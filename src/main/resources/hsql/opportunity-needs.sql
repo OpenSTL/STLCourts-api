@@ -1,0 +1,9 @@
+INSERT INTO opportunity_needs (id,opportunity_id,start_time,end_time,violation_fine_limit,desired_count,description) VALUES (1,1,'2012-04-23 13:25:43','2012-04-23 13:25:43',100,5,'');
+INSERT INTO opportunity_needs (id,opportunity_id,start_time,end_time,violation_fine_limit,desired_count,description) VALUES (3,4,'2015-09-24 00:00:00','2015-09-30 00:00:00',105,2,'');
+INSERT INTO opportunity_needs (id,opportunity_id,start_time,end_time,violation_fine_limit,desired_count,description) VALUES (5,3,'2015-10-15 00:00:00','2015-10-16 00:00:00',150,4,'');
+INSERT INTO opportunity_needs (id,opportunity_id,start_time,end_time,violation_fine_limit,desired_count,description) VALUES (4,7,'2015-09-24 00:00:00','2015-09-30 00:00:00',105,2,'');
+INSERT INTO opportunity_needs (id,opportunity_id,start_time,end_time,violation_fine_limit,desired_count,description) VALUES (6,8,'2015-10-01 00:00:00','2015-10-10 00:00:00',100,5,'');
+INSERT INTO opportunity_needs (id,opportunity_id,start_time,end_time,violation_fine_limit,desired_count,description) VALUES (7,3,'2015-01-01 00:00:00','2014-01-01 00:00:00',100,-9,'');
+INSERT INTO opportunity_needs (id,opportunity_id,start_time,end_time,violation_fine_limit,desired_count,description) VALUES (8,5,'2015-12-31 00:00:00','2016-12-31 00:00:00',150,7,'');
+INSERT INTO opportunity_needs (id,opportunity_id,start_time,end_time,violation_fine_limit,desired_count,description) VALUES (9,10,'2016-05-05 00:00:00','2016-05-10 00:00:00',100,5,'');
+INSERT INTO opportunity_needs (id,opportunity_id,start_time,end_time,violation_fine_limit,desired_count,description) VALUES (10,11,'2016-05-01 00:00:00','2016-05-22 00:00:00',100,10,'');

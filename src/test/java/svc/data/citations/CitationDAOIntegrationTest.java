@@ -22,7 +22,7 @@ public class CitationDAOIntegrationTest {
 	public void GetCitationByIDSuccessful() {
 		CitationDAO dao = new CitationDAO();
 
-		Citation citation = dao.getByCitationId(1);
+		Citation citation = dao.getByCitationId(1L);
 
 		assertThat(citation, is(notNullValue()));
 		assertThat(citation.citation_number, is("789674515"));

@@ -21,28 +21,22 @@ import svc.models.*;
 @RestController
 @EnableAutoConfiguration
 @RequestMapping("/opportunities")
-public class OpportunityController
-{	
+public class OpportunityController {	
 	@Inject
-	OpportunityManager _opportunityManager;
+	OpportunityManager opportunityManager;
 	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET)
-	OpportunitiesDTO FindOpportunities(@RequestParam(value = "sponsorId", required = false) Integer sponsorId,
-									   @RequestParam(value = "courtId", required = false) Integer courtId)
-	{
-		if (sponsorId == null && courtId == null)
-		{
+	OpportunitiesDTO FindOpportunities(@RequestParam(value = "sponsorId", required = false) Long sponsorId,
+									   @RequestParam(value = "courtId", required = false) Long courtId) {
+		if (sponsorId == null && courtId == null) {
 			LogSystem.LogEvent("Null ids passed to controller::find");
 		}
 		
-		if (sponsorId != null)
-		{
-			return new OpportunitiesDTO(_opportunityManager.GetOpportunitiesForSponsor(sponsorId));
-		}
-		else if (courtId != null)
-		{
-			return new OpportunitiesDTO(_opportunityManager.GetOpportunitiesForCourt(courtId));
+		if (sponsorId != null) {
+			return new OpportunitiesDTO(opportunityManager.GetOpportunitiesForSponsor(sponsorId));
+		} else if (courtId != null) {
+			return new OpportunitiesDTO(opportunityManager.GetOpportunitiesForCourt(courtId));
 		}
 		
 		return null;
@@ -50,90 +44,76 @@ public class OpportunityController
 	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET, value="/{id}")
-	Opportunity GetOpportunity(@PathVariable("id") Integer opportunityId)
-	{
-		if (opportunityId == null)
-		{
+	Opportunity GetOpportunity(@PathVariable("id") Long opportunityId) {
+		if (opportunityId == null) {
 			LogSystem.LogEvent("Null id passed to controller");
 		}
 		
-		return _opportunityManager.getOpportunity(opportunityId);
+		return opportunityManager.getOpportunity(opportunityId);
 	}
 	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST)
-	Opportunity CreateOpportunity(@RequestBody Opportunity newOpportunity)
-	{
-		if (newOpportunity == null)
-		{
+	Opportunity CreateOpportunity(@RequestBody Opportunity newOpportunity) {
+		if (newOpportunity == null) {
 			LogSystem.LogEvent("Null opportunity passed to post.");
 			return null;
 		}
 		
-		if (newOpportunity.id != 0)
-		{
+		if (newOpportunity.id != 0) {
 			LogSystem.LogEvent("Opportunity with id was passed to post.");
 			return null;
 		}
 		
-		return _opportunityManager.createOpportunity(newOpportunity);
+		return opportunityManager.createOpportunity(newOpportunity);
 	}
 	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET, value="/{id}/needs")
-	OpportunityNeedsDTO GetNeedsForOpportunity(@PathVariable("id") int opportunityId)
-	{
-		return new OpportunityNeedsDTO(_opportunityManager.getOpportunityNeedsForOpportunity(opportunityId));
+	OpportunityNeedsDTO GetNeedsForOpportunity(@PathVariable("id") Long opportunityId) {
+		return new OpportunityNeedsDTO(opportunityManager.getOpportunityNeedsForOpportunity(opportunityId));
 	}
 	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST, value="/{id}/needs")
-	OpportunityNeed CreateOpportunityNeed(@RequestBody OpportunityNeed need)
-	{
-		if (need == null)
-		{
+	OpportunityNeed CreateOpportunityNeed(@RequestBody OpportunityNeed need) {
+		if (need == null) {
 			LogSystem.LogEvent("Null opportunity need passed to post.");
 			return null;
 		}
 		
-		if (need.id != 0)
-		{
+		if (need.id != 0) {
 			LogSystem.LogEvent("Opportunity need with id was passed to post.");
 			return null;
 		}
 		
-		return _opportunityManager.addNeedToOpportunity(need);
+		return opportunityManager.addNeedToOpportunity(need);
 	}
 	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}/needs/{needId}/pairings")
-	OpportunityPairingsDTO GetOpportunityPairingsForNeed(@PathVariable("needId") int needId)
-	{
-		return new OpportunityPairingsDTO(_opportunityManager.getOpportunityPairingsForNeed(needId));
+	OpportunityPairingsDTO GetOpportunityPairingsForNeed(@PathVariable("needId") Long needId) {
+		return new OpportunityPairingsDTO(opportunityManager.getOpportunityPairingsForNeed(needId));
 	}
 	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST, value = "/{opId}/needs/{needId}/pairings")
-	OpportunityPairing CreateOpportunityPairing(@RequestBody OpportunityPairing pairing)
-	{
-		if (pairing == null)
-		{
+	OpportunityPairing CreateOpportunityPairing(@RequestBody OpportunityPairing pairing) {
+		if (pairing == null) {
 			LogSystem.LogEvent("Null opportunity pairing passed to post.");
 			return null;
 		}
 		
-		if (pairing.opportunityNeedId == 0)
-		{
+		if (pairing.opportunityNeedId == 0) {
 			LogSystem.LogEvent("Opportunity pairing with no need id was passed to post.");
 			return null;
 		}
 		
-		if (pairing.violationId == 0)
-		{
+		if (pairing.violationId == 0) {
 			LogSystem.LogEvent("Opportunity pairing with no violation id was passed to post.");
 			return null;
 		}
 		
-		return _opportunityManager.createPairingForNeed(pairing);
+		return opportunityManager.createPairingForNeed(pairing);
 	}
 }
