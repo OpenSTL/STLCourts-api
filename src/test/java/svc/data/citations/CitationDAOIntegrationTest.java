@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import static org.hamcrest.CoreMatchers.*;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.*;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -17,11 +18,12 @@ import svc.models.Citation;
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
 public class CitationDAOIntegrationTest {
+	
+	@Autowired
+    private CitationDAO dao;
 
 	@Test
 	public void GetCitationByIDSuccessful() {
-		CitationDAO dao = new CitationDAO();
-
 		Citation citation = dao.getByCitationId(1L);
 
 		assertThat(citation, is(notNullValue()));

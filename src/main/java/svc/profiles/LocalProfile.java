@@ -22,6 +22,7 @@ public class LocalProfile {
 				.addScript("hsql/sponsor-login.sql")
 				.addScript("hsql/sponsors.sql")
 				.addScript("hsql/violations.sql")
+				.addScript("hsql/citations.sql")
 				.build();
 	}
 }
