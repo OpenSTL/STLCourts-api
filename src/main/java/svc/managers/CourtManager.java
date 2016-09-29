@@ -14,7 +14,7 @@ public class CourtManager {
 	@Inject
 	private CourtDAO courtDAO;
 	
-	public Court GetCourtById(int courtId) {
+	public Court GetCourtById(Long courtId) {
 		return courtDAO.getByCourtId(courtId);
 	}
 

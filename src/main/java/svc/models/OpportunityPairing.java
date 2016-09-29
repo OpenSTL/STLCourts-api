@@ -4,8 +4,8 @@ package svc.models;
 
 public class OpportunityPairing
 {
-	public int id;
-	public int opportunityNeedId;
-	public int violationId;
+	public Long id;
+	public Long opportunityNeedId;
+	public Long violationId;
 	public String status;
 }

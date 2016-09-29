@@ -17,7 +17,7 @@ import svc.models.*;
 
 @RestController
 @EnableAutoConfiguration
-@RequestMapping("api/courts")
+@RequestMapping("/courts")
 public class CourtController {	
 	@Inject
 	CourtManager courtManager;
@@ -30,7 +30,7 @@ public class CourtController {
 	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET, value="/{id}")
-	Court GetCourt(@PathVariable("id") Integer id) {
+	Court GetCourt(@PathVariable("id") Long id) {
 		if (id == null) {
 			LogSystem.LogEvent("Null id passed to controller");
 		}

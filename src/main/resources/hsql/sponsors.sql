@@ -1,0 +1,1 @@
+INSERT INTO sponsors (id,name,short_description,contact_email,contact_phonenumber) VALUES (1,'DemoCompany','We care. Check out our civic rennovation programs!','civic_programs@DemoCompany.com','314-314-3141');

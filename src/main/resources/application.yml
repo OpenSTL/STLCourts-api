@@ -1,0 +1,28 @@
+server:
+  port: 8080
+  contextPath: /api
+---
+spring:
+  profiles.active: local
+---
+spring:
+  profiles: qa
+spring.datasource:
+  driverClassName: com.mysql.jdbc.Driver
+  url: jdbc:mysql:${MYSQL_URL}?useUnicode=true&amp;characterEncoding=UTF-8
+  username: ${MYSQL_USERNAME}
+  password: ${MYSQL_PASSWORD}
+  testWhileIdle: true
+  timeBetweenEvictionRunsMillis: 60000
+  validationQuery: SELECT 1
+---
+spring:
+  profiles: prod
+spring.datasource:
+  driverClassName: com.mysql.jdbc.Driver
+  url: jdbc:mysql:${MYSQL_URL}?useUnicode=true&amp;characterEncoding=UTF-8
+  username: ${MYSQL_USERNAME}
+  password: ${MYSQL_PASSWORD}
+  testWhileIdle: true
+  timeBetweenEvictionRunsMillis: 60000
+  validationQuery: SELECT 1

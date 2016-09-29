@@ -1,14 +1,15 @@
 package svc.data.municipal;
 
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
-import static org.hamcrest.CoreMatchers.*;
-
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.junit4.*;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import svc.Application;
 import svc.models.Court;
@@ -17,12 +18,12 @@ import svc.models.Court;
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
 public class CourtDAOIntegrationTest {
-
+	@Autowired
+    private CourtDAO dao;
+	
 	@Test
 	public void GetByCourtIdSuccessful() {
-		CourtDAO dao = new CourtDAO();
-
-		Court court = dao.getByCourtId(1);
+		Court court = dao.getByCourtId(1L);
 
 		assertThat(court, is(notNullValue()));
 		assertThat(court.municipality, is("Ballwin"));
