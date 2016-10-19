@@ -3,13 +3,12 @@ package svc.controllers;
 import javax.inject.Inject;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import svc.dto.CourtsDTO;
 import svc.logging.LogSystem;
@@ -32,15 +31,12 @@ public class CourtController {
 	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET, value="/{id}")
-	ResponseEntity<Court> GetCourt(@PathVariable("id") Long id) {
+	Court GetCourt(@PathVariable("id") Long id) {
 		if (id == null) {
-			LogSystem.LogEvent("Null id passed to controller");
+			LogSystem.LogEvent("non id passed to controller");
+			throw new IncorrectResultSizeDataAccessException("non courtId passed",1);
 		}
 		Court court = courtManager.GetCourtById(id);
-		if (court != null){
-			return ResponseEntity.ok(court);
-		}else{
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-		}
+		return court;
 	}
 }
