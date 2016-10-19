@@ -9,18 +9,23 @@ import java.util.Map;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import svc.controllers.NotFoundException;
 import svc.data.jdbc.BaseJdbcDao;
 import svc.logging.LogSystem;
 import svc.models.Court;
 
 @Repository
 public class CourtDAO extends BaseJdbcDao {
-	public Court getByCourtId(Long courtId) {
+	public Court getByCourtId(Long courtId) throws NotFoundException {
+		try{
 			Map<String, Object> parameterMap = new HashMap<String, Object>();
 			parameterMap.put("courtId", courtId);
 			String sql = "SELECT * FROM courts WHERE id = :courtId";
 			Court court = jdbcTemplate.queryForObject(sql, parameterMap, new CourtSQLMapper());
 			return court;
+		}catch (Exception e){
+			throw new NotFoundException();
+		}
 	}
 	
 	public List<Court> getAllCourts() {

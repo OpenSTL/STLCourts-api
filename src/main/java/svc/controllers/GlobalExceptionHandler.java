@@ -4,7 +4,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.http.HttpStatus;
 
 @ControllerAdvice
@@ -12,15 +11,16 @@ import org.springframework.http.HttpStatus;
 public class GlobalExceptionHandler {
 	
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	@ExceptionHandler(IncorrectResultSizeDataAccessException.class)
-	public String handleIncorrectResultSizeDataAccessException(IncorrectResultSizeDataAccessException e){
+	@ExceptionHandler(NotFoundException.class)
+	public String handleNotFoundException(NotFoundException e){
 		return ("Result Not Found");
 	}
 	
-	@ResponseStatus(HttpStatus.NOT_FOUND)
+	
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	@ExceptionHandler(Exception.class)
 	public String handleGeneralExceptions(Exception e){
-		return ("General Exception");
+		return ("500: General Unhandled Exception");
 	}
 	
 }
