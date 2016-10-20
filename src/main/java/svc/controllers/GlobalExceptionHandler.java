@@ -4,7 +4,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpStatus;
 
 @ControllerAdvice
@@ -13,13 +12,10 @@ public class GlobalExceptionHandler {
 	
 	/* 
 	 * This handler was created for SQL queries that are out of bounds using 
-	 * custom exception: NotFoundException.
-	 * The TypeMismatchException is to catch REST requests where the request parameter
-	 * doesn't match the type expected. 
 	 */
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	@ExceptionHandler({NotFoundException.class, TypeMismatchException.class})
-	public String handleNotFoundException(Exception e){
+	@ExceptionHandler(NotFoundException.class)
+	public String handleNotFoundException(NotFoundException e){
 		return ("Result Not Found");
 	}
 	

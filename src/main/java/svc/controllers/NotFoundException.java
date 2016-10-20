@@ -1,6 +1,6 @@
 package svc.controllers;
 
-public class NotFoundException extends Exception {
+public class NotFoundException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 	private String message = null;
 	
@@ -17,6 +17,11 @@ public class NotFoundException extends Exception {
 		super(cause);
 	}
 	
+	public NotFoundException(String message, Throwable cause){
+		super(message,cause);
+		this.message = message;
+	}
+	
 	@Override
 	public String toString(){
 		return message;
@@ -27,6 +32,4 @@ public class NotFoundException extends Exception {
 		return message;
 	}
 	
-	
-
 }
