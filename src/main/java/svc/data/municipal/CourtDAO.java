@@ -24,6 +24,7 @@ public class CourtDAO extends BaseJdbcDao {
 			Court court = jdbcTemplate.queryForObject(sql, parameterMap, new CourtSQLMapper());
 			return court;
 		}catch (Exception e){
+			//catches IncorrectResultSizeDataAccessException if court doesn't return only 1 result
 			throw new NotFoundException();
 		}
 	}
