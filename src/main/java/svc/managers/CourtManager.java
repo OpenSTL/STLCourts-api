@@ -6,7 +6,6 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Component;
 
-import svc.controllers.NotFoundException;
 import svc.data.municipal.CourtDAO;
 import svc.models.Court;
 
@@ -15,7 +14,7 @@ public class CourtManager {
 	@Inject
 	private CourtDAO courtDAO;
 	
-	public Court GetCourtById(Long courtId) throws NotFoundException {
+	public Court GetCourtById(Long courtId){
 		return courtDAO.getByCourtId(courtId);
 	}
 
