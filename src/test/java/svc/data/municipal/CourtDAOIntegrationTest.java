@@ -12,7 +12,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import svc.Application;
-import svc.controllers.NotFoundException;
 import svc.models.Court;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -23,7 +22,7 @@ public class CourtDAOIntegrationTest {
     private CourtDAO dao;
 	
 	@Test
-	public void GetByCourtIdSuccessful() throws NotFoundException {
+	public void GetByCourtIdSuccessful(){
 		Court court = dao.getByCourtId(1L);
 
 		assertThat(court, is(notNullValue()));
