@@ -46,4 +46,12 @@ public class CourtControllerTest {
 		assertThat(returnedCourt,equalTo(COURT));
 	}
 	
+	@Test (expected = NotFoundException.class)
+	public void throwsExceptionWhenCourtNotFound() throws NotFoundException{
+		final Long COURT_ID = 1L;
+		
+		when(managerMock.GetCourtById(COURT_ID)).thenReturn(null);
+		controller.GetCourt(COURT_ID);
+	}
+	
 }
