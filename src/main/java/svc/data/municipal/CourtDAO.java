@@ -15,16 +15,14 @@ import svc.models.Court;
 
 @Repository
 public class CourtDAO extends BaseJdbcDao {
-	public Court getByCourtId(Long courtId) {
-		try {
+	public Court getByCourtId(Long courtId){
+		try{
 			Map<String, Object> parameterMap = new HashMap<String, Object>();
 			parameterMap.put("courtId", courtId);
 			String sql = "SELECT * FROM courts WHERE id = :courtId";
 			Court court = jdbcTemplate.queryForObject(sql, parameterMap, new CourtSQLMapper());
-			
 			return court;
-		} catch (Exception e) {
-			LogSystem.LogDBException(e);
+		}catch (Exception e){
 			return null;
 		}
 	}
