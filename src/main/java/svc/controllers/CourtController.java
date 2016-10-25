@@ -36,8 +36,9 @@ public class CourtController {
 	@RequestMapping(method = RequestMethod.GET, value="/{id}")
 	Court GetCourt(@PathVariable("id") Long id) throws NotFoundException {
 		Court court = courtManager.GetCourtById(id);
-		if (court == null) 
-			throw new NotFoundException();
+		if (court == null) {
+			throw new NotFoundException("Court Not Found");
+		}
 		return court;
 	}
 	
@@ -46,10 +47,6 @@ public class CourtController {
 	public void typeMismatchExceptionHandler(TypeMismatchException e, HttpServletResponse response){	
 	}
 	
-	@ExceptionHandler(NotFoundException.class)
-	@ResponseStatus(value = HttpStatus.NOT_FOUND, reason="Court Not Found")
-	public void handleNotFoundException(NotFoundException e, HttpServletResponse response){
-	}
 	
 }
 
