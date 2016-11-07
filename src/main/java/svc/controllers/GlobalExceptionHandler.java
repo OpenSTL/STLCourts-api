@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	@ExceptionHandler(Exception.class)
 	public String handleGeneralExceptions(Exception e){
-		return ("500: General Unhandled Exception");
+		return ("500: General Unhandled Exception<br>"+e.getMessage());
 	}
 	
 }

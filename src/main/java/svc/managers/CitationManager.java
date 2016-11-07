@@ -11,6 +11,8 @@ import svc.data.citations.CitationDAO;
 import svc.dto.CitationSearchCriteria;
 import svc.logging.LogSystem;
 import svc.models.Citation;
+import svc.models.Court;
+import svc.models.Violation;
 
 @Component
 public class CitationManager {
@@ -18,6 +20,10 @@ public class CitationManager {
 	private CitationDAO citationDAO;
 	@Inject
 	private ViolationManager violationManager;
+	@Inject
+	private CourtManager courtManager;
+	@Inject
+	private SMSManager smsManager;
 
 	
 	public Citation GetCitationById(Long citationId) {
@@ -66,5 +72,25 @@ public class CitationManager {
 			citation.violations = violationManager.getViolationsByCitationNumber(citation.citation_number);
 		}
 		return citations;
+	}
+	
+	public String getCitationSMS(Citation citation){
+		String message = "";
+		message += "Ticket Date: "+smsManager.convertDatabaseDateToUS(citation.citation_date);
+		message += "\nCourt Date: "+smsManager.convertDatabaseDateToUS(citation.court_date);
+		message += "\nTicket #: "+citation.citation_number;
+		Court court = courtManager.GetCourtById(Long.valueOf(citation.court_id));
+		message += "\nCourt Address: "+court.address+" "+court.city+", "+court.state+" "+court.zip_code;
+		List<Violation> violations = violationManager.getViolationsByCitationNumber(citation.citation_number);
+		int violationCount = 0;
+		for(Violation violation:violations){
+			if (violationCount > 0){
+				message += "\n------------------";
+			}
+			message += violationManager.getViolationSMS(violation, false);
+			violationCount++;
+		}
+		
+		return message;
 	}
 }
