@@ -47,7 +47,6 @@ public class SMSController {
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST)
 	void GetMessage(@ModelAttribute TwimlMessageRequest twimlMessageRequest, HttpServletResponse response, HttpServletRequest request, HttpSession session) throws IOException{
-		//HttpSession session = request.getSession(true);
 		session.setMaxInactiveInterval(30*60); //set session timeout to 30 minutes
 		SMS_STAGE currentTextStage, nextTextStage;
 		
