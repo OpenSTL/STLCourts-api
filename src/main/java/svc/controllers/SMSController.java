@@ -53,7 +53,11 @@ public class SMSController {
 		if (stageNumber == null){
 			currentTextStage = SMS_STAGE.WELCOME;
 		}else{
-			currentTextStage = SMS_STAGE.values()[stageNumber];
+			try{
+				currentTextStage = SMS_STAGE.values()[stageNumber];
+			}catch (IndexOutOfBoundsException iobe){
+				currentTextStage = SMS_STAGE.WELCOME;
+			}
 		}
 		nextTextStage = null;
 		String message = "";
@@ -91,6 +95,7 @@ public class SMSController {
 					int counter = 1;
 					for(Citation citation : citations){
 						message += "\n"+counter+") ticket from: "+smsManager.convertDatabaseDateToUS(citation.citation_date);
+						counter++;
 					}
 					message += "\nReply with the ticket number you want to view.";
 					nextTextStage = SMS_STAGE.VIEW_CITATION;
@@ -136,26 +141,20 @@ public class SMSController {
 				nextTextStage = SMS_STAGE.VIEW_CITATION;
 			}
 			break;
-		default:
-			message = "Default should not happen.";
-			nextTextStage = currentTextStage;
-			break;
-				
 		}
 		
 	    session.setAttribute("stage", new Integer(nextTextStage.ordinal()));
 	    
-	    // Create a TwiML response and add our friendly message.
-	    Message sms = new Message.Builder().body(new Body(message)).build();
-	    MessagingResponse twimlResponse = new MessagingResponse.Builder().message(sms).build();
+	    MessagingResponse twimlResponse = smsManager.getTwimlResponse(message);
 
 	    response.setContentType("application/xml");
 
 	    try {
-	      response.getWriter().print(twimlResponse.toXml());
+	    	response.getWriter().print(twimlResponse.toXml());
 	    } catch (TwiMLException e) {
 	      e.printStackTrace();
 	    }
 	}
+	
 		
 }

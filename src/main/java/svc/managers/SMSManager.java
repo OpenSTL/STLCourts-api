@@ -16,6 +16,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.twilio.twiml.Body;
+import com.twilio.twiml.Message;
+import com.twilio.twiml.MessagingResponse;
+
 import svc.data.municipal.CourtDAO;
 import svc.models.Citation;
 import svc.models.Court;
@@ -94,6 +98,12 @@ public class SMSManager {
 		SimpleDateFormat usFormat = new SimpleDateFormat("MM/dd/yyyy");
 		
 		return usFormat.format(databaseDate);
+	}
+	
+	public MessagingResponse getTwimlResponse(String msg){
+		Message sms = new Message.Builder().body(new Body(msg)).build();
+	    MessagingResponse twimlResponse = new MessagingResponse.Builder().message(sms).build();
+	    return twimlResponse;
 	}
 
 }
