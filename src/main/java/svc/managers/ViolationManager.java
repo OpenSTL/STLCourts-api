@@ -13,10 +13,8 @@ import svc.models.Violation;
 public class ViolationManager {
 	@Inject
 	private ViolationDAO violationDAO;
-	@Inject
-	private SMSManager smsManager;
 	
-	private enum VIOLATION_STATUS{
+	public enum VIOLATION_STATUS{
 		CONT_FOR_PAYMENT,
 		FTA_WARRANT_ISSUED,
 		DISMISS_WITHOUT_COSTS,
@@ -53,19 +51,4 @@ public class ViolationManager {
 		return violationDAO.getViolationsByCitationNumber(citationNumber);
 	}
 	
-	public String getViolationSMS(Violation violation, boolean showDismissedViolations){
-		String message = "";
-		//by default Closed violations will not be returned.
-		VIOLATION_STATUS status = VIOLATION_STATUS.valueOf(violation.status.replaceAll(" ", "_"));
-		if ((status != VIOLATION_STATUS.CLOSED) && (status != VIOLATION_STATUS.DISMISS_WITHOUT_COSTS || showDismissedViolations)){
-			message += "\nViolation #: "+violation.violation_number;
-			message += "\nViolation: "+violation.violation_description;
-			message += "\nStatus (as of "+smsManager.convertDatabaseDateToUS(violation.status_date)+"): "+status.toString();
-			if (status != VIOLATION_STATUS.DISMISS_WITHOUT_COSTS){
-				message += "\nFine Amount: $"+violation.fine_amount;
-				message += "\nCourt Costs: $"+violation.court_cost;
-			}
-		}
-		return message;
-	}
 }
