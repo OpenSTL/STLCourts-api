@@ -21,11 +21,17 @@ CREATE TABLE courts (
     id integer NOT NULL,
     latitude double precision,
     longitude double precision,
-    municipality text,
     address text,
     city text,
     state text,
     zip_code text
+);
+
+DROP TABLE IF EXISTS municipalities;
+CREATE TABLE municipalities (
+    id integer NOT NULL,
+    municipality text,
+    courts_id integer NOT NULL
 );
 
 DROP TABLE IF EXISTS opportunities;

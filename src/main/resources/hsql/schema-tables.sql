@@ -24,11 +24,17 @@ CREATE TABLE courts
     id 						INTEGER 					NOT NULL,
     latitude 				DOUBLE 			PRECISION,
     longitude 				DOUBLE 			PRECISION,
-    municipality 			VARCHAR(50),
     address 				VARCHAR(50),
     city 					VARCHAR(50),
     state 					VARCHAR(25),
     zip_code 				VARCHAR(12)
+);
+
+CREATE TABLE municipalities 
+(
+    id 						INTEGER 					NOT NULL,
+    municipality 			VARCHAR(50),
+	court_id				INTEGER						NOT NULL
 );
 
 CREATE TABLE opportunities
