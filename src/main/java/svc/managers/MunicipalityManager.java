@@ -14,6 +14,10 @@ public class MunicipalityManager {
 	@Inject
 	private MunicipalityDAO municipalityDAO;
 	
+	public Municipality GetMunicipalityByCourtId(Long courtId){
+		return municipalityDAO.getByCourtId(courtId);
+	}
+	
 	public Municipality GetMunicipalityById(Long municipalityId){
 		return municipalityDAO.getByMunicipalityId(municipalityId);
 	}

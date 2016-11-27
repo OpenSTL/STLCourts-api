@@ -1,5 +1,7 @@
 package svc.controllers;
 
+import java.util.Map;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,7 +45,19 @@ public class MunicipalityController {
 		return municipality;
 	}
 	
-	@ExceptionHandler(TypeMismatchException.class)
+	@ResponseBody
+	@RequestMapping(method = RequestMethod.GET, params = "courtId")
+	Municipality GetMunicipalityByCourtId(@RequestParam Map<String, String> params) throws NotFoundException {
+		Long courtId = Long.parseLong(params.get("courtId"));
+		
+		Municipality municipality = municipalityManager.GetMunicipalityByCourtId(courtId);
+		if (municipality == null) {
+			throw new NotFoundException("Municipality Not Found");
+		}
+		return municipality;
+	}
+	
+	@ExceptionHandler({TypeMismatchException.class,NumberFormatException.class})
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason="Invalid Municipality ID")
 	public void typeMismatchExceptionHandler(TypeMismatchException e, HttpServletResponse response){	
 	}

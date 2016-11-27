@@ -14,6 +14,18 @@ import svc.models.Municipality;
 
 @Repository
 public class MunicipalityDAO extends BaseJdbcDao {
+	public Municipality getByCourtId(Long courtId){
+		try{
+			Map<String, Object> parameterMap = new HashMap<String, Object>();
+			parameterMap.put("courtId", courtId);
+			String sql = "SELECT * FROM municipalities WHERE court_id = :courtId";
+			Municipality municipality = jdbcTemplate.queryForObject(sql, parameterMap, new MunicipalitySQLMapper());
+			return municipality;
+		}catch (Exception e){
+			return null;
+		}
+	}
+	
 	public Municipality getByMunicipalityId(Long municipalityId){
 		try{
 			Map<String, Object> parameterMap = new HashMap<String, Object>();

@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import org.mockito.runners.MockitoJUnitRunner;
@@ -28,7 +29,7 @@ public class MunicipalityControllerTest {
 	@Mock
 	MunicipalityManager managerMock;
 	@Test
-	public void returnsAllCourts(){
+	public void returnsAllMunicipalities(){
 		final List<Municipality> MUNICIPALITIES = Arrays.asList(new Municipality[]{new Municipality()});
 
 		when(managerMock.GetAllMunicipalities()).thenReturn(MUNICIPALITIES);
@@ -52,6 +53,28 @@ public class MunicipalityControllerTest {
 		
 		when(managerMock.GetMunicipalityById(MUNICIPALITY_ID)).thenReturn(null);
 		controller.GetMunicipality(MUNICIPALITY_ID);
+	}
+	
+	@Test
+	public void returnsMunicipalityFromValidCourtId() throws NotFoundException{
+		final long COURT_ID = 2L;
+		final Municipality MUNICIPALITY = new Municipality();
+		
+		when(managerMock.GetMunicipalityByCourtId(COURT_ID)).thenReturn(MUNICIPALITY);
+		
+		HashMap<String,String> params = new HashMap<>();
+		params.put("courtId","2");
+		
+		Municipality returnedMunicipality = controller.GetMunicipalityByCourtId(params);
+		assertThat(returnedMunicipality,equalTo(MUNICIPALITY));
+	}
+	
+	@Test (expected = NumberFormatException.class)
+	public void throwsExceptionWhenCourtIdIsNotLong() throws NotFoundException{
+		HashMap<String,String> params = new HashMap<>();
+		params.put("courtId","a");
+		
+		Municipality returnedMunicipality = controller.GetMunicipalityByCourtId(params);
 	}
 	
 }
