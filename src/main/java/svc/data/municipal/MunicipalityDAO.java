@@ -14,11 +14,11 @@ import svc.models.Municipality;
 
 @Repository
 public class MunicipalityDAO extends BaseJdbcDao {
-	public Municipality getByCourtId(Long courtId){
+	public Municipality getByMunicipalityId(Long municipalityId){
 		try{
 			Map<String, Object> parameterMap = new HashMap<String, Object>();
-			parameterMap.put("courtId", courtId);
-			String sql = "SELECT * FROM courts WHERE id = :courtId";
+			parameterMap.put("municipalityId", municipalityId);
+			String sql = "SELECT * FROM municipalities WHERE id = :municipalityId";
 			Municipality municipality = jdbcTemplate.queryForObject(sql, parameterMap, new MunicipalitySQLMapper());
 			return municipality;
 		}catch (Exception e){
@@ -26,11 +26,11 @@ public class MunicipalityDAO extends BaseJdbcDao {
 		}
 	}
 	
-	public List<Municipality> getAllCourts() {
+	public List<Municipality> getAllMunicipalities() {
 		try  {
-			String sql = "SELECT * FROM courts";
-			List<Municipality> courts = jdbcTemplate.query(sql, new MunicipalitySQLMapper());
-			return courts;
+			String sql = "SELECT * FROM municipalities";
+			List<Municipality> municipalities = jdbcTemplate.query(sql, new MunicipalitySQLMapper());
+			return municipalities;
 		} catch (Exception e) {
 			LogSystem.LogDBException(e);
 			return null;
