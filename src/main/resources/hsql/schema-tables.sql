@@ -24,6 +24,8 @@ CREATE TABLE courts
     id 						INTEGER 					NOT NULL,
     latitude 				DOUBLE 			PRECISION,
     longitude 				DOUBLE 			PRECISION,
+    phone					VARCHAR(50),
+    website					VARCHAR(200),
     address 				VARCHAR(50),
     city 					VARCHAR(50),
     state 					VARCHAR(25),

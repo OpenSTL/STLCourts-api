@@ -45,6 +45,8 @@ public class CourtDAO extends BaseJdbcDao {
 				court.id = rs.getInt("id");
 				court.latitude = new BigDecimal(rs.getString("latitude"));
 				court.longitude = new BigDecimal(rs.getString("longitude"));
+				court.phone = rs.getString("phone");
+				court.website = rs.getString("website");
 				court.address = rs.getString("address");
 				court.city = rs.getString("city");
 				court.state = rs.getString("state");
