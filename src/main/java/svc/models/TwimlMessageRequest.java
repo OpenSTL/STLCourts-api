@@ -25,7 +25,7 @@ public class TwimlMessageRequest {
 	public void setMessageSid(String MessageSid){this.MessageSid = MessageSid;}
 	
 	public String getSmsSid() {return SmsSid;}
-	public void setSmsSid(String MessageSid){this.SmsSid = SmsSid;}
+	public void setSmsSid(String SmsSid){this.SmsSid = SmsSid;}
 	
 	public String getAccountSid() {return AccountSid;}
 	public void setAccountSid(String AccountSid){this.AccountSid = AccountSid;}
@@ -61,7 +61,7 @@ public class TwimlMessageRequest {
 	public void setFromZip(String FromZip){this.FromZip = FromZip;}
 	
 	public String getFromCountry() {return FromCountry;}
-	public void setFromCountry(String MessageSid){this.FromCountry = FromCountry;}
+	public void setFromCountry(String FromCountry){this.FromCountry = FromCountry;}
 	
 	public String getToCity() {return ToCity;}
 	public void setToCity(String ToCity){this.ToCity = ToCity;}
@@ -73,6 +73,6 @@ public class TwimlMessageRequest {
 	public void setToZip(String ToZip){this.ToZip = ToZip;}
 	
 	public String getToCountry() {return ToCountry;}
-	public void setToCountry(String MessageSid){this.ToCountry = ToCountry;}
+	public void setToCountry(String ToCountry){this.ToCountry = ToCountry;}
 
 }

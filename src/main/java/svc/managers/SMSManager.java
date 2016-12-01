@@ -19,117 +19,68 @@ import com.twilio.twiml.Message;
 import com.twilio.twiml.MessagingResponse;
 
 import svc.dto.CitationSearchCriteria;
-import svc.managers.ViolationManager.VIOLATION_STATUS;
 import svc.models.Citation;
 import svc.models.Court;
 import svc.models.TwimlMessageRequest;
 import svc.models.Violation;
+import svc.util.DatabaseUtilities;
+import svc.data.textMessages.CitationTextMessage;
 
 @Component
 public class SMSManager {
 	@Inject
 	CitationManager citationManager;
 	@Inject
-	private CourtManager courtManager;
+	CourtManager courtManager;
 	@Inject
-	private ViolationManager violationManager;
+	ViolationManager violationManager;
 	
 	private enum SMS_STAGE{
 		WELCOME(0),
 		READ_DOB(1),
 		READ_LICENSE(2),
-		VIEW_CITATION(3);
+		VIEW_CITATION(3),
+		READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN(4);
 		
 		private int numVal;
 		
 		SMS_STAGE(int numVal){
-			this.numVal = numVal;
+			this.numVal =numVal;
 		}
-		
-		public int getNumVal(){
+	
+		public int getNumVal() {
 			return numVal;
 		}
 	}
 	
 	
-	//a null String means validDOB, otherwise a message is returned to pass on to user
-	private String validDOB(String dob){
+	//a empty String means validDOB, otherwise a message is returned to pass on to user
+	private String validateDOBString(String dob){
 		String errMsg = "";
 		dob = dob.trim();
 		if (!dob.matches("^\\d{2}([./-])\\d{2}\\1\\d{4}$")){
-			errMsg = "Please re-enter your birthdate.  The format is: MM/DD/YYYY";
+			//makes sure DOB is a valid date string format, also accepts "." and "-"
+			errMsg = "You entered: '" + dob + "' Please re-enter your birthdate.  The format is: MM/DD/YYYY";
 		}else{
-			if (isValidDate(dob)){
+			//be forgiving for dates delineated with "." or "-"
+			dob = dob.replaceAll("[.-]","/");
+			if (!DatabaseUtilities.isStringValidUSDateString(dob)){
+				//DOB is not a valid date, meaning month is out of bounds or day of month does not align with month or year
+				errMsg = "The date you entered: '"+dob+"' was not a valid date.  Please re-enter your birthdate using MM/DD/YYYY";
+			}else{
 				//Check that the DOB is > 18 years old
 				DateTimeFormatter formatter = DateTimeFormat.forPattern("MM/dd/yyyy");
 				DateTime dobDT = formatter.parseDateTime(dob);
 				DateTime now = new DateTime();
 				Years age = Years.yearsBetween(dobDT, now);
 				if (age.getYears() < 18){
-					errMsg = "You must be at leat 18 years old to use www.yourSTLcourts.com";
+					errMsg = "You must be at least 18 years old to use www.yourSTLcourts.com";
 				}
-			}else{
-				//DOB is not a valid date
-				errMsg = "The date you entered: '"+dob+"' was not a valid date.  Please re-enter your birthdate using MM/DD/YYYY";
 			}
-		}
-		
+		}	
 		return errMsg;
 	}
 	
-	
-	private boolean isValidDate(String dateToCheck){
-		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-	    dateFormat.setLenient(false);
-	    try {
-	      dateFormat.parse(dateToCheck.trim());
-	    } catch (ParseException pe) {
-	      return false;
-	    }
-	    return true;
-	}
-	
-	private String convertDatabaseDateToUS(Date databaseDate){
-		SimpleDateFormat usFormat = new SimpleDateFormat("MM/dd/yyyy");
-		
-		return usFormat.format(databaseDate);
-	}
-	
-	private String getViolationSMS(Violation violation, boolean showDismissedViolations){
-		String message = "";
-		//by default Closed violations will not be returned.
-		VIOLATION_STATUS status = VIOLATION_STATUS.valueOf(violation.status.replaceAll(" ", "_"));
-		if ((status != VIOLATION_STATUS.CLOSED) && (status != VIOLATION_STATUS.DISMISS_WITHOUT_COSTS || showDismissedViolations)){
-			message += "\nViolation #: "+violation.violation_number;
-			message += "\nViolation: "+violation.violation_description;
-			message += "\nStatus (as of "+convertDatabaseDateToUS(violation.status_date)+"): "+status.toString();
-			if (status != VIOLATION_STATUS.DISMISS_WITHOUT_COSTS){
-				message += "\nFine Amount: $"+violation.fine_amount;
-				message += "\nCourt Costs: $"+violation.court_cost;
-			}
-		}
-		return message;
-	}
-	
-	public String getCitationSMS(Citation citation){
-		String message = "";
-		message += "Ticket Date: "+convertDatabaseDateToUS(citation.citation_date);
-		message += "\nCourt Date: "+convertDatabaseDateToUS(citation.court_date);
-		message += "\nTicket #: "+citation.citation_number;
-		Court court = courtManager.GetCourtById(Long.valueOf(citation.court_id));
-		message += "\nCourt Address: "+court.address+" "+court.city+", "+court.state+" "+court.zip_code;
-		List<Violation> violations = violationManager.getViolationsByCitationNumber(citation.citation_number);
-		int violationCount = 0;
-		for(Violation violation:violations){
-			if (violationCount > 0){
-				message += "\n------------------";
-			}
-			message += getViolationSMS(violation, false);
-			violationCount++;
-		}
-		
-		return message;
-	}
 	
 	private MessagingResponse createTwimlResponse(String msg){
 		Message sms = new Message.Builder().body(new Body(msg)).build();
@@ -137,108 +88,203 @@ public class SMSManager {
 	    return twimlResponse;
 	}
 	
-	public MessagingResponse getTwimlResponse(TwimlMessageRequest twimlMessageRequest, HttpSession session){
-		SMS_STAGE currentTextStage, nextTextStage;
-		String dob,license;
-		SimpleDateFormat dateFormat;
-		CitationSearchCriteria criteria;
-		List<Citation> citations;
+	private SMS_STAGE getStageFromSession(HttpSession session){
+		SMS_STAGE stage;
 		
 		Integer stageNumber = (Integer) session.getAttribute("stage");
 		if (stageNumber == null){
-			currentTextStage = SMS_STAGE.WELCOME;
+			stage = SMS_STAGE.WELCOME;
 		}else{
 			try{
-				currentTextStage = SMS_STAGE.values()[stageNumber];
+				stage = SMS_STAGE.values()[stageNumber];
 			}catch (IndexOutOfBoundsException iobe){
-				currentTextStage = SMS_STAGE.WELCOME;
+				stage = SMS_STAGE.WELCOME;
 			}
 		}
-		nextTextStage = null;
-		String message = "";
-		switch(currentTextStage){
-		case WELCOME:
-			message = "Welcome to www.yourSTLcourts.com.  Please enter your birthdate using MM/DD/YYYY";
+		
+		return stage;
+	}
+	
+	private void setNextStageInSession(HttpSession session, SMS_STAGE nextTextStage){
+		session.setAttribute("stage", new Integer(nextTextStage.getNumVal()));
+	}
+	
+	private String generateWelcomeStageMessage(HttpSession session){
+		String message = "Welcome to www.yourSTLcourts.com.  Please enter your birthdate using MM/DD/YYYY";
+		setNextStageInSession(session,SMS_STAGE.READ_DOB);
+		return message;
+	}
+	
+	private String generateReadDobMessage(HttpSession session, String dob){
+		SMS_STAGE nextTextStage;
+		String message = validateDOBString(dob);
+		if (message == ""){
+			session.setAttribute("dob", dob);
+			message = "Thank you.  Now please enter your driver\'s license number.";
+			nextTextStage = SMS_STAGE.READ_LICENSE;
+		}else{
 			nextTextStage = SMS_STAGE.READ_DOB;
-			break;
-		case READ_DOB:
-			message = validDOB(twimlMessageRequest.getBody());
-			if (message == ""){
-				session.setAttribute("dob", twimlMessageRequest.getBody().trim());
-				message = "Thank you.  Now please enter your driver\'s license number.";
-				nextTextStage = SMS_STAGE.READ_LICENSE;
-			}else{
-				nextTextStage = currentTextStage;
-			}
-			break;
-		case READ_LICENSE:
-			dob = (String)session.getAttribute("dob");
+		}
+		setNextStageInSession(session,nextTextStage);
+		return message;
+	}
+	
+	private String ListCitations(Date dob, String license){
+		CitationSearchCriteria criteria = new CitationSearchCriteria();
+		criteria.date_of_birth = dob;
+		criteria.drivers_license_number = license;
+		List<Citation> citations = citationManager.FindCitations(criteria);
+		
+		String message = "";
+		
+		String ticketWord = (citations.size()>1)?" tickets were ":" ticket was ";
+		if (citations.size() > 0){
+			message = citations.size()+ticketWord+"found";
 			
-			criteria = new CitationSearchCriteria();
-			dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-			try{
-				criteria.date_of_birth = dateFormat.parse(dob);
-				criteria.drivers_license_number = twimlMessageRequest.getBody().trim();
-				session.setAttribute("license_number", twimlMessageRequest.getBody().trim());
-				
-				citations = citationManager.FindCitations(criteria);
-				
-				String ticketWord = (citations.size()>1)?" tickets were ":" ticket was ";
-				if (citations.size() > 0){
-					message = citations.size()+ticketWord+"found";
-					
-					int counter = 1;
-					for(Citation citation : citations){
-						message += "\n"+counter+") ticket from: "+convertDatabaseDateToUS(citation.citation_date);
-						counter++;
-					}
-					message += "\nReply with the ticket number you want to view.";
-					nextTextStage = SMS_STAGE.VIEW_CITATION;
-					
-				}else{
-					message = "No tickets were found.";
-					nextTextStage = SMS_STAGE.WELCOME;
-				}
-			}catch (ParseException e){
-				//something went wrong here  this shouldn't happen since dob has already been parsed
-				message = "Sorry, something went wrong.  Please use the website www.yourSTLcourts.com.";
-				nextTextStage = SMS_STAGE.WELCOME;
+			int counter = 1;
+			for(Citation citation : citations){
+				message += "\n"+counter+") ticket from: "+DatabaseUtilities.convertDatabaseDateToUS(citation.citation_date);
+				counter++;
 			}
-			break;
-		case VIEW_CITATION:
-			dob = (String)session.getAttribute("dob");
-			license = (String)session.getAttribute("license_number");
-			criteria = new CitationSearchCriteria();
-			dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-			try{
-				criteria.date_of_birth = dateFormat.parse(dob);
-				criteria.drivers_license_number = license;
-				citations = citationManager.FindCitations(criteria);
-				String citationNumber = twimlMessageRequest.getBody().trim();
-				int citationNumberToView = Integer.parseInt(citationNumber) - 1;
-				if (citationNumberToView >= 0 && citationNumberToView < citations.size()){
-					Citation citationToView = citations.get(citationNumberToView);	
-					message = getCitationSMS(citationToView);
-					nextTextStage = SMS_STAGE.WELCOME;  //could change this to go on and ask if want alerts for court dates
-					
-				}else{
-					message = "Invalid entry. Please enter only the number of the ticket you would like to view.";
-					nextTextStage = SMS_STAGE.VIEW_CITATION;
-				}
-				
-				
-			}catch (ParseException e){
-				//something went wrong here  this shouldn't happen since dob has already been parsed
-				message = "Sorry, something went wrong.  Please use the website www.yourSTLcourts.com.";
+			message += "\nReply with the ticket number you want to view.";
+		}
+		
+		return message;
+	}
+	
+	private String generateReadLicenseMessage(HttpSession session, String licenseNumber){
+		SimpleDateFormat dateFormat;
+		String message = "";
+		SMS_STAGE nextTextStage;
+		
+		licenseNumber = (licenseNumber != null)?licenseNumber:(String)session.getAttribute("license_number");
+		String dob = (String)session.getAttribute("dob");
+		dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		
+		try{
+			Date date_of_birth = dateFormat.parse(dob);
+			session.setAttribute("license_number", licenseNumber);
+			message = ListCitations(date_of_birth, licenseNumber);
+			if (message == ""){
+				message = "No tickets were found.";
 				nextTextStage = SMS_STAGE.WELCOME;
-			}catch (NumberFormatException ne){
+			}else{
+				nextTextStage = SMS_STAGE.VIEW_CITATION;
+			}
+			
+		}catch (ParseException e){
+			//something went wrong here  this shouldn't happen since dob has already been parsed
+			message = "Sorry, something went wrong.  Please use the website www.yourSTLcourts.com.";
+			nextTextStage = SMS_STAGE.WELCOME;
+		}
+		
+		setNextStageInSession(session,nextTextStage);
+		return message;
+	}
+	
+	private String generateReadLicenseMessage(HttpSession session){
+		String message = generateReadLicenseMessage(session, null);
+		return message;
+	}
+	
+	private String replyWithAdditionalViewingOptions(){
+		String message = "";
+		message += "\nReply with '1' to view another Ticket";
+		message += "\nReply with '2' for payment Options";
+		return message;
+	}
+	
+	private String generateViewCitationsAgainMessage(HttpSession session, String menuChoice){
+		String message = "";
+		
+		switch(menuChoice){
+			case "1":
+				message = generateReadLicenseMessage(session);
+				break;
+			case "2":
+				//TODO make this link valid or implement a solution of some sort
+				message = "Visit www.yourSTLcourts.com/paymentOptions";
+				setNextStageInSession(session,SMS_STAGE.WELCOME);
+				break;
+			default:
+				message = "Option not recognized.";
+				message += replyWithAdditionalViewingOptions();
+				setNextStageInSession(session,SMS_STAGE.READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN);
+				break;
+		}
+		
+		return message;
+	}
+	
+	private String generateViewCitationMessage(HttpSession session, String citationNumber){
+		CitationSearchCriteria criteria;
+		SimpleDateFormat dateFormat;
+		List<Citation> citations;
+		String message = "";
+		SMS_STAGE nextTextStage;
+		
+		String dob = (String)session.getAttribute("dob");
+		String license = (String)session.getAttribute("license_number");
+		criteria = new CitationSearchCriteria();
+		dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		try{
+			criteria.date_of_birth = dateFormat.parse(dob);
+			criteria.drivers_license_number = license;
+			citations = citationManager.FindCitations(criteria);
+			int citationNumberToView = Integer.parseInt(citationNumber) - 1;
+			if (citationNumberToView >= 0 && citationNumberToView < citations.size()){
+				Citation citationToView = citations.get(citationNumberToView);
+				List<Violation> violations = violationManager.getViolationsByCitationNumber(citationToView.citation_number);
+				Court court = courtManager.GetCourtById(Long.valueOf(citationToView.court_id));
+				CitationTextMessage citationTextMessage = new CitationTextMessage(citationToView,violations,court);
+				message = citationTextMessage.toTextMessage();
+				message += replyWithAdditionalViewingOptions();
+				nextTextStage = SMS_STAGE.READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN;
+				
+			}else{
 				message = "Invalid entry. Please enter only the number of the ticket you would like to view.";
 				nextTextStage = SMS_STAGE.VIEW_CITATION;
 			}
-			break;
+			
+			
+		}catch (ParseException e){
+			//something went wrong here  this shouldn't happen since dob has already been parsed
+			message = "Sorry, something went wrong with your birthdate.  Please use the website www.yourSTLcourts.com.";
+			nextTextStage = SMS_STAGE.WELCOME;
+		}catch (NumberFormatException ne){
+			message = "Invalid entry. Please enter only the number of the ticket you would like to view.";
+			nextTextStage = SMS_STAGE.VIEW_CITATION;
+		}catch (Exception exception){
+			//message = "Sorry, something went wrong.  Please use the website www.yourSTLcourts.com.";
+			nextTextStage = SMS_STAGE.VIEW_CITATION;
 		}
 		
-	    session.setAttribute("stage", new Integer(nextTextStage.ordinal()));
+		setNextStageInSession(session,nextTextStage);
+		return message;
+	}
+	
+	public MessagingResponse getTwimlResponse(TwimlMessageRequest twimlMessageRequest, HttpSession session){
+		SMS_STAGE currentTextStage = getStageFromSession(session);
+		String message = "";
+		String content = twimlMessageRequest.getBody().trim();
+		
+		switch(currentTextStage){
+		case WELCOME:
+			message = generateWelcomeStageMessage(session);
+			break;
+		case READ_DOB:
+			message = generateReadDobMessage(session, content);
+			break;
+		case READ_LICENSE:
+			message = generateReadLicenseMessage(session, content);
+			break;
+		case VIEW_CITATION:
+			message = generateViewCitationMessage(session, content);
+			break;
+		case READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN:
+			message = generateViewCitationsAgainMessage(session, content);
+			break;
+		}
 	    
 	    MessagingResponse twimlResponse = createTwimlResponse(message);
 	    
