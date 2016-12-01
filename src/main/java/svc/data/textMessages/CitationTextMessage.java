@@ -2,8 +2,6 @@ package svc.data.textMessages;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import svc.models.*;
 import svc.util.DatabaseUtilities;
 

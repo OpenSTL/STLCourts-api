@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import com.twilio.twiml.Body;
 import com.twilio.twiml.Message;
 import com.twilio.twiml.MessagingResponse;
+import com.twilio.twiml.TwiML;
 
 import svc.dto.CitationSearchCriteria;
 import svc.models.Citation;
@@ -25,6 +26,7 @@ import svc.models.TwimlMessageRequest;
 import svc.models.Violation;
 import svc.util.DatabaseUtilities;
 import svc.data.textMessages.CitationTextMessage;
+import svc.data.textMessages.ListCitationsTextMessage;
 
 @Component
 public class SMSManager {
@@ -135,19 +137,9 @@ public class SMSManager {
 		criteria.drivers_license_number = license;
 		List<Citation> citations = citationManager.FindCitations(criteria);
 		
-		String message = "";
+		ListCitationsTextMessage listCitationsTM = new ListCitationsTextMessage(citations);
 		
-		String ticketWord = (citations.size()>1)?" tickets were ":" ticket was ";
-		if (citations.size() > 0){
-			message = citations.size()+ticketWord+"found";
-			
-			int counter = 1;
-			for(Citation citation : citations){
-				message += "\n"+counter+") ticket from: "+DatabaseUtilities.convertDatabaseDateToUS(citation.citation_date);
-				counter++;
-			}
-			message += "\nReply with the ticket number you want to view.";
-		}
+		String message = listCitationsTM.toTextMessage();
 		
 		return message;
 	}
