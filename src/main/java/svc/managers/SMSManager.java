@@ -194,7 +194,6 @@ public class SMSManager {
 				message = generateReadLicenseMessage(session);
 				break;
 			case "2":
-				//TODO make this link valid or implement a solution of some sort
 				message = "Visit www.yourSTLcourts.com/paymentOptions";
 				setNextStageInSession(session,SMS_STAGE.WELCOME);
 				break;

@@ -51,7 +51,6 @@ public class CitationTextMessage {
 			}
 		}
 		
-		//TODO when new database created create a link to the payment options  something like "Click here to pay...then the link can take them to community service options or a payment link
 		return message;
 	}
 }

@@ -37,7 +37,7 @@ public class SMSController {
 	    try {
 	    	response.getWriter().print(twimlResponse.toXml());
 	    } catch (TwiMLException e) {
-	      e.printStackTrace();
+	    	e.printStackTrace();
 	    }
 	}
 	
