@@ -21,8 +21,6 @@ public class MunicipalityJudgeDAO extends BaseJdbcDao {
 			parameterMap.put("courtId", courtId);
 			String sql = "SELECT * FROM municipality_judges WHERE court_id = :courtId";
 			List<MunicipalityJudge> municipalityJudges = jdbcTemplate.query(sql,parameterMap, new MunicipalityJudgeSQLMapper());
-			if (municipalityJudges == null)
-				municipalityJudges = new ArrayList();
 			return municipalityJudges;
 		}catch (Exception e){
 			return null;
