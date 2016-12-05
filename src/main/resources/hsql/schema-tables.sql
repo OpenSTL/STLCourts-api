@@ -22,7 +22,7 @@ CREATE TABLE citations
 CREATE TABLE courts 
 (
     id 						INTEGER 					NOT NULL,
-    court_name				VARCHAR(50)
+    court_name				VARCHAR(50),
     phone					VARCHAR(50),
     extension				VARCHAR(15),
     website					VARCHAR(200),

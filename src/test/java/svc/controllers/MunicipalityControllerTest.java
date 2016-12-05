@@ -74,7 +74,7 @@ public class MunicipalityControllerTest {
 		HashMap<String,String> params = new HashMap<>();
 		params.put("courtId","a");
 		
-		Municipality returnedMunicipality = controller.GetMunicipalityByCourtId(params);
+		controller.GetMunicipalityByCourtId(params);
 	}
 	
 }

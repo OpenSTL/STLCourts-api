@@ -1,6 +1,7 @@
 package svc.data.municipal;
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,9 @@ public class MunicipalityJudgeDAO extends BaseJdbcDao {
 			Map<String, Object> parameterMap = new HashMap<String, Object>();
 			parameterMap.put("courtId", courtId);
 			String sql = "SELECT * FROM municipality_judges WHERE court_id = :courtId";
-			List<MunicipalityJudge> municipalityJudges = jdbcTemplate.query(sql,new MunicipalityJudgeSQLMapper());
+			List<MunicipalityJudge> municipalityJudges = jdbcTemplate.query(sql,parameterMap, new MunicipalityJudgeSQLMapper());
+			if (municipalityJudges == null)
+				municipalityJudges = new ArrayList();
 			return municipalityJudges;
 		}catch (Exception e){
 			return null;
