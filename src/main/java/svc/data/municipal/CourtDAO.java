@@ -45,6 +45,10 @@ public class CourtDAO extends BaseJdbcDao {
 				court.id = rs.getInt("id");
 				court.court_name = rs.getString("court_name");
 				court.phone = rs.getString("phone");
+				if (court.phone != ""){
+					String[] phoneParts = court.phone.split("\\.");
+					court.phone = "("+phoneParts[0]+") "+phoneParts[1]+"-"+phoneParts[2];
+				}
 				court.extension = rs.getString("extension");
 				court.website = rs.getString("website");
 				court.payment_system = rs.getString("payment_system");
