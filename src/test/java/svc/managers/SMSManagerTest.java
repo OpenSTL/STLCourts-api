@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.mockito.runners.MockitoJUnitRunner;
@@ -45,6 +46,8 @@ public class SMSManagerTest {
 	ViolationManager violationManagerMock;
 	@Mock
 	CitationManager citationManagerMock;
+	@Mock
+	HttpServletRequest requestMock;
 	
 	MockHttpSession session;
 	
@@ -88,7 +91,7 @@ public class SMSManagerTest {
 		TwimlMessageRequest twimlMessageRequest = new TwimlMessageRequest();
 		twimlMessageRequest.setBody("");
 		String message = "Welcome to www.yourSTLcourts.com.  Please enter your birthdate using MM/DD/YYYY";
-		MessagingResponse twimlResponse = manager.getTwimlResponse(twimlMessageRequest, session);
+		MessagingResponse twimlResponse = manager.getTwimlResponse(twimlMessageRequest,requestMock, session);
 		assertEquals(createTwimlResponse(message).toXml(),twimlResponse.toXml());
 	}
 	
@@ -98,7 +101,7 @@ public class SMSManagerTest {
 		TwimlMessageRequest twimlMessageRequest = new TwimlMessageRequest();
 		twimlMessageRequest.setBody("06/01/1963");
 		String message = "Thank you.  Now please enter your driver\'s license number.";
-		MessagingResponse twimlResponse = manager.getTwimlResponse(twimlMessageRequest, session);
+		MessagingResponse twimlResponse = manager.getTwimlResponse(twimlMessageRequest, requestMock,session);
 		assertEquals(createTwimlResponse(message).toXml(),twimlResponse.toXml());
 	}
 	
@@ -117,7 +120,7 @@ public class SMSManagerTest {
 		TwimlMessageRequest twimlMessageRequest = new TwimlMessageRequest();
 		twimlMessageRequest.setBody("F917801962");
 		String message = "1 ticket was found\n1) ticket from: 02/03/1990\nReply with the ticket number you want to view.";
-		MessagingResponse twimlResponse = manager.getTwimlResponse(twimlMessageRequest, session);
+		MessagingResponse twimlResponse = manager.getTwimlResponse(twimlMessageRequest,requestMock, session);
 		assertEquals(createTwimlResponse(message).toXml(),twimlResponse.toXml());
 	}
 	
@@ -166,7 +169,7 @@ public class SMSManagerTest {
 		message += "\nCourt Costs: $"+violation.court_cost;
 		message += "\nReply with '1' to view another Ticket";
 		message += "\nReply with '2' for payment Options";
-		MessagingResponse twimlResponse = manager.getTwimlResponse(twimlMessageRequest, session);
+		MessagingResponse twimlResponse = manager.getTwimlResponse(twimlMessageRequest,requestMock, session);
 		assertEquals(createTwimlResponse(message).toXml(),twimlResponse.toXml());
 	}
 	
@@ -186,7 +189,7 @@ public class SMSManagerTest {
 		TwimlMessageRequest twimlMessageRequest = new TwimlMessageRequest();
 		twimlMessageRequest.setBody("1");
 		String message = "1 ticket was found\n1) ticket from: 02/03/1990\nReply with the ticket number you want to view.";
-		MessagingResponse twimlResponse = manager.getTwimlResponse(twimlMessageRequest, session);
+		MessagingResponse twimlResponse = manager.getTwimlResponse(twimlMessageRequest,requestMock, session);
 		assertEquals(createTwimlResponse(message).toXml(),twimlResponse.toXml());
 	}
 }

@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.joda.time.DateTime;
@@ -185,7 +186,7 @@ public class SMSManager {
 		return message;
 	}
 	
-	private String generateViewCitationsAgainMessage(HttpSession session, String menuChoice){
+	private String generateViewCitationsAgainMessage(HttpSession session, HttpServletRequest request, String menuChoice){
 		String message = "";
 		
 		switch(menuChoice){
@@ -193,13 +194,19 @@ public class SMSManager {
 				message = generateReadLicenseMessage(session);
 				break;
 			case "2":
-				message = "Visit www.yourSTLcourts.com/paymentOptions?";
+				message = "Visit ";
+				CharSequence ch = "localhost";
+				if (request.getRequestURL().toString().contains(ch))
+					message += "test.yourstlcourts.com/paymentOptions?";
+				else
+					message += "http://www.yourstlcourts.com/paymentOptions?";
+				
 				String licenseNumber = (String)session.getAttribute("license_number");
 				message += "driversLicenseNumber="+licenseNumber;
 				String dob = (String)session.getAttribute("dob");
-				message += "dob="+dob;
+				message += "&dob="+dob;
 				String citation = (String)session.getAttribute("citation");
-				message += "citation="+citation;
+				message += "&citation="+citation;
 				setNextStageInSession(session,SMS_STAGE.WELCOME);
 				break;
 			default:
@@ -260,7 +267,7 @@ public class SMSManager {
 		return message;
 	}
 	
-	public MessagingResponse getTwimlResponse(TwimlMessageRequest twimlMessageRequest, HttpSession session){
+	public MessagingResponse getTwimlResponse(TwimlMessageRequest twimlMessageRequest, HttpServletRequest request, HttpSession session){
 		SMS_STAGE currentTextStage = getStageFromSession(session);
 		String message = "";
 		String content = twimlMessageRequest.getBody().trim();
@@ -279,7 +286,7 @@ public class SMSManager {
 			message = generateViewCitationMessage(session, content);
 			break;
 		case READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN:
-			message = generateViewCitationsAgainMessage(session, content);
+			message = generateViewCitationsAgainMessage(session, request, content);
 			break;
 		}
 	    

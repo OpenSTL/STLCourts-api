@@ -5,6 +5,7 @@ import com.twilio.twiml.MessagingResponse;
 import com.twilio.twiml.TwiMLException;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -27,10 +28,10 @@ public class SMSController {
 		
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST)
-	void GetMessage(@ModelAttribute TwimlMessageRequest twimlMessageRequest, HttpServletResponse response, HttpSession session) throws IOException{
+	void GetMessage(@ModelAttribute TwimlMessageRequest twimlMessageRequest, HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException{
 		session.setMaxInactiveInterval(30*60); //set session timeout to 30 minutes
 		
-		MessagingResponse twimlResponse = smsManager.getTwimlResponse(twimlMessageRequest, session);
+		MessagingResponse twimlResponse = smsManager.getTwimlResponse(twimlMessageRequest, request, session);
 
 	    response.setContentType("application/xml");
 
