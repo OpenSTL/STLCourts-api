@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyString;
@@ -26,7 +25,6 @@ import org.springframework.mock.web.MockHttpSession;
 import com.twilio.twiml.Body;
 import com.twilio.twiml.Message;
 import com.twilio.twiml.MessagingResponse;
-import com.twilio.twiml.TwiML;
 import com.twilio.twiml.TwiMLException;
 
 import svc.dto.CitationSearchCriteria;
@@ -74,16 +72,6 @@ public class SMSManagerTest {
 	    return twimlResponse;
 	}
 	
-	private SMS_STAGE getStage(HttpSession session){
-		SMS_STAGE stage;
-		Integer stageNumber = (Integer) session.getAttribute("stage");
-		try{
-			stage = SMS_STAGE.values()[stageNumber];
-		}catch (IndexOutOfBoundsException iobe){
-			stage = SMS_STAGE.WELCOME;
-		}
-		return stage;
-	}
 	
 	private void setStageInSession(HttpSession session, SMS_STAGE textStage){
 		session.setAttribute("stage", new Integer(textStage.getNumVal()));
@@ -121,7 +109,7 @@ public class SMSManagerTest {
 		Citation citation = new Citation();
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 		citation.citation_date = sdf.parse("02/03/1990");
-		List<Citation> citations = new ArrayList();
+		List<Citation> citations = new ArrayList<Citation>();
 		citations.add(citation);
 		
 		when(citationManagerMock.FindCitations((CitationSearchCriteria)notNull())).thenReturn(citations);
@@ -145,7 +133,7 @@ public class SMSManagerTest {
 		citation.citation_number = "a1234";
 		citation.court_date = sdf.parse("11/20/2015");
 		citation.court_id = 1;
-		List<Citation> citations = new ArrayList();
+		List<Citation> citations = new ArrayList<Citation>();
 		citations.add(citation);
 		
 		Court court = new Court();
@@ -161,7 +149,7 @@ public class SMSManagerTest {
 		violation.status = VIOLATION_STATUS.CONT_FOR_PAYMENT;
 		violation.fine_amount = new BigDecimal(200.54);
 		violation.court_cost = new BigDecimal(22.34);
-		List<Violation> violations = new ArrayList();
+		List<Violation> violations = new ArrayList<Violation>();
 		violations.add(violation);
 		
 		
@@ -190,7 +178,7 @@ public class SMSManagerTest {
 		Citation citation = new Citation();
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 		citation.citation_date = sdf.parse("02/03/1990");
-		List<Citation> citations = new ArrayList();
+		List<Citation> citations = new ArrayList<Citation>();
 		citations.add(citation);
 		
 		when(citationManagerMock.FindCitations((CitationSearchCriteria)notNull())).thenReturn(citations);

@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 import com.twilio.twiml.Body;
 import com.twilio.twiml.Message;
 import com.twilio.twiml.MessagingResponse;
-import com.twilio.twiml.TwiML;
 
 import svc.dto.CitationSearchCriteria;
 import svc.models.Citation;
@@ -194,7 +193,13 @@ public class SMSManager {
 				message = generateReadLicenseMessage(session);
 				break;
 			case "2":
-				message = "Visit www.yourSTLcourts.com/paymentOptions";
+				message = "Visit www.yourSTLcourts.com/paymentOptions?";
+				String licenseNumber = (String)session.getAttribute("license_number");
+				message += "driversLicenseNumber="+licenseNumber;
+				String dob = (String)session.getAttribute("dob");
+				message += "dob="+dob;
+				String citation = (String)session.getAttribute("citation");
+				message += "citation="+citation;
 				setNextStageInSession(session,SMS_STAGE.WELCOME);
 				break;
 			default:
@@ -230,6 +235,7 @@ public class SMSManager {
 				CitationTextMessage citationTextMessage = new CitationTextMessage(citationToView,violations,court);
 				message = citationTextMessage.toTextMessage();
 				message += replyWithAdditionalViewingOptions();
+				session.setAttribute("citation", citationToView.citation_number);
 				nextTextStage = SMS_STAGE.READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN;
 				
 			}else{
