@@ -42,7 +42,7 @@ CREATE TABLE municipalities
 	court_id				INTEGER						NOT NULL
 );
 
-CREATE TABLE municipality_judges 
+CREATE TABLE judges 
 (
     id 						INTEGER 					NOT NULL,
     judge		 			VARCHAR(100),

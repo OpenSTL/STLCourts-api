@@ -14,13 +14,13 @@ import svc.models.Municipality;
 
 @Repository
 public class MunicipalityDAO extends BaseJdbcDao {
-	public Municipality getByCourtId(Long courtId){
+	public List<Municipality> getByCourtId(Long courtId){
 		try{
 			Map<String, Object> parameterMap = new HashMap<String, Object>();
 			parameterMap.put("courtId", courtId);
 			String sql = "SELECT * FROM municipalities WHERE court_id = :courtId";
-			Municipality municipality = jdbcTemplate.queryForObject(sql, parameterMap, new MunicipalitySQLMapper());
-			return municipality;
+			List<Municipality> municipalities = jdbcTemplate.query(sql, parameterMap, new MunicipalitySQLMapper());
+			return municipalities;
 		}catch (Exception e){
 			return null;
 		}

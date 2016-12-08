@@ -35,16 +35,17 @@ public class MunicipalityDAOTest{
 		
 	@SuppressWarnings("unchecked")
 	@Test
-	public void returnsMunicipalityFromCourtId(){
+	public void returnsMunicipalitiesFromCourtId(){
 		final Municipality MUNICIPALITY = new Municipality();
 		MUNICIPALITY.municipality = "myMuni";
+		final List<Municipality> MUNICIPALITIES = Arrays.asList(MUNICIPALITY);
 		final long COURTID = 123458L;
-		when(jdbcTemplate.queryForObject(Matchers.anyString(), Matchers.anyMap(), Matchers.<RowMapper<Municipality>>any()))
-        .thenReturn(MUNICIPALITY);
+		when(jdbcTemplate.query(Matchers.anyString(), Matchers.anyMap(), Matchers.<RowMapper<Municipality>>any()))
+        .thenReturn(MUNICIPALITIES);
 
-		Municipality municipality = municipalityDAO.getByCourtId(COURTID);
+		List<Municipality> municipalities = municipalityDAO.getByCourtId(COURTID);
 		
-		assertThat(municipality.municipality, is("myMuni"));
+		assertThat(municipalities.get(0).municipality, is("myMuni"));
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -56,7 +57,7 @@ public class MunicipalityDAOTest{
 		when(jdbcTemplate.queryForObject(Matchers.anyString(), Matchers.anyMap(), Matchers.<RowMapper<Municipality>>any()))
         .thenReturn(MUNICIPALITY);
 
-		Municipality municipality = municipalityDAO.getByCourtId(MUNICIPALITYID);
+		Municipality municipality = municipalityDAO.getByMunicipalityId(MUNICIPALITYID);
 		
 		assertThat(municipality.municipality, is("myMuni"));
 	}

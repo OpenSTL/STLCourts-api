@@ -1,6 +1,6 @@
 package svc.models;
 
-public class MunicipalityJudge 
+public class Judge 
 {
 	public int id;
 	public String judge;

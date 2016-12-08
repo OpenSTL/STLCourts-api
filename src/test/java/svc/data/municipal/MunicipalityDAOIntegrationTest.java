@@ -25,18 +25,18 @@ public class MunicipalityDAOIntegrationTest {
     private MunicipalityDAO dao;
 
 	@Test
-	public void GetMunicipalityByCourtIdSuccessful() {
-		Municipality municipality = dao.getByCourtId(1L);
+	public void GetMunicipalitiesByCourtIdSuccessful() {
+		List<Municipality> municipalities = dao.getByCourtId(1L);
 
-		assertThat(municipality, is(notNullValue()));
-		assertThat(municipality.municipality, is("Ballwin"));
+		assertThat(municipalities, is(notNullValue()));
+		assertThat(municipalities.get(0).municipality, is("Ballwin"));
 	}
 	
 	@Test
-	public void GetMunicipalityByCourtIdUnSuccessful() {
-		Municipality municipality = dao.getByCourtId(0L);
+	public void GetMunicipalitiesByCourtIdUnSuccessful() {
+		List<Municipality> municipalities = dao.getByCourtId(0L);
 
-		assertThat(municipality, is(nullValue()));
+		assertTrue(municipalities.isEmpty());
 	}
 	
 	@Test

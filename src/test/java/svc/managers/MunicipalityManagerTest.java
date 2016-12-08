@@ -28,11 +28,12 @@ public class MunicipalityManagerTest {
 	MunicipalityDAO municipalityDAOMock;
 	
 	@Test
-	public void returnsMunicipalityFromCourtId(){
+	public void returnsMunicipalitiesFromCourtId(){
 		final Municipality MUNICIPALITY = new Municipality();
 		final long COURTID = 1L;
-		when(municipalityDAOMock.getByCourtId(COURTID)).thenReturn(MUNICIPALITY);
-		assertThat(manager.GetMunicipalityByCourtId(COURTID),equalTo(MUNICIPALITY));
+		final List<Municipality> MUNICIPALITIES = Arrays.asList(new Municipality[]{MUNICIPALITY});
+		when(municipalityDAOMock.getByCourtId(COURTID)).thenReturn(MUNICIPALITIES);
+		assertThat(manager.GetMunicipalitiesByCourtId(COURTID),equalTo(MUNICIPALITIES));
 	}
 	
 	@Test

@@ -9,14 +9,12 @@ import org.mockito.Mock;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.*;
 
-import svc.dto.MunicipalitiesDTO;
 import svc.managers.MunicipalityManager;
 import svc.models.Municipality;
 
@@ -33,8 +31,8 @@ public class MunicipalityControllerTest {
 		final List<Municipality> MUNICIPALITIES = Arrays.asList(new Municipality[]{new Municipality()});
 
 		when(managerMock.GetAllMunicipalities()).thenReturn(MUNICIPALITIES);
-		MunicipalitiesDTO returnedMunicipalitiesDTO = controller.GetMunicipalities();
-		assertThat(returnedMunicipalitiesDTO.municipalities,equalTo(MUNICIPALITIES));
+		List<Municipality> municipalities = controller.GetMunicipalities();
+		assertThat(municipalities,equalTo(MUNICIPALITIES));
 	}
 	
 	@Test
@@ -56,25 +54,15 @@ public class MunicipalityControllerTest {
 	}
 	
 	@Test
-	public void returnsMunicipalityFromValidCourtId() throws NotFoundException{
+	public void returnsMunicipalitiesFromValidCourtId() throws NotFoundException{
 		final long COURT_ID = 2L;
 		final Municipality MUNICIPALITY = new Municipality();
+		final List<Municipality> MUNICIPALITIES = Arrays.asList(new Municipality[]{MUNICIPALITY});
 		
-		when(managerMock.GetMunicipalityByCourtId(COURT_ID)).thenReturn(MUNICIPALITY);
+		when(managerMock.GetMunicipalitiesByCourtId(COURT_ID)).thenReturn(MUNICIPALITIES);
 		
-		HashMap<String,String> params = new HashMap<>();
-		params.put("courtId","2");
-		
-		Municipality returnedMunicipality = controller.GetMunicipalityByCourtId(params);
-		assertThat(returnedMunicipality,equalTo(MUNICIPALITY));
-	}
-	
-	@Test (expected = NumberFormatException.class)
-	public void throwsExceptionWhenCourtIdIsNotLong() throws NotFoundException{
-		HashMap<String,String> params = new HashMap<>();
-		params.put("courtId","a");
-		
-		controller.GetMunicipalityByCourtId(params);
+		List<Municipality> returnedMunicipalities = controller.GetMunicipalityByCourtId(COURT_ID);
+		assertThat(returnedMunicipalities,equalTo(MUNICIPALITIES));
 	}
 	
 }

@@ -15,7 +15,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.*;
 
-import svc.dto.CourtsDTO;
 import svc.managers.CourtManager;
 import svc.models.Court;
 
@@ -32,8 +31,8 @@ public class CourtControllerTest {
 		final List<Court> COURTS = Arrays.asList(new Court[]{new Court()});
 
 		when(managerMock.GetAllCourts()).thenReturn(COURTS);
-		CourtsDTO returnedCourtsDTO = controller.GetCourts();
-		assertThat(returnedCourtsDTO.courts,equalTo(COURTS));
+		List<Court> courts = controller.GetCourts();
+		assertThat(courts,equalTo(COURTS));
 	}
 	
 	@Test

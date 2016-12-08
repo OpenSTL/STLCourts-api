@@ -1,6 +1,6 @@
 package svc.controllers;
 
-import java.util.Map;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
@@ -12,31 +12,28 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import svc.dto.MunicipalitiesDTO;
 import svc.managers.*;
 import svc.models.*;
 
 
 @RestController
 @EnableAutoConfiguration
-@RequestMapping("/municipalities")
 public class MunicipalityController {	
 	@Inject
 	MunicipalityManager municipalityManager;
 	
 	@ResponseBody
-	@RequestMapping(method = RequestMethod.GET)
-	MunicipalitiesDTO GetMunicipalities() {
-		return new MunicipalitiesDTO(municipalityManager.GetAllMunicipalities());
+	@RequestMapping(method = RequestMethod.GET, value="/municipalities")
+	List<Municipality> GetMunicipalities() {
+		return municipalityManager.GetAllMunicipalities();
 	}
 	
 	@ResponseBody
-	@RequestMapping(method = RequestMethod.GET, value="/{id}")
+	@RequestMapping(method = RequestMethod.GET, value="/municipalities/{id}")
 	Municipality GetMunicipality(@PathVariable("id") Long id) throws NotFoundException {
 		Municipality municipality = municipalityManager.GetMunicipalityById(id);
 		if (municipality == null) {
@@ -46,15 +43,10 @@ public class MunicipalityController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(method = RequestMethod.GET, params = "courtId")
-	Municipality GetMunicipalityByCourtId(@RequestParam Map<String, String> params) throws NotFoundException {
-		Long courtId = Long.parseLong(params.get("courtId"));
-		
-		Municipality municipality = municipalityManager.GetMunicipalityByCourtId(courtId);
-		if (municipality == null) {
-			throw new NotFoundException("Municipality Not Found");
-		}
-		return municipality;
+	@RequestMapping(method = RequestMethod.GET, value="courts/{courtId}/municipalities")
+	List<Municipality> GetMunicipalityByCourtId(@PathVariable("courtId") Long courtId) throws NotFoundException {
+		List<Municipality> municipalities = municipalityManager.GetMunicipalitiesByCourtId(courtId);
+		return municipalities;
 	}
 	
 	@ExceptionHandler({TypeMismatchException.class,NumberFormatException.class})
