@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
+import svc.logging.LogSystem;
 
 @ControllerAdvice
 @RestController
@@ -27,6 +28,7 @@ public class GlobalExceptionHandler {
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	@ExceptionHandler(Exception.class)
 	public String handleGeneralExceptions(Exception e){
+		LogSystem.LogEvent("Unhandled Exception - "+e.getMessage());
 		return ("500: General Unhandled Exception");
 	}
 	

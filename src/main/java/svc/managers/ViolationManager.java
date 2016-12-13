@@ -21,4 +21,5 @@ public class ViolationManager {
 	public List<Violation> getViolationsByCitationNumber(String citationNumber) {
 		return violationDAO.getViolationsByCitationNumber(citationNumber);
 	}
+	
 }
