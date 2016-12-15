@@ -54,7 +54,7 @@ public class MunicipalityDAO extends BaseJdbcDao {
 			Municipality municipality = new Municipality();
 			try {	
 				municipality.id = rs.getInt("id");
-				municipality.municipality = rs.getString("municipality");
+				municipality.municipality_name = rs.getString("municipality_name");
 				municipality.court_id = rs.getInt("court_id");
 			} catch (Exception e) {
 				LogSystem.LogDBException(e);

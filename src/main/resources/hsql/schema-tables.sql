@@ -38,7 +38,7 @@ CREATE TABLE courts
 CREATE TABLE municipalities 
 (
     id 						INTEGER 					NOT NULL,
-    municipality 			VARCHAR(50),
+    municipality_name		VARCHAR(50),
 	court_id				INTEGER						NOT NULL
 );
 

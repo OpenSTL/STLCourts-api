@@ -37,7 +37,7 @@ public class MunicipalityDAOTest{
 	@Test
 	public void returnsMunicipalitiesFromCourtId(){
 		final Municipality MUNICIPALITY = new Municipality();
-		MUNICIPALITY.municipality = "myMuni";
+		MUNICIPALITY.municipality_name = "myMuni";
 		final List<Municipality> MUNICIPALITIES = Arrays.asList(MUNICIPALITY);
 		final long COURTID = 123458L;
 		when(jdbcTemplate.query(Matchers.anyString(), Matchers.anyMap(), Matchers.<RowMapper<Municipality>>any()))
@@ -45,27 +45,27 @@ public class MunicipalityDAOTest{
 
 		List<Municipality> municipalities = municipalityDAO.getByCourtId(COURTID);
 		
-		assertThat(municipalities.get(0).municipality, is("myMuni"));
+		assertThat(municipalities.get(0).municipality_name, is("myMuni"));
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Test
 	public void returnsMunicipalityFromMunicipalityId(){
 		final Municipality MUNICIPALITY = new Municipality();
-		MUNICIPALITY.municipality = "myMuni";
+		MUNICIPALITY.municipality_name = "myMuni";
 		final long MUNICIPALITYID = 123458L;
 		when(jdbcTemplate.queryForObject(Matchers.anyString(), Matchers.anyMap(), Matchers.<RowMapper<Municipality>>any()))
         .thenReturn(MUNICIPALITY);
 
 		Municipality municipality = municipalityDAO.getByMunicipalityId(MUNICIPALITYID);
 		
-		assertThat(municipality.municipality, is("myMuni"));
+		assertThat(municipality.municipality_name, is("myMuni"));
 	}
 	
 	@Test
 	public void returnsAllMunicipalities(){
 		final Municipality MUNICIPALITY = new Municipality();
-		MUNICIPALITY.municipality = "myMunicipality";
+		MUNICIPALITY.municipality_name = "myMunicipality";
 		final List<Municipality> MUNICIPALITIES = Arrays.asList(new Municipality[]{MUNICIPALITY});
 		
 		when(jdbcTemplate.query(Matchers.anyString(), Matchers.<RowMapper<Municipality>>any()))
@@ -73,7 +73,7 @@ public class MunicipalityDAOTest{
 
 		List<Municipality> municipalities = municipalityDAO.getAllMunicipalities();
 		
-		assertThat(municipalities.get(0).municipality, is("myMunicipality"));
+		assertThat(municipalities.get(0).municipality_name, is("myMunicipality"));
 	}
 	
 	

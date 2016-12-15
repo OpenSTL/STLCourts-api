@@ -29,7 +29,7 @@ public class MunicipalityDAOIntegrationTest {
 		List<Municipality> municipalities = dao.getByCourtId(1L);
 
 		assertThat(municipalities, is(notNullValue()));
-		assertThat(municipalities.get(0).municipality, is("Ballwin"));
+		assertThat(municipalities.get(0).municipality_name, is("Ballwin"));
 	}
 	
 	@Test
@@ -44,7 +44,7 @@ public class MunicipalityDAOIntegrationTest {
 		Municipality municipality = dao.getByMunicipalityId(1L);
 
 		assertThat(municipality, is(notNullValue()));
-		assertThat(municipality.municipality, is("Ballwin"));
+		assertThat(municipality.municipality_name, is("Ballwin"));
 	}
 	
 	@Test

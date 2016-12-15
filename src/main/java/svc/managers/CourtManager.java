@@ -15,14 +15,11 @@ public class CourtManager {
 	private CourtDAO courtDAO;
 		
 	public Court GetCourtById(Long courtId){
-		Court court = courtDAO.getByCourtId(courtId); 
-		
-		return court;
+		return courtDAO.getByCourtId(courtId); 
 	}
 
 	public List<Court> GetAllCourts() {
-		List<Court> courts = courtDAO.getAllCourts();
-		return courts;
+		return courtDAO.getAllCourts();
 	}
 	
 }

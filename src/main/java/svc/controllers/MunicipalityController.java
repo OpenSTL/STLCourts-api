@@ -45,8 +45,7 @@ public class MunicipalityController {
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET, value="courts/{courtId}/municipalities")
 	List<Municipality> GetMunicipalityByCourtId(@PathVariable("courtId") Long courtId) throws NotFoundException {
-		List<Municipality> municipalities = municipalityManager.GetMunicipalitiesByCourtId(courtId);
-		return municipalities;
+		return municipalityManager.GetMunicipalitiesByCourtId(courtId);
 	}
 	
 	@ExceptionHandler({TypeMismatchException.class,NumberFormatException.class})
