@@ -11,6 +11,7 @@
 	</configs>
 	<autoconfigs>
 		<config>java:svc.controllers.OpportunityController</config>
+		<config>java:svc.controllers.MunicipalityController</config>
 		<config>java:svc.controllers.SponsorController</config>
 		<config>java:svc.controllers.CitationController</config>
 		<config>java:svc.controllers.ViolationController</config>
