@@ -25,4 +25,9 @@ public class LocalProfile {
 				.addScript("hsql/citations.sql")
 				.build();
 	}
+	
+	@Bean
+	public String clientURL(){
+		return "localhost:9000";
+	}
 }

@@ -4,11 +4,10 @@ server:
 ---
 spring:
   profiles.active: local
-  applicationURL: localhost:9000
 ---
 spring:
   profiles: qa
-  applicationURL: http://test.yourstlcourts.com
+  clientURL: http://test.yourstlcourts.com
 spring.datasource:
   driverClassName: com.mysql.jdbc.Driver
   url: jdbc:mysql:${MYSQL_URL}?useUnicode=true&amp;characterEncoding=UTF-8
@@ -20,7 +19,7 @@ spring.datasource:
 ---
 spring:
   profiles: prod
-  applicationURL: http://www.yourstlcourts.com
+  clientURL: http://www.yourstlcourts.com
 spring.datasource:
   driverClassName: com.mysql.jdbc.Driver
   url: jdbc:mysql:${MYSQL_URL}?useUnicode=true&amp;characterEncoding=UTF-8

@@ -38,8 +38,8 @@ public class SMSManager {
 	@Inject
 	ViolationManager violationManager;
 	
-	@Value("${spring.applicationURL}")
-	String applicationURL;
+	@Inject
+	String clientURL;
 	
 	private enum SMS_STAGE{
 		WELCOME(0),
