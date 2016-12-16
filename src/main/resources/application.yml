@@ -7,7 +7,7 @@ spring:
 ---
 spring:
   profiles: local
-  clientURL: localhost:9000
+  clientURL: http://localhost:9000
 ---
 spring:
   profiles: qa
