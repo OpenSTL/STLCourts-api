@@ -6,6 +6,10 @@ spring:
   profiles.active: local
 ---
 spring:
+  profiles: local
+  clientURL: localhost:9000
+---
+spring:
   profiles: qa
   clientURL: http://test.yourstlcourts.com
 spring.datasource:

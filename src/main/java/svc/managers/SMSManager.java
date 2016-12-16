@@ -38,7 +38,7 @@ public class SMSManager {
 	@Inject
 	ViolationManager violationManager;
 	
-	@Inject
+	@Value("${spring.clientURL}")
 	String clientURL;
 	
 	private enum SMS_STAGE{
@@ -199,7 +199,7 @@ public class SMSManager {
 				break;
 			case "2":
 				message = "Visit ";
-				message += applicationURL+"/paymentOptions?";
+				message += clientURL+"/paymentOptions?";
 				
 				String licenseNumber = (String)session.getAttribute("license_number");
 				message += "driversLicenseNumber="+licenseNumber;

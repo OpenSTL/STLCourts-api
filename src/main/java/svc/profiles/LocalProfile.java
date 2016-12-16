@@ -26,8 +26,4 @@ public class LocalProfile {
 				.build();
 	}
 	
-	@Bean
-	public String clientURL(){
-		return "localhost:9000";
-	}
 }
