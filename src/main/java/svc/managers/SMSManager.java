@@ -13,6 +13,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Years;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.twilio.twiml.Body;
@@ -36,6 +37,9 @@ public class SMSManager {
 	CourtManager courtManager;
 	@Inject
 	ViolationManager violationManager;
+	
+	@Value("${spring.clientURL}")
+	String clientURL;
 	
 	private enum SMS_STAGE{
 		WELCOME(0),
@@ -195,11 +199,7 @@ public class SMSManager {
 				break;
 			case "2":
 				message = "Visit ";
-				CharSequence ch = "localhost";
-				if (request.getRequestURL().toString().contains(ch))
-					message += "test.yourstlcourts.com/paymentOptions?";
-				else
-					message += "http://www.yourstlcourts.com/paymentOptions?";
+				message += clientURL+"/paymentOptions?";
 				
 				String licenseNumber = (String)session.getAttribute("license_number");
 				message += "driversLicenseNumber="+licenseNumber;

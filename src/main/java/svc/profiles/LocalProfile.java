@@ -25,4 +25,5 @@ public class LocalProfile {
 				.addScript("hsql/citations.sql")
 				.build();
 	}
+	
 }
