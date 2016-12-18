@@ -26,7 +26,6 @@ public class CourtDAOIntegrationTest {
 		Court court = dao.getByCourtId(1L);
 
 		assertThat(court, is(notNullValue()));
-		assertThat(court.municipality, is("Ballwin"));
 	}
 
 }

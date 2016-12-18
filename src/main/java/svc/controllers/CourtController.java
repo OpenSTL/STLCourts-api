@@ -1,5 +1,7 @@
 package svc.controllers;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 
@@ -14,26 +16,24 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import svc.dto.CourtsDTO;
 import svc.managers.*;
 import svc.models.*;
 
 
 @RestController
 @EnableAutoConfiguration
-@RequestMapping("/courts")
 public class CourtController {	
 	@Inject
 	CourtManager courtManager;
 	
 	@ResponseBody
-	@RequestMapping(method = RequestMethod.GET)
-	CourtsDTO GetCourts() {
-		return new CourtsDTO(courtManager.GetAllCourts());
+	@RequestMapping(method = RequestMethod.GET, value="/courts")
+	List<Court> GetCourts() {
+		return courtManager.GetAllCourts();
 	}
 	
 	@ResponseBody
-	@RequestMapping(method = RequestMethod.GET, value="/{id}")
+	@RequestMapping(method = RequestMethod.GET, value="/courts/{id}")
 	Court GetCourt(@PathVariable("id") Long id) throws NotFoundException {
 		Court court = courtManager.GetCourtById(id);
 		if (court == null) {

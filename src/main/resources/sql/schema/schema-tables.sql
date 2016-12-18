@@ -22,13 +22,31 @@ CREATE TABLE citations
 CREATE TABLE courts 
 (
     id 						INTEGER 					NOT NULL,
-    latitude 				DOUBLE 			PRECISION,
-    longitude 				DOUBLE 			PRECISION,
-    municipality 			VARCHAR(50),
+    court_name				VARCHAR(50),
+    phone					VARCHAR(50),
+    extension				VARCHAR(15),
+    website					VARCHAR(200),
+ 	payment_system			VARCHAR(50),
     address 				VARCHAR(50),
     city 					VARCHAR(50),
     state 					VARCHAR(25),
-    zip_code 				VARCHAR(12)
+    zip_code 				VARCHAR(12),
+    latitude 				DOUBLE 			PRECISION,
+    longitude 				DOUBLE 			PRECISION
+);
+
+CREATE TABLE municipalities 
+(
+    id 						INTEGER 					NOT NULL,
+    municipality_name		VARCHAR(50),
+	court_id				INTEGER						NOT NULL
+);
+
+CREATE TABLE judges 
+(
+    id 						INTEGER 					NOT NULL,
+    judge		 			VARCHAR(100),
+	court_id				INTEGER						NOT NULL
 );
 
 CREATE TABLE opportunities

@@ -13,12 +13,13 @@ import svc.models.Court;
 public class CourtManager {
 	@Inject
 	private CourtDAO courtDAO;
-	
+		
 	public Court GetCourtById(Long courtId){
-		return courtDAO.getByCourtId(courtId);
+		return courtDAO.getByCourtId(courtId); 
 	}
 
 	public List<Court> GetAllCourts() {
 		return courtDAO.getAllCourts();
 	}
+	
 }
