@@ -3,7 +3,7 @@ package svc.models;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class Court extends BaseModel
+public class Court
 {
 	public int id;
 	public String court_name;
@@ -19,9 +19,5 @@ public class Court extends BaseModel
 	public BigDecimal longitude;
 	
 	public List<Judge> judges;
-	
-	protected String getTableName(){
-		return "courts";
-	}
 	
 }
