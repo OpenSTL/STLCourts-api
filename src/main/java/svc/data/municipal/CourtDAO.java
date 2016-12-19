@@ -2,6 +2,7 @@ package svc.data.municipal;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,11 +18,16 @@ import svc.models.Judge;
 
 @Repository
 public class CourtDAO extends BaseJdbcDao {
+	
+	private List<String> getCourtSQLNames(){
+		return Arrays.asList("courts.id","courts.court_name","courts.phone","courts.website","courts.extension","courts.address","courts.payment_system","courts.city","courts.state","courts.zip_code","courts.latitude","courts.longitude");
+	}
+	
 	public Court getByCourtId(Long courtId){
 		try{
 			Map<String, Object> parameterMap = new HashMap<String, Object>();
 			parameterMap.put("courtId", courtId);
-			String sql = "SELECT "+String.join(",", Court.getSQLNames())+", judges.judge, judges.id AS judge_id, judges.court_id AS judges_court_id FROM courts LEFT OUTER JOIN judges ON judges.court_id=courts.id WHERE courts.id = :courtId";
+			String sql = "SELECT "+String.join(",", getCourtSQLNames())+", judges.judge, judges.id AS judge_id, judges.court_id AS judges_court_id FROM courts LEFT OUTER JOIN judges ON judges.court_id=courts.id WHERE courts.id = :courtId";
 			SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(sql, parameterMap);
 			mapSqlRowSetToCourt rsCourt = new mapSqlRowSetToCourt(sqlRowSet);
 			Court court = rsCourt.mapToCourt();
@@ -33,7 +39,7 @@ public class CourtDAO extends BaseJdbcDao {
 	
 	public List<Court> getAllCourts() {
 		try  {
-			String sql = "SELECT "+String.join(",", Court.getSQLNames())+", judges.judge, judges.id AS judge_id, judges.court_id AS judges_court_id FROM courts LEFT OUTER JOIN judges ON judges.court_id=courts.id";
+			String sql = "SELECT "+String.join(",", getCourtSQLNames())+", judges.judge, judges.id AS judge_id, judges.court_id AS judges_court_id FROM courts LEFT OUTER JOIN judges ON judges.court_id=courts.id";
 			SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(sql, new HashMap<String, Object>());
 			mapSqlRowSetToCourt rsCourt = new mapSqlRowSetToCourt(sqlRowSet);
 			List<Court> courts = rsCourt.mapToCourts();
