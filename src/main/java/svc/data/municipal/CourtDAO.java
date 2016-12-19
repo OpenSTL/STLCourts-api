@@ -27,12 +27,24 @@ public class CourtDAO extends BaseJdbcDao {
 		try{
 			Map<String, Object> parameterMap = new HashMap<String, Object>();
 			parameterMap.put("courtId", courtId);
-			String sql = "SELECT "+String.join(",", getCourtSQLNames())+", judges.judge, judges.id AS judge_id, judges.court_id AS judges_court_id FROM courts LEFT OUTER JOIN judges ON judges.court_id=courts.id WHERE courts.id = :courtId";
+			String sql;
+			if (courtId == 5L)
+				sql = "SELECT "+String.join(",", getCourtSQLNames())+" FROM courts WHERE courts.id = :courtId";
+			else
+				if (courtId == 6L)
+					sql = "SELECT * FROM courts WHERE courts.id = :courtId";
+				else
+					sql = "SELECT "+String.join(",", getCourtSQLNames())+", judges.judge, judges.id AS judge_id, judges.court_id AS judges_court_id FROM courts LEFT OUTER JOIN judges ON judges.court_id=courts.id WHERE courts.id = :courtId";
+			System.out.println("SQL for getByCourtId with courtId="+courtId+": "+sql);
 			SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(sql, parameterMap);
+			System.out.println("After sql queryForRowSet");
 			mapSqlRowSetToCourt rsCourt = new mapSqlRowSetToCourt(sqlRowSet);
+			System.out.println("After mapSqlRowSetToCourt");
 			Court court = rsCourt.mapToCourt();
+			System.out.println("After mapToCourt");
 			return court;
 		}catch (Exception e){
+			System.out.println("Exception in getByCourtId, message: "+e.getMessage());
 			return null;
 		}
 	}
@@ -93,9 +105,13 @@ public class CourtDAO extends BaseJdbcDao {
 		
 		private Judge getJudge(){
 			Judge judge = new Judge();
-			judge.id = rs.getInt("JUDGE_ID");
-			judge.judge = rs.getString(rs.findColumn("judge"));
-			judge.court_id = rs.getInt("JUDGES_COURT_ID");
+			try{
+				judge.id = rs.getInt("JUDGE_ID");
+				judge.judge = rs.getString(rs.findColumn("judge"));
+				judge.court_id = rs.getInt("JUDGES_COURT_ID");
+			}catch(Exception e){
+				
+			}
 			return judge;
 		}
 		
