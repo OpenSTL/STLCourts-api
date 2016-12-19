@@ -19,12 +19,13 @@ import svc.models.Judge;
 public class CourtDAO extends BaseJdbcDao {
 	public Court getByCourtId(Long courtId){
 		try{
+			Court court = new Court();
 			Map<String, Object> parameterMap = new HashMap<String, Object>();
 			parameterMap.put("courtId", courtId);
-			String sql = "SELECT "+String.join(",", Court.getSQLNames())+", judges.judge, judges.id AS judge_id, judges.court_id AS judges_court_id FROM courts LEFT OUTER JOIN judges ON judges.court_id=courts.id WHERE courts.id = :courtId";
+			String sql = "SELECT "+String.join(",", court.getNonListFieldNames())+", judges.judge, judges.id AS judge_id, judges.court_id AS judges_court_id FROM courts LEFT OUTER JOIN judges ON judges.court_id=courts.id WHERE courts.id = :courtId";
 			SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(sql, parameterMap);
 			mapSqlRowSetToCourt rsCourt = new mapSqlRowSetToCourt(sqlRowSet);
-			Court court = rsCourt.mapToCourt();
+			court = rsCourt.mapToCourt();
 			return court;
 		}catch (Exception e){
 			return null;
@@ -33,7 +34,8 @@ public class CourtDAO extends BaseJdbcDao {
 	
 	public List<Court> getAllCourts() {
 		try  {
-			String sql = "SELECT "+String.join(",", Court.getSQLNames())+", judges.judge, judges.id AS judge_id, judges.court_id AS judges_court_id FROM courts LEFT OUTER JOIN judges ON judges.court_id=courts.id";
+			Court court = new Court();
+			String sql = "SELECT "+String.join(",", court.getNonListFieldNames())+", judges.judge, judges.id AS judge_id, judges.court_id AS judges_court_id FROM courts LEFT OUTER JOIN judges ON judges.court_id=courts.id";
 			SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(sql, new HashMap<String, Object>());
 			mapSqlRowSetToCourt rsCourt = new mapSqlRowSetToCourt(sqlRowSet);
 			List<Court> courts = rsCourt.mapToCourts();
