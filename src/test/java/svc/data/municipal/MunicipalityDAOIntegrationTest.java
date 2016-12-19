@@ -7,9 +7,8 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.*;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -17,8 +16,7 @@ import svc.Application;
 import svc.models.Municipality;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
-@WebAppConfiguration
+@SpringBootTest(classes = Application.class)
 public class MunicipalityDAOIntegrationTest {
 	
 	@Autowired

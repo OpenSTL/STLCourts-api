@@ -76,7 +76,8 @@ public class CitationDAO extends BaseJdbcDao {
 			Map<String, Object> parameterMap = new HashMap<String, Object>();
 			parameterMap.put("lastName", lastName.toLowerCase());
 			parameterMap.put("dob", new java.sql.Date(dob.getTime()).toString());
-			parameterMap.put("municipalities", String.join(",", municipalities).toLowerCase());
+			municipalities.replaceAll(String::toLowerCase);
+			parameterMap.put("municipalities", municipalities);
 			
 			String sql = "SELECT * FROM citations WHERE date_of_birth = :dob AND LOWER(last_name) = :lastName AND LOWER(court_location) IN (:municipalities)";
 			List<Citation> citations = jdbcTemplate.query(sql, parameterMap, new CitationSQLMapper());
