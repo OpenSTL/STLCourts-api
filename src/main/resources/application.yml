@@ -14,7 +14,7 @@ spring:
   clientURL: http://test.yourstlcourts.com
 spring.datasource:
   driverClassName: com.mysql.jdbc.Driver
-  url: jdbc:mysql:${MYSQL_URL}?useUnicode=true&amp;characterEncoding=UTF-8
+  url: jdbc:mysql://${MYSQL_URL}?useUnicode=true&amp;characterEncoding=UTF-8
   username: ${MYSQL_USERNAME}
   password: ${MYSQL_PASSWORD}
   testWhileIdle: true
