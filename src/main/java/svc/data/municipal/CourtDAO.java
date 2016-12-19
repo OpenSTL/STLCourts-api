@@ -27,7 +27,8 @@ public class CourtDAO extends BaseJdbcDao {
 		try{
 			Map<String, Object> parameterMap = new HashMap<String, Object>();
 			parameterMap.put("courtId", courtId);
-			String sql = "SELECT "+String.join(",", getCourtSQLNames())+", judges.judge, judges.id AS judge_id, judges.court_id AS judges_court_id FROM courts LEFT OUTER JOIN judges ON judges.court_id=courts.id WHERE courts.id = :courtId";
+			//Uppercase on aliased names to avoid sql err
+			String sql = "SELECT "+String.join(",", getCourtSQLNames())+", judges.judge, judges.id AS JUDGE_ID, judges.court_id AS JUDGES_COURT_ID FROM courts LEFT OUTER JOIN judges ON judges.court_id=courts.id WHERE courts.id = :courtId";
 			SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(sql, parameterMap);
 			mapSqlRowSetToCourt rsCourt = new mapSqlRowSetToCourt(sqlRowSet);
 			Court court = rsCourt.mapToCourt();
@@ -39,7 +40,7 @@ public class CourtDAO extends BaseJdbcDao {
 	
 	public List<Court> getAllCourts() {
 		try  {
-			String sql = "SELECT "+String.join(",", getCourtSQLNames())+", judges.judge, judges.id AS judge_id, judges.court_id AS judges_court_id FROM courts LEFT OUTER JOIN judges ON judges.court_id=courts.id";
+			String sql = "SELECT "+String.join(",", getCourtSQLNames())+", judges.judge, judges.id AS JUDGE_ID, judges.court_id AS JUDGES_COURT_ID FROM courts LEFT OUTER JOIN judges ON judges.court_id=courts.id";
 			SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(sql, new HashMap<String, Object>());
 			mapSqlRowSetToCourt rsCourt = new mapSqlRowSetToCourt(sqlRowSet);
 			List<Court> courts = rsCourt.mapToCourts();
