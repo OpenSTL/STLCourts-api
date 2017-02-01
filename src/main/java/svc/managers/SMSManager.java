@@ -203,8 +203,6 @@ public class SMSManager {
 				
 				String citation = (String)session.getAttribute("citation");
 				message += "/"+citation;
-				String dob = (String)session.getAttribute("dob");
-				message += "/"+dob;
 				setNextStageInSession(session,SMS_STAGE.WELCOME);
 				break;
 			default:

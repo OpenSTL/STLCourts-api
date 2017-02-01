@@ -196,12 +196,11 @@ public class SMSManagerTest {
 	@Test
 	public void checkPaymentURL() throws TwiMLException{
 		setStageInSession(session,SMS_STAGE.READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN);
-		session.setAttribute("dob", "06/01/1963");
 		session.setAttribute("citation", "ABC");
 		
 		TwimlMessageRequest twimlMessageRequest = new TwimlMessageRequest();
 		twimlMessageRequest.setBody("2");
-		String message = "Visit null/paymentOptions/ABC/06/01/1963";
+		String message = "Visit null/paymentOptions/ABC";
 		MessagingResponse twimlResponse = manager.getTwimlResponse(twimlMessageRequest,requestMock, session);
 		assertEquals(createTwimlResponse(message).toXml(),twimlResponse.toXml());
 	}
