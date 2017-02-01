@@ -192,4 +192,16 @@ public class SMSManagerTest {
 		MessagingResponse twimlResponse = manager.getTwimlResponse(twimlMessageRequest,requestMock, session);
 		assertEquals(createTwimlResponse(message).toXml(),twimlResponse.toXml());
 	}
+	
+	@Test
+	public void checkPaymentURL() throws TwiMLException{
+		setStageInSession(session,SMS_STAGE.READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN);
+		session.setAttribute("citation", "ABC");
+		
+		TwimlMessageRequest twimlMessageRequest = new TwimlMessageRequest();
+		twimlMessageRequest.setBody("2");
+		String message = "Visit null/paymentOptions/ABC";
+		MessagingResponse twimlResponse = manager.getTwimlResponse(twimlMessageRequest,requestMock, session);
+		assertEquals(createTwimlResponse(message).toXml(),twimlResponse.toXml());
+	}
 }

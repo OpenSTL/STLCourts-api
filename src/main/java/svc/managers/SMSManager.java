@@ -199,14 +199,10 @@ public class SMSManager {
 				break;
 			case "2":
 				message = "Visit ";
-				message += clientURL+"/paymentOptions?";
+				message += clientURL+"/paymentOptions";
 				
-				String licenseNumber = (String)session.getAttribute("license_number");
-				message += "driversLicenseNumber="+licenseNumber;
-				String dob = (String)session.getAttribute("dob");
-				message += "&dob="+dob;
 				String citation = (String)session.getAttribute("citation");
-				message += "&citation="+citation;
+				message += "/"+citation;
 				setNextStageInSession(session,SMS_STAGE.WELCOME);
 				break;
 			default:
