@@ -4,7 +4,7 @@ INSERT INTO municipalities(id,municipality_name,court_id) VALUES (3,'Bellefontai
 INSERT INTO municipalities(id,municipality_name,court_id) VALUES (4,'Bellerive',4);
 INSERT INTO municipalities(id,municipality_name,court_id) VALUES (5,'Bel-Nor',5);
 INSERT INTO municipalities(id,municipality_name,court_id) VALUES (6,'Bel-Ridge',6);
-INSERT INTO municipalities(id,municipality_name,court_id) VALUES (7,'Berkeley 1',7);
+INSERT INTO municipalities(id,municipality_name,court_id) VALUES (7,'Berkeley',7);
 INSERT INTO municipalities(id,municipality_name,court_id) VALUES (8,'Beverly Hills',8);
 INSERT INTO municipalities(id,municipality_name,court_id) VALUES (9,'Black Jack',9);
 INSERT INTO municipalities(id,municipality_name,court_id) VALUES (10,'Breckenridge Hills',10);
