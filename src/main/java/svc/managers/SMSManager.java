@@ -38,7 +38,7 @@ public class SMSManager {
 	@Inject
 	ViolationManager violationManager;
 	
-	@Value("${spring.clientURL}")
+	@Value("${stlcourts.clientURL}")
 	String clientURL;
 	
 	private enum SMS_STAGE{

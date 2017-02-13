@@ -1,17 +1,22 @@
 server:
   port: 8080
   contextPath: /api
+stlcourts:
+  citationDataSources:
+    tyler:
+      rootURL: TODO
+      apiKey: TODO
 ---
 spring:
   profiles.active: local
 ---
 spring:
   profiles: local
+stlcourts:
   clientURL: http://localhost:9000
 ---
 spring:
   profiles: qa
-  clientURL: http://test.yourstlcourts.com
 spring.datasource:
   driverClassName: com.mysql.jdbc.Driver
   url: jdbc:mysql:${MYSQL_URL}?useUnicode=true&amp;characterEncoding=UTF-8
@@ -20,10 +25,11 @@ spring.datasource:
   testWhileIdle: true
   timeBetweenEvictionRunsMillis: 60000
   validationQuery: SELECT 1
+stlcourts:
+  clientURL: http://test.yourstlcourts.com
 ---
 spring:
   profiles: prod
-  clientURL: http://www.yourstlcourts.com
 spring.datasource:
   driverClassName: com.mysql.jdbc.Driver
   url: jdbc:mysql:${MYSQL_URL}?useUnicode=true&amp;characterEncoding=UTF-8
@@ -32,3 +38,5 @@ spring.datasource:
   testWhileIdle: true
   timeBetweenEvictionRunsMillis: 60000
   validationQuery: SELECT 1
+stlcourts:
+  clientURL: http://www.yourstlcourts.com
