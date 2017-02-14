@@ -8,6 +8,8 @@ spring:
 spring:
   profiles: local
   clientURL: http://localhost:9000
+spring.security:
+  hashSalt: ${HASHIDS_SALT}
 ---
 spring:
   profiles: qa
@@ -20,6 +22,8 @@ spring.datasource:
   testWhileIdle: true
   timeBetweenEvictionRunsMillis: 60000
   validationQuery: SELECT 1
+spring.security:
+  hashSalt: ${HASHIDS_SALT}
 ---
 spring:
   profiles: prod
@@ -32,3 +36,5 @@ spring.datasource:
   testWhileIdle: true
   timeBetweenEvictionRunsMillis: 60000
   validationQuery: SELECT 1
+spring.security:
+  hashSalt: ${HASHIDS_SALT}
