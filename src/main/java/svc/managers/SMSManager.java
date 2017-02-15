@@ -162,7 +162,7 @@ public class SMSManager {
 			session.setAttribute("license_number", licenseNumber);
 			message = ListCitations(date_of_birth, licenseNumber);
 			if (message == ""){
-				message = "No tickets were found.";
+				message = "No tickets were found. If you have additional questions, go to www.yourSTLcourts.com.";
 				nextTextStage = SMS_STAGE.WELCOME;
 			}else{
 				nextTextStage = SMS_STAGE.VIEW_CITATION;
