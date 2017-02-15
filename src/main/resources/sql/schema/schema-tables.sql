@@ -103,7 +103,7 @@ CREATE TABLE citation_datasource (
   name    VARCHAR(100)    NOT NULL
 );
 
-CREATE TABLE citation_datasource_court (
+CREATE TABLE citation_datasource_municipality (
   citation_datasource_id    INTEGER,
-  court_id                  INTEGER
+  municipality_id           INTEGER
 );
