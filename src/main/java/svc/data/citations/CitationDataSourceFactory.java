@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
 
-public class CitationDataSourceFactory extends BaseJdbcDao {
+public final class CitationDataSourceFactory extends BaseJdbcDao {
     private static final CitationDataSource tylerSource = new TylerCitationDataSource();
 
     public static List<CitationDataSource> getAllCitationDataSources() {
