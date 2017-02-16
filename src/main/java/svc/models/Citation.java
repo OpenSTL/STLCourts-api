@@ -3,8 +3,7 @@ package svc.models;
 import java.util.Date;
 import java.util.List;
 
-public class Citation 
-{
+public class Citation {
 	public int id;
 	public String citation_number;
 	public Date citation_date;
@@ -20,5 +19,5 @@ public class Citation
 	public String court_address;
 	
 	public List<Violation> violations;
-	public int court_id;
+	public Long court_id;
 }

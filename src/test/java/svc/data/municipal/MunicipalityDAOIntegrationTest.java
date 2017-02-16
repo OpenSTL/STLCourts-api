@@ -1,19 +1,18 @@
 package svc.data.municipal;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import svc.Application;
+import svc.models.Municipality;
 
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.*;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.*;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import svc.Application;
-import svc.models.Municipality;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = Application.class)
@@ -27,7 +26,7 @@ public class MunicipalityDAOIntegrationTest {
 		List<Municipality> municipalities = dao.getByCourtId(1L);
 
 		assertThat(municipalities, is(notNullValue()));
-		assertThat(municipalities.get(0).municipality_name, is("Ballwin"));
+		assertThat(municipalities.get(0).name, is("Ballwin"));
 	}
 	
 	@Test
@@ -42,7 +41,7 @@ public class MunicipalityDAOIntegrationTest {
 		Municipality municipality = dao.getByMunicipalityId(1L);
 
 		assertThat(municipality, is(notNullValue()));
-		assertThat(municipality.municipality_name, is("Ballwin"));
+		assertThat(municipality.name, is("Ballwin"));
 	}
 	
 	@Test

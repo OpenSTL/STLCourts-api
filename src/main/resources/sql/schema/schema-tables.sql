@@ -19,9 +19,8 @@ CREATE TABLE citations
     court_id 				INTEGER  						NULL
 );
 
-CREATE TABLE courts 
-(
-    id 						INTEGER 					NOT NULL,
+CREATE TABLE court (
+    court_id 						INTEGER 					NOT NULL,
     court_name				VARCHAR(50),
     phone					VARCHAR(50),
     extension				VARCHAR(15),
@@ -35,11 +34,14 @@ CREATE TABLE courts
     longitude 				DOUBLE 			PRECISION
 );
 
-CREATE TABLE municipalities 
-(
-    id 						INTEGER 					NOT NULL,
-    municipality_name		VARCHAR(50),
-	court_id				INTEGER						NOT NULL
+CREATE TABLE municipality (
+    municipality_id 			  INTEGER 					NOT NULL,
+    municipality_name		    VARCHAR(50)
+);
+
+CREATE TABLE municipality_court (
+    municipality_id       INTEGER       NOT NULL,
+    court_id              INTEGER       NOT NULL
 );
 
 CREATE TABLE judges 

@@ -137,9 +137,9 @@ public class SMSManager {
 	
 	private String ListCitations(Date dob, String license){
 		CitationSearchCriteria criteria = new CitationSearchCriteria();
-		criteria.date_of_birth = dob;
-		criteria.drivers_license_number = license;
-		List<Citation> citations = citationManager.FindCitations(criteria);
+		criteria.dateOfBirth = dob;
+		criteria.driversLicenseNumber = license;
+		List<Citation> citations = citationManager.findCitations(criteria);
 		
 		ListCitationsTextMessage listCitationsTM = new ListCitationsTextMessage(citations);
 		
@@ -227,14 +227,14 @@ public class SMSManager {
 		criteria = new CitationSearchCriteria();
 		dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 		try{
-			criteria.date_of_birth = dateFormat.parse(dob);
-			criteria.drivers_license_number = license;
-			citations = citationManager.FindCitations(criteria);
+			criteria.dateOfBirth = dateFormat.parse(dob);
+			criteria.driversLicenseNumber = license;
+			citations = citationManager.findCitations(criteria);
 			int citationNumberToView = Integer.parseInt(citationNumber) - 1;
 			if (citationNumberToView >= 0 && citationNumberToView < citations.size()){
 				Citation citationToView = citations.get(citationNumberToView);
 				List<Violation> violations = violationManager.getViolationsByCitationNumber(citationToView.citation_number);
-				Court court = courtManager.GetCourtById(Long.valueOf(citationToView.court_id));
+				Court court = courtManager.getCourtById(citationToView.court_id);
 				CitationTextMessage citationTextMessage = new CitationTextMessage(citationToView,violations,court);
 				message = citationTextMessage.toTextMessage();
 				message += replyWithAdditionalViewingOptions();

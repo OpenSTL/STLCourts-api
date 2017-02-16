@@ -5,7 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.jdbc.core.RowMapper;
+import com.google.common.collect.Lists;
+import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.stereotype.Repository;
 
 import svc.data.jdbc.BaseJdbcDao;
@@ -14,14 +15,22 @@ import svc.models.Municipality;
 
 @Repository
 public class MunicipalityDAO extends BaseJdbcDao {
+
+	public static final String MUNICIPALITY_ID_COLUMN_NAMER = "municipality_id";
+    public static final String MUNICIPALITY_NAME_COLUMN_NAMER = "municipality_name";
+
 	public List<Municipality> getByCourtId(Long courtId){
 		try{
-			Map<String, Object> parameterMap = new HashMap<String, Object>();
+			Map<String, Object> parameterMap = new HashMap<>();
 			parameterMap.put("courtId", courtId);
-			String sql = "SELECT * FROM municipalities WHERE court_id = :courtId";
-			List<Municipality> municipalities = jdbcTemplate.query(sql, parameterMap, new MunicipalitySQLMapper());
-			return municipalities;
+			String sql = getSql("municipality/get-all.sql") + " WHERE mc.court_id = :courtId";
+
+            MunicipalityRowCallbackHandler rowCallbackHandler = new MunicipalityRowCallbackHandler();
+			jdbcTemplate.query(sql, parameterMap, rowCallbackHandler);
+
+			return Lists.newArrayList(rowCallbackHandler.municipalityMap.values());
 		}catch (Exception e){
+            LogSystem.LogDBException(e);
 			return null;
 		}
 	}
@@ -30,38 +39,51 @@ public class MunicipalityDAO extends BaseJdbcDao {
 		try{
 			Map<String, Object> parameterMap = new HashMap<String, Object>();
 			parameterMap.put("municipalityId", municipalityId);
-			String sql = "SELECT * FROM municipalities WHERE id = :municipalityId";
-			Municipality municipality = jdbcTemplate.queryForObject(sql, parameterMap, new MunicipalitySQLMapper());
-			return municipality;
+            String sql = getSql("municipality/get-all.sql") + " WHERE m.municipality_id = :municipalityId";
+
+            MunicipalityRowCallbackHandler rowCallbackHandler = new MunicipalityRowCallbackHandler();
+            jdbcTemplate.query(sql, parameterMap, rowCallbackHandler);
+
+			return rowCallbackHandler.municipalityMap.values().iterator().next(); //Should only be 1
 		}catch (Exception e){
+            LogSystem.LogDBException(e);
 			return null;
 		}
 	}
 	
 	public List<Municipality> getAllMunicipalities() {
 		try  {
-			String sql = "SELECT * FROM municipalities";
-			List<Municipality> municipalities = jdbcTemplate.query(sql, new MunicipalitySQLMapper());
-			return municipalities;
+            MunicipalityRowCallbackHandler rowCallbackHandler = new MunicipalityRowCallbackHandler();
+            jdbcTemplate.query(getSql("municipality/get-all.sql"), rowCallbackHandler);
+
+            return Lists.newArrayList(rowCallbackHandler.municipalityMap.values());
 		} catch (Exception e) {
 			LogSystem.LogDBException(e);
 			return null;
 		}
 	}
 	
-	private class MunicipalitySQLMapper implements RowMapper<Municipality> {
-		public Municipality mapRow(ResultSet rs, int i) {
-			Municipality municipality = new Municipality();
-			try {	
-				municipality.id = rs.getInt("id");
-				municipality.municipality_name = rs.getString("municipality_name");
-				municipality.court_id = rs.getInt("court_id");
+	private final class MunicipalityRowCallbackHandler implements RowCallbackHandler {
+	    public Map<Long, Municipality> municipalityMap = new HashMap<>();
+
+	    @Override
+        public void processRow(ResultSet rs) {
+			try {
+                Long municipalityId = rs.getLong(MUNICIPALITY_ID_COLUMN_NAMER);
+                Long courtId = rs.getLong(CourtDAO.COURT_ID_COLUMN_NAME);
+                if(municipalityMap.containsKey(municipalityId)) {
+                    municipalityMap.get(municipalityId).courts.add(courtId);
+                } else {
+                    Municipality municipality = new Municipality();
+                    municipality.id = municipalityId;
+                    municipality.name = rs.getString(MUNICIPALITY_NAME_COLUMN_NAMER);
+                    municipality.courts = Lists.newArrayList(courtId);
+
+                    municipalityMap.put(municipalityId, municipality);
+                }
 			} catch (Exception e) {
 				LogSystem.LogDBException(e);
-				return null;
 			}
-			
-			return municipality;
 		}
 	}
 }
