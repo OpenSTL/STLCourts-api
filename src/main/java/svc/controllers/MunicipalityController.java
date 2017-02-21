@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import svc.hashids.Hashids;
 import svc.managers.*;
 import svc.models.*;
 
@@ -26,6 +27,12 @@ public class MunicipalityController {
 	@Inject
 	MunicipalityManager municipalityManager;
 	
+	@Inject
+	Hashids courtHashids;
+	
+	@Inject
+	Hashids municipalityHashids;
+	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET, value="/municipalities")
 	List<Municipality> GetMunicipalities() {
@@ -34,7 +41,8 @@ public class MunicipalityController {
 	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET, value="/municipalities/{id}")
-	Municipality GetMunicipality(@PathVariable("id") Long id) throws NotFoundException {
+	Municipality GetMunicipality(@PathVariable("id") String idString) throws NotFoundException {
+		long id = municipalityHashids.decode(idString)[0];
 		Municipality municipality = municipalityManager.GetMunicipalityById(id);
 		if (municipality == null) {
 			throw new NotFoundException("Municipality Not Found");
@@ -44,7 +52,8 @@ public class MunicipalityController {
 	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET, value="courts/{courtId}/municipalities")
-	List<Municipality> GetMunicipalityByCourtId(@PathVariable("courtId") Long courtId) throws NotFoundException {
+	List<Municipality> GetMunicipalityByCourtId(@PathVariable("courtId") String courtIdString) throws NotFoundException {
+		long courtId = courtHashids.decode(courtIdString)[0];
 		return municipalityManager.GetMunicipalitiesByCourtId(courtId);
 	}
 	

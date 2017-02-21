@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import svc.hashids.Hashids;
 import svc.managers.*;
 import svc.models.*;
 
@@ -26,6 +27,9 @@ public class CourtController {
 	@Inject
 	CourtManager courtManager;
 	
+	@Inject
+	Hashids courtHashids;
+	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET, value="/courts")
 	List<Court> GetCourts() {
@@ -34,7 +38,8 @@ public class CourtController {
 	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET, value="/courts/{id}")
-	Court GetCourt(@PathVariable("id") Long id) throws NotFoundException {
+	Court GetCourt(@PathVariable("id") String idString) throws NotFoundException {
+		long id = courtHashids.decode(idString)[0];
 		Court court = courtManager.GetCourtById(id);
 		if (court == null) {
 			throw new NotFoundException("Court Not Found");
