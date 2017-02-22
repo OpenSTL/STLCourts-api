@@ -1,3 +1,40 @@
+# Drop Existing courts and municipalities Tables
+DROP TABLE courts;
+DROP TABLE municipalities;
+
+# Create new court, municipality, and municipality_court tables
+CREATE TABLE court (
+    court_id 						INTEGER 					  NOT NULL  AUTO_INCREMENT,
+    court_name				  VARCHAR(50),
+    phone					      VARCHAR(50),
+    extension				    VARCHAR(15),
+    website					    VARCHAR(200),
+ 	  payment_system			VARCHAR(50),
+    address 				    VARCHAR(50),
+    city 					      VARCHAR(50),
+    state 					    VARCHAR(25),
+    zip_code 				    VARCHAR(12),
+    latitude 				    DOUBLE PRECISION,
+    longitude 				  DOUBLE PRECISION,
+    PRIMARY KEY (court_id)
+)ENGINE=InnoDB;
+
+CREATE TABLE municipality (
+    municipality_id 			  INTEGER 					NOT NULL  AUTO_INCREMENT,
+    municipality_name		    VARCHAR(50),
+    PRIMARY KEY (municipality_id)
+)ENGINE=InnoDB;
+
+CREATE TABLE municipality_court (
+    municipality_id       INTEGER       NOT NULL,
+    court_id              INTEGER       NOT NULL
+)ENGINE=InnoDB;
+
+# Add association FK constraints
+ALTER TABLE municipality_court ADD CONSTRAINT municipality_court_fk_1 FOREIGN KEY (municipality_id) REFERENCES municipality (municipality_id);
+ALTER TABLE municipality_court ADD CONSTRAINT municipality_court_fk_2 FOREIGN KEY (court_id) REFERENCES court (court_id);
+
+#Insert new court data
 INSERT INTO court(court_id,court_name,phone,extension,website,payment_system,address,city,state,zip_code,latitude,longitude) VALUES (1,'Ballwin','636.227.9468','','http://www.ballwin.mo.us/City-Government/Departments/Municipal-Court','iPayCourt','300 Park Drive','St. Louis','MO','63011','38.59729089','-90.54189364');
 INSERT INTO court(court_id,court_name,phone,extension,website,payment_system,address,city,state,zip_code,latitude,longitude) VALUES (2,'Bella Villa','314.638.8840','','','IPG','751 Avenue H','St. Louis','MO','63125','38.54256229','-90.28909176');
 INSERT INTO court(court_id,court_name,phone,extension,website,payment_system,address,city,state,zip_code,latitude,longitude) VALUES (3,'Bellefontaine Neighbors','314.867.0076','','http://www.cityofbn.com/departments/court/','iPayCourt','9641 Bellefontaine Road','St. Louis','MO','63137','38.74151895','-90.22576437');
@@ -78,3 +115,192 @@ INSERT INTO court(court_id,court_name,phone,extension,website,payment_system,add
 INSERT INTO court(court_id,court_name,phone,extension,website,payment_system,address,city,state,zip_code,latitude,longitude) VALUES (78,'Woodson Terrace','314.427.2600','','http://woodsonterrace.net/City-Clerk/Municipal-Court-Information-Online-Payment-Link/','iPayCourt','4323 Woodson Road','St. Louis','MO','63134','38.72808378','-90.35789852');
 INSERT INTO court(court_id,court_name,phone,extension,website,payment_system,address,city,state,zip_code,latitude,longitude) VALUES (79,'St. Louis County - Central','314.615.8760','','http://www.stlouisco.com/LawandPublicSafety/Municipalcourt','Municipal Online Payments Tyler','7900 Carondelet Avenue','St. Louis','MO','63105','38.64893351','-90.33859257');
 INSERT INTO court(court_id,court_name,phone,extension,website,payment_system,address,city,state,zip_code,latitude,longitude) VALUES (80,'St. Louis County - West','314.615.8760','','http://www.stlouisco.com/LawandPublicSafety/Municipalcourt','Municipal Online Payments Tyler','82 Clarkson Wilson Centre','St. Louis','MO','63017','38.627512','-90.58024738');
+
+#insert new municipality data
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (1,'Ballwin');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (2,'Bella Villa');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (3,'Bellefontaine Neighbors');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (4,'Bellerive');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (5,'Bel-Nor');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (6,'Bel-Ridge');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (7,'Berkeley');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (8,'Beverly Hills');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (9,'Black Jack');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (10,'Breckenridge Hills');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (11,'Brentwood');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (12,'Bridgeton');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (13,'Calverton Park');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (14,'Charlack');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (15,'Chesterfield');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (16,'Clarkson Valley');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (17,'Clayton');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (18,'Cool Valley');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (19,'Country Club Hills');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (20,'Country Life Acres');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (21,'Crestwood');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (22,'Creve Coeur');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (23,'Crystal Lake Park');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (24,'Dellwood');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (25,'Des Peres');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (26,'Edmundson');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (27,'Ellisville');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (28,'Eureka');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (29,'Fenton');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (30,'Ferguson');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (31,'Flordell Hills');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (32,'Florissant');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (33,'Frontenac');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (34,'Glen Echo Park');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (35,'Glendale');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (36,'Grantwood Village');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (37,'Greendale');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (38,'Green Park');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (39,'Hanley Hills');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (40,'Hazelwood');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (41,'Hillsdale');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (42,'Huntleigh');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (43,'Jennings');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (44,'Kinloch');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (45,'Kirkwood');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (46,'Ladue');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (47,'Lakeshire');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (48,'Mackenzie');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (49,'Manchester');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (50,'Maplewood');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (51,'Marlborough');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (52,'Maryland Heights');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (53,'Moline Acres');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (54,'Normandy');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (55,'Northwoods');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (56,'Norwood Court');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (57,'Oakland');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (58,'Olivette');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (59,'Overland');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (60,'Pacific');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (61,'Pagedale');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (62,'Pasadena Hills');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (63,'Pasadena Park');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (64,'Pine Lawn');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (65,'Richmond Heights');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (66,'Riverview');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (67,'Rock Hill');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (68,'Shrewsbury');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (69,'St. Ann');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (70,'St. John');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (71,'Sunset Hills');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (72,'Sycamore Hills');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (73,'Town and Country');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (74,'Twin Oaks');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (75,'University City');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (76,'Uplands Park');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (77,'Valley Park');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (78,'Velda City');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (79,'Velda Village Hills');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (80,'Vinita Park');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (81,'Vinita Terrace');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (82,'Warson Woods');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (83,'Webster Groves');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (84,'Wellston');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (85,'Westwood');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (86,'Wilbur Park');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (87,'Wildwood');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (88,'Winchester');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (89,'Woodson Terrace');
+INSERT INTO municipality(municipality_id,municipality_name) VALUES (90,'Unincorporated St. Louis County');
+
+# insert court/muni relationships
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (1, 1);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (2, 2);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (3, 3);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (4, 4);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (5, 5);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (6, 6);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (7, 7);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (8, 8);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (9, 9);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (10, 10);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (11, 11);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (12, 12);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (13, 13);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (14, 14);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (15, 15);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (16, 16);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (17, 17);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (18, 18);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (19, 19);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (20, 20);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (21, 21);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (22, 22);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (23, 23);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (24, 24);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (25, 25);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (26, 26);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (27, 27);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (28, 28);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (29, 29);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (30, 30);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (31, 31);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (32, 32);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (33, 23);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (34, 4);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (35, 33);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (36, 34);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (37, 4);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (38, 35);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (39, 36);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (40, 37);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (41, 38);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (42, 23);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (43, 39);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (44, 40);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (45, 41);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (46, 42);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (47, 43);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (48, 44);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (49, 45);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (50, 46);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (51, 47);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (52, 48);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (53, 49);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (54, 4);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (55, 50);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (56, 51);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (57, 52);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (58, 53);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (59, 54);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (60, 55);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (61, 56);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (62, 57);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (63, 58);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (64, 59);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (65, 60);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (66, 61);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (67, 62);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (68, 44);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (69, 63);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (70, 64);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (71, 65);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (72, 64);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (73, 20);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (74, 35);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (75, 66);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (76, 67);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (77, 68);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (78, 69);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (79, 70);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (80, 71);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (81, 72);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (82, 73);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (83, 74);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (84, 75);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (85, 23);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (86, 35);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (87, 76);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (88, 77);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (89, 78);
+
+# County (1 municipality to many courts)
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (90, 79);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (90, 80);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (90, 51);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (90, 35);

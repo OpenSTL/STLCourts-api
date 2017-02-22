@@ -1,23 +1,22 @@
 package svc.data.textMessages;
 
-import static org.junit.Assert.assertEquals;
+import com.google.common.collect.Lists;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
+import svc.models.Citation;
+import svc.models.Court;
+import svc.models.VIOLATION_STATUS;
+import svc.models.Violation;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import svc.models.Citation;
-import svc.models.Court;
-import svc.models.VIOLATION_STATUS;
-import svc.models.Violation;
+import static org.junit.Assert.assertEquals;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CitationTextMessageTest {
@@ -40,7 +39,7 @@ public class CitationTextMessageTest {
 		COURT.address = "AnyStreet";
 		COURT.city = "AnyCity";
 		COURT.state = "State";
-		COURT.zip_code = "ABC";
+		COURT.zip = "ABC";
 		
 		Violation VIOLATION = new Violation();
 		VIOLATION.id = 4;
@@ -50,13 +49,13 @@ public class CitationTextMessageTest {
 		VIOLATION.status_date = format.parse(violationStatusDateString);
 		VIOLATION.fine_amount = new BigDecimal("2.00");
 		VIOLATION.court_cost = new BigDecimal("3.00");
-		List<Violation> VIOLATIONS = Arrays.asList(new Violation[]{VIOLATION});
+		List<Violation> VIOLATIONS = Lists.newArrayList(VIOLATION);
 		
 		String expectedViolationMessage = "\nViolation #: 8910\nViolation: hello\nStatus (as of "+violationStatusDateString+"): "+VIOLATION.status.toString();
 		expectedViolationMessage += "\nFine Amount: $2.00\nCourt Costs: $3.00";
 		
 		String expectedCitationMessage = "Ticket Date: " + ticketDateString+"\nCourt Date: "+courtDateString+"\nTicket #: 123";
-		expectedCitationMessage += "\nCourt Address: "+COURT.address+" "+COURT.city+", "+COURT.state+" "+COURT.zip_code;
+		expectedCitationMessage += "\nCourt Address: "+COURT.address+" "+COURT.city+", "+COURT.state+" "+COURT.zip;
 		expectedCitationMessage += expectedViolationMessage;
 		
 		CitationTextMessage citationTextMessageObj = new CitationTextMessage(CITATION, VIOLATIONS, COURT);

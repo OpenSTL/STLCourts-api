@@ -12,6 +12,7 @@ import java.util.Locale;
 
 import static org.hamcrest.CoreMatchers.*;
 
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.*;
@@ -74,7 +75,7 @@ public class CitationDAOIntegrationTest {
 		String dateString = "05/18/1987";
         DateFormat  format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
         Date date = format.parse(dateString);
-        List<String> municipalities = Arrays.asList(new String[]{"FRONTENAC","KINLOCH"});
+        List<Long> municipalities = Lists.newArrayList(33L, 44L);
         
         List<Citation> citations = dao.getByDOBAndNameAndMunicipalities(date, "Peterson", municipalities);
         assertThat(citations, is(notNullValue()));

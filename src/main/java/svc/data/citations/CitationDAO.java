@@ -71,16 +71,14 @@ public class CitationDAO extends BaseJdbcDao {
 		}
 	}
 	
-	public List<Citation> getByDOBAndNameAndMunicipalities(Date dob, String lastName, List<String> municipalities) {
+	public List<Citation> getByDOBAndNameAndMunicipalities(Date dob, String lastName, List<Long> municipalities) {
 		try {
-			Map<String, Object> parameterMap = new HashMap<String, Object>();
+			Map<String, Object> parameterMap = new HashMap<>();
 			parameterMap.put("lastName", lastName.toLowerCase());
 			parameterMap.put("dob", new java.sql.Date(dob.getTime()).toString());
-			municipalities.replaceAll(String::toLowerCase);
 			parameterMap.put("municipalities", municipalities);
-			
-			String sql = "SELECT * FROM citations WHERE date_of_birth = :dob AND LOWER(last_name) = :lastName AND LOWER(court_location) IN (:municipalities)";
-			List<Citation> citations = jdbcTemplate.query(sql, parameterMap, new CitationSQLMapper());
+
+			List<Citation> citations = jdbcTemplate.query(getSql("citation/get-by-location.sql"), parameterMap, new CitationSQLMapper());
 			
 			return citations;
 		} catch (Exception e) {
@@ -106,7 +104,7 @@ public class CitationDAO extends BaseJdbcDao {
 				citation.court_date = rs.getDate("court_date");
 				citation.court_location = rs.getString("court_location");
 				citation.court_address = rs.getString("court_address");
-				citation.court_id = rs.getInt("court_id");
+				citation.court_id = rs.getLong("court_id");
 			} catch (Exception e) {
 				LogSystem.LogDBException(e);
 				return null;
