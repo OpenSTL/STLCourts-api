@@ -30,6 +30,9 @@ public class CourtController {
 	@Inject
 	Hashids courtHashids;
 	
+	@Inject
+	Hashids municipalityHashids;
+	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET, value="/courts")
 	List<Court> GetCourts() {
@@ -49,7 +52,8 @@ public class CourtController {
 
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET, value="municipalities/{municipalityId}/courts")
-	List<Court> GetCourtsByMunicipalityId(@PathVariable("municipalityId") Long municipalityId) {
+	List<Court> GetCourtsByMunicipalityId(@PathVariable("municipalityId") String municipalityIdString) {
+		long municipalityId = municipalityHashids.decode(municipalityIdString)[0];
 		return courtManager.getCourtsByMunicipalityId(municipalityId);
 	}
 	

@@ -28,6 +28,7 @@ public class CourtControllerTest {
 	CourtController controller;
 	
 	Hashids courtHashids = Mockito.mock(Hashids.class);
+	Hashids municipalityHashids = Mockito.mock(Hashids.class);
 	
 	@Mock
 	CourtManager managerMock;
@@ -51,6 +52,19 @@ public class CourtControllerTest {
 		when(managerMock.getCourtById(COURT_ID)).thenReturn(COURT);
 		Court returnedCourt = controller.GetCourt(COURT_ID_STRING);
 		assertThat(returnedCourt,equalTo(COURT));
+	}
+	
+	@Test
+	public void returnsCourtFromValidMunicipalityId(){
+		final long MUNICIPALITY_ID = 1L;
+		final String  MUNICIPALITY_ID_STRING = "ABC";
+		final List<Court> COURTS = Arrays.asList(new Court[]{new Court()});
+		final long[] MUNICIPALITYS_ID = new long[]{MUNICIPALITY_ID};
+		
+		when(municipalityHashids.decode(MUNICIPALITY_ID_STRING)).thenReturn(MUNICIPALITYS_ID);
+		when(managerMock.getCourtsByMunicipalityId(MUNICIPALITY_ID)).thenReturn(COURTS);
+		List<Court> returnedCourts = controller.GetCourtsByMunicipalityId(MUNICIPALITY_ID_STRING);
+		assertThat(returnedCourts,equalTo(COURTS));
 	}
 	
 	
