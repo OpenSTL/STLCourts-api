@@ -35,7 +35,7 @@ public class CourtControllerTest {
 	public void returnsAllCourts(){
 		final List<Court> COURTS = Arrays.asList(new Court[]{new Court()});
 
-		when(managerMock.GetAllCourts()).thenReturn(COURTS);
+		when(managerMock.getAllCourts()).thenReturn(COURTS);
 		List<Court> courts = controller.GetCourts();
 		assertThat(courts,equalTo(COURTS));
 	}
@@ -48,7 +48,7 @@ public class CourtControllerTest {
 		final long[] COURTS_ID = new long[]{COURT_ID};
 		
 		when(courtHashids.decode(COURT_ID_STRING)).thenReturn(COURTS_ID);
-		when(managerMock.GetCourtById(COURT_ID)).thenReturn(COURT);
+		when(managerMock.getCourtById(COURT_ID)).thenReturn(COURT);
 		Court returnedCourt = controller.GetCourt(COURT_ID_STRING);
 		assertThat(returnedCourt,equalTo(COURT));
 	}
@@ -61,7 +61,7 @@ public class CourtControllerTest {
 		final long[] COURTS_ID = new long[]{COURT_ID};
 		
 		when(courtHashids.decode(COURT_ID_STRING)).thenReturn(COURTS_ID);
-		when(managerMock.GetCourtById(COURT_ID)).thenReturn(null);
+		when(managerMock.getCourtById(COURT_ID)).thenReturn(null);
 		controller.GetCourt(COURT_ID_STRING);
 	}
 	

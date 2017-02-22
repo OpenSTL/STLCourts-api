@@ -1,39 +1,31 @@
 package svc.managers;
 
+import com.twilio.twiml.Body;
+import com.twilio.twiml.Message;
+import com.twilio.twiml.MessagingResponse;
+import com.twilio.twiml.TwiMLException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.mock.web.MockHttpSession;
+import svc.dto.CitationSearchCriteria;
+import svc.models.*;
 
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.notNull;
-import static org.mockito.Mockito.when;
-
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.mock.web.MockHttpSession;
-
-import com.twilio.twiml.Body;
-import com.twilio.twiml.Message;
-import com.twilio.twiml.MessagingResponse;
-import com.twilio.twiml.TwiMLException;
-
-import svc.dto.CitationSearchCriteria;
-import svc.models.Citation;
-import svc.models.Court;
-import svc.models.TwimlMessageRequest;
-import svc.models.VIOLATION_STATUS;
-import svc.models.Violation;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.notNull;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SMSManagerTest {
@@ -115,7 +107,7 @@ public class SMSManagerTest {
 		List<Citation> citations = new ArrayList<Citation>();
 		citations.add(citation);
 		
-		when(citationManagerMock.FindCitations((CitationSearchCriteria)notNull())).thenReturn(citations);
+		when(citationManagerMock.findCitations((CitationSearchCriteria)notNull())).thenReturn(citations);
 		
 		TwimlMessageRequest twimlMessageRequest = new TwimlMessageRequest();
 		twimlMessageRequest.setBody("F917801962");
@@ -135,7 +127,7 @@ public class SMSManagerTest {
 		citation.citation_date = sdf.parse("02/03/1990");
 		citation.citation_number = "a1234";
 		citation.court_date = sdf.parse("11/20/2015");
-		citation.court_id = 1;
+		citation.court_id = 1L;
 		List<Citation> citations = new ArrayList<Citation>();
 		citations.add(citation);
 		
@@ -143,7 +135,7 @@ public class SMSManagerTest {
 		court.address = "1 Anystreet";
 		court.city = "myCity";
 		court.state = "myState";
-		court.zip_code = "myZip";
+		court.zip = "myZip";
 		
 		Violation violation = new Violation();
 		violation.violation_number = "Y246";
@@ -156,13 +148,13 @@ public class SMSManagerTest {
 		violations.add(violation);
 		
 		
-		when(citationManagerMock.FindCitations((CitationSearchCriteria)notNull())).thenReturn(citations);
-		when(courtManagerMock.GetCourtById(Long.valueOf(citations.get(0).court_id))).thenReturn(court);
+		when(citationManagerMock.findCitations((CitationSearchCriteria)notNull())).thenReturn(citations);
+		when(courtManagerMock.getCourtById(citations.get(0).court_id)).thenReturn(court);
 		when(violationManagerMock.getViolationsByCitationNumber(anyString())).thenReturn(violations);
 		TwimlMessageRequest twimlMessageRequest = new TwimlMessageRequest();
 		twimlMessageRequest.setBody("1");
 		String message = "Ticket Date: 02/03/1990\nCourt Date: 11/20/2015\nTicket #: "+citation.citation_number;
-		message += "\nCourt Address: "+court.address+" "+court.city+", "+court.state+" "+court.zip_code;
+		message += "\nCourt Address: "+court.address+" "+court.city+", "+court.state+" "+court.zip;
 		message += "\nViolation #: "+violation.violation_number+"\nViolation: "+violation.violation_description;
 		message += "\nStatus (as of 12/01/2015): "+violation.status.toString();
 		message += "\nFine Amount: $"+violation.fine_amount;
@@ -184,7 +176,7 @@ public class SMSManagerTest {
 		List<Citation> citations = new ArrayList<Citation>();
 		citations.add(citation);
 		
-		when(citationManagerMock.FindCitations((CitationSearchCriteria)notNull())).thenReturn(citations);
+		when(citationManagerMock.findCitations((CitationSearchCriteria)notNull())).thenReturn(citations);
 		
 		TwimlMessageRequest twimlMessageRequest = new TwimlMessageRequest();
 		twimlMessageRequest.setBody("1");

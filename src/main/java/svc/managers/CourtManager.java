@@ -14,11 +14,15 @@ public class CourtManager {
 	@Inject
 	private CourtDAO courtDAO;
 		
-	public Court GetCourtById(Long courtId){
-		return courtDAO.getByCourtId(courtId); 
+	public Court getCourtById(Long courtId){
+		return courtDAO.getCourtById(courtId);
 	}
 
-	public List<Court> GetAllCourts() {
+	public List<Court> getCourtsByMunicipalityId(Long municipalityId) {
+		return courtDAO.getCourtsByMunicipalityId(municipalityId);
+	}
+
+	public List<Court> getAllCourts() {
 		return courtDAO.getAllCourts();
 	}
 	

@@ -1,9 +1,10 @@
 
 package svc.models;
 
-public class Municipality 
-{
-	public int id;
-	public String municipality_name;
-	public int court_id;
+import java.util.List;
+
+public class Municipality {
+	public Long id;
+	public String name;
+	public List<Long> courts;
 }
