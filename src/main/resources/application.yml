@@ -8,10 +8,16 @@ spring:
 spring:
   profiles: local
   clientURL: http://localhost:9000
+spring.twilio:
+  accountSid: ${TWILIO_SID}
+  authToken: ${TWILIO_AUTH_TOKEN}
 ---
 spring:
   profiles: qa
   clientURL: http://test.yourstlcourts.com
+spring.twilio:
+  accountSid: ${TWILIO_SID}
+  authToken: ${TWILIO_AUTH_TOKEN}
 spring.datasource:
   driverClassName: com.mysql.jdbc.Driver
   url: jdbc:mysql:${MYSQL_URL}?useUnicode=true&amp;characterEncoding=UTF-8
@@ -24,6 +30,9 @@ spring.datasource:
 spring:
   profiles: prod
   clientURL: http://www.yourstlcourts.com
+spring.twilio:
+  accountSid: ${TWILIO_SID}
+  authToken: ${TWILIO_AUTH_TOKEN}
 spring.datasource:
   driverClassName: com.mysql.jdbc.Driver
   url: jdbc:mysql:${MYSQL_URL}?useUnicode=true&amp;characterEncoding=UTF-8
