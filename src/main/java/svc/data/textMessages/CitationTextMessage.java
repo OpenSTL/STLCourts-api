@@ -21,6 +21,7 @@ public class CitationTextMessage {
 	
 		message += "Ticket Date: " + DatabaseUtilities.convertDatabaseDateToUS(this.citation.citation_date);
 		message += "\nCourt Date: " + DatabaseUtilities.convertDatabaseDateToUS(this.citation.court_date);
+		message += "\nCourt Time: " + DatabaseUtilities.convertDatabaseDateToUSTime(this.citation.court_date);
 		message += "\nTicket #: " + this.citation.citation_number;
 		message += "\nCourt Address: "+court.address+" "+court.city+", "+court.state+" "+court.zip;
 		int violationCount = 0;
@@ -53,4 +54,5 @@ public class CitationTextMessage {
 		
 		return message;
 	}
+	
 }

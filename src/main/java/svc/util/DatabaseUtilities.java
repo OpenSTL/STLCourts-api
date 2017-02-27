@@ -2,7 +2,9 @@ package svc.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class DatabaseUtilities {
 	public static boolean isStringValidUSDateString(String dateToCheck){
@@ -16,9 +18,15 @@ public class DatabaseUtilities {
 	    return true;
 	}
 	
-	public static String convertDatabaseDateToUS(Date databaseDate){
-		SimpleDateFormat usFormat = new SimpleDateFormat("MM/dd/yyyy");
-		
-		return usFormat.format(databaseDate);
+	public static String convertDatabaseDateToUS(LocalDate databaseDate){
+		return databaseDate.format(DateTimeFormatter.ofPattern("MM/dd/YYYY"));
+	}
+	
+	public static String convertDatabaseDateToUS(LocalDateTime databaseDate){
+		return databaseDate.format(DateTimeFormatter.ofPattern("MM/dd/YYYY"));
+	}
+	
+	public static String convertDatabaseDateToUSTime(LocalDateTime databaseDate){
+		return databaseDate.format(DateTimeFormatter.ofPattern("hh:mm a"));
 	}
 }

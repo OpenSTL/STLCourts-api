@@ -1,6 +1,9 @@
 package svc.data.citations;
 
 import java.sql.ResultSet;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -93,15 +96,17 @@ public class CitationDAO extends BaseJdbcDao {
 			try {	
 				citation.id = rs.getInt("id");
 				citation.citation_number = rs.getString("citation_number");
-				citation.citation_date = rs.getDate("citation_date");
+				citation.citation_date = rs.getDate("citation_date").toLocalDate();
 				citation.first_name = rs.getString("first_name");
 				citation.last_name = rs.getString("last_name");
-				citation.date_of_birth = rs.getDate("date_of_birth");
+				citation.date_of_birth = rs.getDate("date_of_birth").toLocalDate();
 				citation.defendant_address = rs.getString("defendant_address");
 				citation.defendant_city = rs.getString("defendant_city");
 				citation.defendant_state = rs.getString("defendant_state");
 				citation.drivers_license_number = rs.getString("drivers_license_number");
-				citation.court_date = rs.getDate("court_date");
+				LocalDate courtDate = rs.getDate("court_date").toLocalDate();
+				LocalTime courtTime = rs.getTime("court_date").toLocalTime();
+				citation.court_date = LocalDateTime.of(courtDate, courtTime);
 				citation.court_location = rs.getString("court_location");
 				citation.court_address = rs.getString("court_address");
 				citation.court_id = rs.getLong("court_id");

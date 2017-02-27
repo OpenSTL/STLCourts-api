@@ -1,7 +1,7 @@
 package svc.models;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Violation
 {	
@@ -12,7 +12,7 @@ public class Violation
 	public boolean warrant_status;
 	public String warrant_number;
 	public VIOLATION_STATUS status;
-	public Date status_date;
+	public LocalDate status_date;
 	public BigDecimal fine_amount;
 	public BigDecimal court_cost;
 }
