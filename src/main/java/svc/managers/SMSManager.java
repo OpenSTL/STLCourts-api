@@ -2,6 +2,11 @@ package svc.managers;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -9,10 +14,6 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.joda.time.DateTime;
-import org.joda.time.Years;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -37,6 +38,8 @@ public class SMSManager {
 	CourtManager courtManager;
 	@Inject
 	ViolationManager violationManager;
+	@Inject
+	SMSAlertManager smsAlertManager;
 	
 	@Value("${spring.clientURL}")
 	String clientURL;
@@ -75,10 +78,10 @@ public class SMSManager {
 				errMsg = "The date you entered: '"+dob+"' was not a valid date.  Please re-enter your birthdate using MM/DD/YYYY";
 			}else{
 				//Check that the DOB is > 18 years old
-				DateTimeFormatter formatter = DateTimeFormat.forPattern("MM/dd/yyyy");
-				DateTime dobDT = formatter.parseDateTime(dob);
-				DateTime now = new DateTime();
-				Years age = Years.yearsBetween(dobDT, now);
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+				LocalDate dobLD = LocalDate.parse(dob,formatter);
+				LocalDate nowLD = LocalDate.now(ZoneId.of("America/Chicago"));
+				Period age = dobLD.until(nowLD);
 				if (age.getYears() < 18){
 					errMsg = "You must be at least 18 years old to use www.yourSTLcourts.com";
 				}
@@ -185,13 +188,15 @@ public class SMSManager {
 	
 	private String replyWithAdditionalViewingOptions(){
 		String message = "";
-		message += "\nReply with '1' to view another Ticket";
-		message += "\nReply with '2' for payment Options";
+		message += "\nReply with '1' to view another ticket";
+		message += "\nReply with '2' for payment options";
+		message += "\nReply with '3' to receive text message reminders about your court date";
 		return message;
 	}
 	
 	private String generateViewCitationsAgainMessage(HttpSession session, HttpServletRequest request, String menuChoice){
 		String message = "";
+		String citation = (String)session.getAttribute("citation");
 		
 		switch(menuChoice){
 			case "1":
@@ -201,10 +206,25 @@ public class SMSManager {
 				message = "Visit ";
 				message += clientURL+"/paymentOptions";
 				
-				String citation = (String)session.getAttribute("citation");
+				citation = (String)session.getAttribute("citation");
 				message += "/"+citation;
 				setNextStageInSession(session,SMS_STAGE.WELCOME);
 				break;
+			case "3":
+				String phoneNumber = (String)session.getAttribute("phoneNumber");
+				String dob = (String)session.getAttribute("dob");
+				try{
+					if (smsAlertManager.add(citation, phoneNumber,LocalDate.parse(dob, DateTimeFormatter.ofPattern("MM/DD/YYYY")))){
+						message = "You will receive 2 text message reminders about your court date.  The first one will be sent two weeks prior to your court date.  The second will be sent the day before your court date.";
+					}else{
+						message = "Something went wrong in processing your request for text message reminders.  Please make sure your phone number is unblocked.  If you have already requested this ticket be added to our reminder system and it has been added succesfully, please ignore this message.";
+					}
+					setNextStageInSession(session,SMS_STAGE.READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN);
+				}catch (DateTimeParseException e){
+					//something went wrong here  this shouldn't happen since dob has already been parsed
+					message = "Sorry, something went wrong.  Please use the website www.yourSTLcourts.com.";
+					setNextStageInSession(session,SMS_STAGE.WELCOME);
+				}
 			default:
 				message = "Option not recognized.";
 				message += replyWithAdditionalViewingOptions();
@@ -267,6 +287,7 @@ public class SMSManager {
 		SMS_STAGE currentTextStage = getStageFromSession(session);
 		String message = "";
 		String content = twimlMessageRequest.getBody().trim();
+		session.setAttribute("phoneNumber", twimlMessageRequest.getFrom());
 		
 		switch(currentTextStage){
 		case WELCOME:

@@ -20,7 +20,7 @@ CREATE TABLE citations
 );
 
 CREATE TABLE court (
-    court_id 						INTEGER 					NOT NULL,
+    court_id 				INTEGER 					NOT NULL,
     court_name				VARCHAR(50),
     phone					VARCHAR(50),
     extension				VARCHAR(15),
@@ -35,7 +35,7 @@ CREATE TABLE court (
 );
 
 CREATE TABLE municipality (
-    municipality_id 			  INTEGER 					NOT NULL,
+    municipality_id 			INTEGER 					NOT NULL,
     municipality_name		    VARCHAR(50)
 );
 
@@ -107,4 +107,12 @@ CREATE TABLE violations
     status_date 			TIMESTAMP,
     fine_amount 			NUMERIC(15,2),
     court_cost 				NUMERIC(15,2)
+);
+
+CREATE TABLE sms_alerts
+(
+	id 						INTEGER 		NOT NULL AUTO_INCREMENT,
+    citation_number 		VARCHAR(25),
+    phone_number			VARCHAR(25),
+    date_of_birth 			DATE     						NULL
 );
