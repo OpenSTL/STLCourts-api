@@ -106,7 +106,7 @@ public class CitationDAO extends BaseJdbcDao {
 				citation.drivers_license_number = rs.getString("drivers_license_number");
 				LocalDate courtDate = rs.getDate("court_date").toLocalDate();
 				LocalTime courtTime = rs.getTime("court_date").toLocalTime();
-				citation.court_date = LocalDateTime.of(courtDate, courtTime);
+				citation.court_dateTime = LocalDateTime.of(courtDate, courtTime);
 				citation.court_location = rs.getString("court_location");
 				citation.court_address = rs.getString("court_address");
 				citation.court_id = rs.getLong("court_id");
