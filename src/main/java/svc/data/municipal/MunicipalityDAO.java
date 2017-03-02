@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import svc.data.jdbc.BaseJdbcDao;
 import svc.logging.LogSystem;
 import svc.models.Municipality;
+import svc.types.HashableEntity;
 
 @Repository
 public class MunicipalityDAO extends BaseJdbcDao {
@@ -64,12 +65,12 @@ public class MunicipalityDAO extends BaseJdbcDao {
 	}
 	
 	private final class MunicipalityRowCallbackHandler implements RowCallbackHandler {
-	    public Map<Long, Municipality> municipalityMap = new HashMap<>();
+	    public Map<HashableEntity<Municipality>, Municipality> municipalityMap = new HashMap<>();
 
 	    @Override
         public void processRow(ResultSet rs) {
 			try {
-                Long municipalityId = rs.getLong(MUNICIPALITY_ID_COLUMN_NAMER);
+                HashableEntity<Municipality> municipalityId = new HashableEntity<Municipality>(Municipality.class,rs.getLong(MUNICIPALITY_ID_COLUMN_NAMER));
                 Long courtId = rs.getLong(CourtDAO.COURT_ID_COLUMN_NAME);
                 if(municipalityMap.containsKey(municipalityId)) {
                     municipalityMap.get(municipalityId).courts.add(courtId);

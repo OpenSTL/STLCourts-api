@@ -17,9 +17,10 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.hamcrest.CoreMatchers.*;
 
-import svc.hashids.Hashids;
 import svc.managers.CourtManager;
 import svc.models.Court;
+import svc.models.Municipality;
+import svc.security.HashUtil;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CourtControllerTest {
@@ -27,8 +28,7 @@ public class CourtControllerTest {
 	@InjectMocks
 	CourtController controller;
 	
-	Hashids courtHashids = Mockito.mock(Hashids.class);
-	Hashids municipalityHashids = Mockito.mock(Hashids.class);
+	HashUtil hashUtil = Mockito.mock(HashUtil.class);
 	
 	@Mock
 	CourtManager managerMock;
@@ -46,9 +46,8 @@ public class CourtControllerTest {
 		final long COURT_ID = 1L;
 		final String COURT_ID_STRING = "ABC";
 		final Court COURT = new Court();
-		final long[] COURTS_ID = new long[]{COURT_ID};
 		
-		when(courtHashids.decode(COURT_ID_STRING)).thenReturn(COURTS_ID);
+		when(hashUtil.decode(Court.class,COURT_ID_STRING)).thenReturn(COURT_ID);
 		when(managerMock.getCourtById(COURT_ID)).thenReturn(COURT);
 		Court returnedCourt = controller.GetCourt(COURT_ID_STRING);
 		assertThat(returnedCourt,equalTo(COURT));
@@ -59,9 +58,8 @@ public class CourtControllerTest {
 		final long MUNICIPALITY_ID = 1L;
 		final String  MUNICIPALITY_ID_STRING = "ABC";
 		final List<Court> COURTS = Arrays.asList(new Court[]{new Court()});
-		final long[] MUNICIPALITYS_ID = new long[]{MUNICIPALITY_ID};
 		
-		when(municipalityHashids.decode(MUNICIPALITY_ID_STRING)).thenReturn(MUNICIPALITYS_ID);
+		when(hashUtil.decode(Municipality.class,MUNICIPALITY_ID_STRING)).thenReturn(MUNICIPALITY_ID);
 		when(managerMock.getCourtsByMunicipalityId(MUNICIPALITY_ID)).thenReturn(COURTS);
 		List<Court> returnedCourts = controller.GetCourtsByMunicipalityId(MUNICIPALITY_ID_STRING);
 		assertThat(returnedCourts,equalTo(COURTS));
@@ -72,9 +70,8 @@ public class CourtControllerTest {
 	public void throwsExceptionWhenCourtNotFound() throws NotFoundException{
 		final Long COURT_ID = 1L;
 		final String COURT_ID_STRING = "ABC";
-		final long[] COURTS_ID = new long[]{COURT_ID};
 		
-		when(courtHashids.decode(COURT_ID_STRING)).thenReturn(COURTS_ID);
+		when(hashUtil.decode(Court.class,COURT_ID_STRING)).thenReturn(COURT_ID);
 		when(managerMock.getCourtById(COURT_ID)).thenReturn(null);
 		controller.GetCourt(COURT_ID_STRING);
 	}

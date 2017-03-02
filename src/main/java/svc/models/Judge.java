@@ -1,8 +1,10 @@
 package svc.models;
 
+import svc.types.HashableEntity;
+
 public class Judge 
 {
-	public int id;
+	public HashableEntity<Judge> id;
 	public String judge;
-	public int court_id;
+	public HashableEntity<Court> court_id;
 }

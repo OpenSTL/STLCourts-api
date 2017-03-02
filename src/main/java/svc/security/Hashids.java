@@ -1,4 +1,4 @@
-package svc.hashids;
+package svc.security;
 
 import java.util.*;
 import java.util.regex.Matcher;

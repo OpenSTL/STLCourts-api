@@ -7,6 +7,7 @@ import svc.data.jdbc.BaseJdbcDao;
 import svc.logging.LogSystem;
 import svc.models.Court;
 import svc.models.Judge;
+import svc.types.HashableEntity;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -75,12 +76,12 @@ public class CourtDAO extends BaseJdbcDao {
     }
 
     private final class CourtRowCallbackHandler implements RowCallbackHandler {
-        public Map<Long, Court> courtMap = new HashMap<>();
+        public Map<HashableEntity<Court>, Court> courtMap = new HashMap<>();
 
         @Override
         public void processRow(ResultSet rs) throws SQLException {
             try {
-                Long courtId = rs.getLong(COURT_ID_COLUMN_NAME);
+                HashableEntity<Court> courtId = new HashableEntity<Court>(Court.class,rs.getLong(COURT_ID_COLUMN_NAME));
                 Judge judge = buildJudge(rs);
                 if (courtMap.containsKey(courtId)){
                     courtMap.get(courtId).judges.add(judge);
@@ -96,7 +97,7 @@ public class CourtDAO extends BaseJdbcDao {
 
         private Court buildCourt(ResultSet rs) throws SQLException {
             Court court = new Court();
-            court.id = rs.getLong(COURT_ID_COLUMN_NAME);
+            court.id = new HashableEntity<Court>(Court.class,rs.getLong(COURT_ID_COLUMN_NAME));
             court.name = rs.getString(COURT_NAME_COLUMN_NAME);
             court.phone = rs.getString(COURT_PHONE_COLUMN_NAME).replaceAll("[.\\- ]", ".");
             if (!court.phone.equals("")){
@@ -119,9 +120,9 @@ public class CourtDAO extends BaseJdbcDao {
 
         private Judge buildJudge(ResultSet rs) throws SQLException {
             Judge judge = new Judge();
-            judge.id = rs.getInt("JUDGE_ID");
+            judge.id = new HashableEntity<Judge>(Judge.class,rs.getLong("JUDGE_ID"));
             judge.judge = rs.getString(rs.findColumn("judge"));
-            judge.court_id = rs.getInt("JUDGES_COURT_ID");
+            judge.court_id = new HashableEntity<Court>(Court.class,rs.getLong("JUDGES_COURT_ID"));
             return judge;
         }
     }
