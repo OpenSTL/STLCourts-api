@@ -3,8 +3,10 @@ package svc.models;
 import java.math.BigDecimal;
 import java.util.List;
 
+import svc.types.HashableEntity;
+
 public class Court {
-	public Long id;
+	public HashableEntity<Court> id;
 	public String name;
 	public String phone;
 	public String website;
