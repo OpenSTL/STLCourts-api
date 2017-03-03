@@ -27,14 +27,14 @@ public class HashUtil{
 	public String encode(Class<?> fieldClass, long value){
 		initializeSalts();
 		String hashedValue = "";
-		switch (fieldClass.getTypeName()){
-			case "svc.models.Municipality":
+		switch (fieldClass.getSimpleName()){
+			case "Municipality":
 				hashedValue = municipalityHashids.encode(value);
 				break;
-			case "svc.models.Judge":
+			case "Judge":
 				hashedValue = judgeHashids.encode(value);
 				break;
-			case "svc.models.Court":
+			case "Court":
 				hashedValue = courtHashids.encode(value);
 				break;
 		}
@@ -43,14 +43,14 @@ public class HashUtil{
 	
 	public long decode(Class<?> fieldClass, String hashValue){
 		long idValue = 0L;
-		switch (fieldClass.getTypeName()){
-			case "svc.models.Municipality":
+		switch (fieldClass.getSimpleName()){
+			case "Municipality":
 				idValue = municipalityHashids.decode(hashValue)[0];
 				break;
-			case "svc.models.Judge":
+			case "Judge":
 				idValue = judgeHashids.decode(hashValue)[0];
 				break;
-			case "svc.models.Court":
+			case "Court":
 				idValue = courtHashids.decode(hashValue)[0];
 				break;
 		}
