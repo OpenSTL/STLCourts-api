@@ -1,9 +1,9 @@
 package svc.types;
 
 public class HashableEntity<CLASS>{
-	public Class<CLASS> type;
+	private Class<CLASS> type;
 	
-	public Long value;
+	private Long value;
 	
 	public HashableEntity(Class<CLASS> cls, Long id){
 		this.value = id;

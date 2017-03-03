@@ -48,7 +48,7 @@ public class GsonConfiguration extends WebMvcConfigurerAdapter {
 
 		@Override
 		public void write(JsonWriter out, HashableEntity hashableEntity) throws IOException {
-			out.value(hashUtil.encode(hashableEntity.getType(), hashableEntity.value));
+			out.value(hashUtil.encode(hashableEntity.getType(), hashableEntity.getValue()));
 			
 		}
 
