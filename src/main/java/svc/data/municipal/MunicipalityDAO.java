@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import svc.data.jdbc.BaseJdbcDao;
 import svc.logging.LogSystem;
+import svc.models.Court;
 import svc.models.Municipality;
 import svc.types.HashableEntity;
 
@@ -65,18 +66,19 @@ public class MunicipalityDAO extends BaseJdbcDao {
 	}
 	
 	private final class MunicipalityRowCallbackHandler implements RowCallbackHandler {
-	    public Map<HashableEntity<Municipality>, Municipality> municipalityMap = new HashMap<>();
+	    public Map<Long, Municipality> municipalityMap = new HashMap<>();
 
-	    @Override
+	    @SuppressWarnings("unchecked")
+		@Override
         public void processRow(ResultSet rs) {
 			try {
-                HashableEntity<Municipality> municipalityId = new HashableEntity<Municipality>(Municipality.class,rs.getLong(MUNICIPALITY_ID_COLUMN_NAMER));
-                Long courtId = rs.getLong(CourtDAO.COURT_ID_COLUMN_NAME);
+                Long municipalityId = rs.getLong(MUNICIPALITY_ID_COLUMN_NAMER);
+                HashableEntity<Court> courtId = new HashableEntity<Court>(Court.class,rs.getLong(CourtDAO.COURT_ID_COLUMN_NAME));
                 if(municipalityMap.containsKey(municipalityId)) {
                     municipalityMap.get(municipalityId).courts.add(courtId);
                 } else {
                     Municipality municipality = new Municipality();
-                    municipality.id = municipalityId;
+                    municipality.id = new HashableEntity<Municipality>(Municipality.class,municipalityId);
                     municipality.name = rs.getString(MUNICIPALITY_NAME_COLUMN_NAMER);
                     municipality.courts = Lists.newArrayList(courtId);
 

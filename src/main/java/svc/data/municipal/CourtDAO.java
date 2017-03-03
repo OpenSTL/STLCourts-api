@@ -76,12 +76,12 @@ public class CourtDAO extends BaseJdbcDao {
     }
 
     private final class CourtRowCallbackHandler implements RowCallbackHandler {
-        public Map<HashableEntity<Court>, Court> courtMap = new HashMap<>();
+        public Map<Long, Court> courtMap = new HashMap<>();
 
         @Override
         public void processRow(ResultSet rs) throws SQLException {
             try {
-                HashableEntity<Court> courtId = new HashableEntity<Court>(Court.class,rs.getLong(COURT_ID_COLUMN_NAME));
+            	Long courtId = rs.getLong(COURT_ID_COLUMN_NAME);
                 Judge judge = buildJudge(rs);
                 if (courtMap.containsKey(courtId)){
                     courtMap.get(courtId).judges.add(judge);
