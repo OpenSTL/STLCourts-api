@@ -5,6 +5,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -35,6 +39,8 @@ public class GsonConfiguration extends WebMvcConfigurerAdapter {
 	 private GsonHttpMessageConverter createGsonHttpMessageConverter() {
 		Gson gsonWithConverter = new GsonBuilder()
 									.registerTypeHierarchyAdapter(HashableEntity.class, new HashIdJsonAdapter())
+									.registerTypeAdapter(LocalDate.class, new LocalDateJsonAdapter())
+									.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeJsonAdapter())
 									.create();
 
         GsonHttpMessageConverter gsonConverter = new GsonHttpMessageConverter();
@@ -58,7 +64,36 @@ public class GsonConfiguration extends WebMvcConfigurerAdapter {
 			//if needed to be implemented, a different type of TypeAdapter might be needed:
 			//see: http://stackoverflow.com/questions/29860545/how-do-i-use-custom-deserialization-on-gson-for-generic-type
 			return null;
-		}
-		 
+		} 
 	 }
+	
+	private class LocalDateJsonAdapter extends TypeAdapter<LocalDate>{
+
+		@Override
+		public void write(JsonWriter out, LocalDate value) throws IOException {
+			out.value(value.toString());
+			
+		}
+
+		@Override
+		public LocalDate read(JsonReader in) throws IOException {
+			return LocalDate.parse(in.nextString(),DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		}
+	}
+	
+	private class LocalDateTimeJsonAdapter extends TypeAdapter<LocalDateTime>{
+
+		@Override
+		public void write(JsonWriter out, LocalDateTime value) throws IOException {
+			out.value(value.toString());
+			
+		}
+
+		@Override
+		public LocalDateTime read(JsonReader in) throws IOException {
+			return LocalDateTime.parse(in.nextString(),DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		}
+
+	}
+	
 }
