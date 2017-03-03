@@ -1,6 +1,7 @@
 server:
   port: 8080
   contextPath: /api
+
 ---
 spring:
   profiles.active: local
@@ -8,6 +9,11 @@ spring:
 spring:
   profiles: local
   clientURL: http://localhost:9000
+stlcourts:
+  security:
+    municipalitySalt: salt1
+    judgeSalt: salt2
+    courtSalt: salt3
 ---
 spring:
   profiles: qa
@@ -20,6 +26,11 @@ spring.datasource:
   testWhileIdle: true
   timeBetweenEvictionRunsMillis: 60000
   validationQuery: SELECT 1
+stlcourts:
+  security:
+    municipalitySalt: ${MUNICIPALITY_SALT}
+    judgeSalt: ${JUDGE_SALT}
+    courtSalt: ${COURT_SALT}
 ---
 spring:
   profiles: prod
@@ -32,3 +43,8 @@ spring.datasource:
   testWhileIdle: true
   timeBetweenEvictionRunsMillis: 60000
   validationQuery: SELECT 1
+stlcourts:
+  security:
+    municipalitySalt: ${MUNICIPALITY_SALT}
+    judgeSalt: ${JUDGE_SALT}
+    courtSalt: ${COURT_SALT}

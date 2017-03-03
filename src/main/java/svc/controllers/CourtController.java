@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import svc.managers.*;
 import svc.models.*;
+import svc.security.HashUtil;
 
 
 @RestController
@@ -25,6 +26,9 @@ import svc.models.*;
 public class CourtController {	
 	@Inject
 	CourtManager courtManager;
+	
+	@Inject
+	HashUtil hashUtil;
 	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET, value="/courts")
@@ -34,7 +38,8 @@ public class CourtController {
 	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET, value="/courts/{id}")
-	Court GetCourt(@PathVariable("id") Long id) throws NotFoundException {
+	Court GetCourt(@PathVariable("id") String idString) throws NotFoundException {
+		long id = hashUtil.decode(Court.class,idString);
 		Court court = courtManager.getCourtById(id);
 		if (court == null) {
 			throw new NotFoundException("Court Not Found");
@@ -44,7 +49,8 @@ public class CourtController {
 
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET, value="municipalities/{municipalityId}/courts")
-	List<Court> GetCourtsByMunicipalityId(@PathVariable("municipalityId") Long municipalityId) {
+	List<Court> GetCourtsByMunicipalityId(@PathVariable("municipalityId") String municipalityIdString) {
+		long municipalityId = hashUtil.decode(Municipality.class,municipalityIdString);
 		return courtManager.getCourtsByMunicipalityId(municipalityId);
 	}
 	
