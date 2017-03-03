@@ -24,12 +24,6 @@ public class HashUtil{
 		}
 	}
 	
-	public String encode(Class<?> fieldClass,String longStringValue){
-		initializeSalts();
-		long longValue = Long.parseLong(longStringValue);
-		return this.encode(fieldClass,longValue);
-	}
-	
 	public String encode(Class<?> fieldClass, long value){
 		initializeSalts();
 		String hashedValue = "";

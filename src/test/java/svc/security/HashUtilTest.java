@@ -44,13 +44,6 @@ public class HashUtilTest {
 	}
 	
 	@Test
-	public void encodesStringLongValues(){
-		when(hashUtil.encode(Court.class, 5L)).thenReturn("ABC");
-		String hashedString = hashUtil.encode(Court.class, "5");
-		assertThat(hashedString,equalTo("ABC"));
-	}
-	
-	@Test
 	public void decodesLongValues(){
 		String encodedString = "ABC";
 		Long decodedValue = 5L;
