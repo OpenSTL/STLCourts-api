@@ -1,4 +1,3 @@
-# Drop Existing courts and municipalities Tables
 DROP TABLE citations;
 
 # Create new citations tables
