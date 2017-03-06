@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import svc.data.jdbc.BaseJdbcDao;
 import svc.logging.LogSystem;
 import svc.models.Citation;
+import svc.util.DatabaseUtilities;
 
 @Repository
 public class CitationDAO extends BaseJdbcDao {	
@@ -96,16 +97,16 @@ public class CitationDAO extends BaseJdbcDao {
 			try {	
 				citation.id = rs.getInt("id");
 				citation.citation_number = rs.getString("citation_number");
-				citation.citation_date = (rs.getDate("citation_date")!=null)?rs.getDate("citation_date").toLocalDate():null;
+				citation.citation_date = DatabaseUtilities.getDatabaseLocalDate(rs.getDate("citation_date"));
 				citation.first_name = rs.getString("first_name");
 				citation.last_name = rs.getString("last_name");
-				citation.date_of_birth = (rs.getDate("date_of_birth")!=null)?rs.getDate("date_of_birth").toLocalDate():null;
+				citation.date_of_birth = DatabaseUtilities.getDatabaseLocalDate(rs.getDate("date_of_birth"));
 				citation.defendant_address = rs.getString("defendant_address");
 				citation.defendant_city = rs.getString("defendant_city");
 				citation.defendant_state = rs.getString("defendant_state");
 				citation.drivers_license_number = rs.getString("drivers_license_number");
-				LocalDate courtDate = (rs.getDate("court_date")!=null)?rs.getDate("court_date").toLocalDate():null;
-				LocalTime courtTime = (rs.getTime("court_date")!=null)?rs.getTime("court_date").toLocalTime():null;
+				LocalDate courtDate = DatabaseUtilities.getDatabaseLocalDate(rs.getDate("court_date"));
+				LocalTime courtTime = DatabaseUtilities.getDatabaseLocalTime(rs.getTime("court_date"));
 				if (courtDate==null || courtTime==null){
 					citation.court_dateTime = null;
 				}else{
