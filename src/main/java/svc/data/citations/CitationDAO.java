@@ -96,17 +96,21 @@ public class CitationDAO extends BaseJdbcDao {
 			try {	
 				citation.id = rs.getInt("id");
 				citation.citation_number = rs.getString("citation_number");
-				citation.citation_date = rs.getDate("citation_date").toLocalDate();
+				citation.citation_date = (rs.getDate("citation_date")!=null)?rs.getDate("citation_date").toLocalDate():null;
 				citation.first_name = rs.getString("first_name");
 				citation.last_name = rs.getString("last_name");
-				citation.date_of_birth = rs.getDate("date_of_birth").toLocalDate();
+				citation.date_of_birth = (rs.getDate("date_of_birth")!=null)?rs.getDate("date_of_birth").toLocalDate():null;
 				citation.defendant_address = rs.getString("defendant_address");
 				citation.defendant_city = rs.getString("defendant_city");
 				citation.defendant_state = rs.getString("defendant_state");
 				citation.drivers_license_number = rs.getString("drivers_license_number");
-				LocalDate courtDate = rs.getDate("court_date").toLocalDate();
-				LocalTime courtTime = rs.getTime("court_date").toLocalTime();
-				citation.court_dateTime = LocalDateTime.of(courtDate, courtTime);
+				LocalDate courtDate = (rs.getDate("court_date")!=null)?rs.getDate("court_date").toLocalDate():null;
+				LocalTime courtTime = (rs.getTime("court_date")!=null)?rs.getTime("court_date").toLocalTime():null;
+				if (courtDate==null || courtTime==null){
+					citation.court_dateTime = null;
+				}else{
+					citation.court_dateTime = LocalDateTime.of(courtDate, courtTime);
+				}
 				citation.court_location = rs.getString("court_location");
 				citation.court_address = rs.getString("court_address");
 				citation.court_id = rs.getLong("court_id");

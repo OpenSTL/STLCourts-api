@@ -71,13 +71,22 @@ public class GsonConfiguration extends WebMvcConfigurerAdapter {
 
 		@Override
 		public void write(JsonWriter out, LocalDate value) throws IOException {
-			out.value(value.toString());
+			if (value != null){
+				out.value(value.toString());
+			}else{
+				out.value("");
+			}
 			
 		}
 
 		@Override
 		public LocalDate read(JsonReader in) throws IOException {
-			return LocalDate.parse(in.nextString(),DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+			String dateString = in.nextString();
+			if (dateString != "" && dateString != null){
+				return LocalDate.parse(dateString,DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+			}else{
+				return null;
+			}
 		}
 	}
 	
@@ -85,13 +94,21 @@ public class GsonConfiguration extends WebMvcConfigurerAdapter {
 
 		@Override
 		public void write(JsonWriter out, LocalDateTime value) throws IOException {
-			out.value(value.toString());
+			if (value !=null){
+				out.value(value.toString());
+			}else{
+				out.value("");
+			}
 			
 		}
 
 		@Override
 		public LocalDateTime read(JsonReader in) throws IOException {
-			return LocalDateTime.parse(in.nextString(),DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+			String dateTimeString = in.nextString();
+			if (dateTimeString != "" && dateTimeString != null)
+				return LocalDateTime.parse(dateTimeString,DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+			else
+				return null;
 		}
 
 	}

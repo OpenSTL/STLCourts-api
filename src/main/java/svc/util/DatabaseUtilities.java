@@ -19,14 +19,26 @@ public class DatabaseUtilities {
 	}
 	
 	public static String convertDatabaseDateToUS(LocalDate databaseDate){
-		return databaseDate.format(DateTimeFormatter.ofPattern("MM/dd/YYYY"));
+		if (databaseDate != null){
+			return databaseDate.format(DateTimeFormatter.ofPattern("MM/dd/YYYY"));
+		}else{
+			return "";
+		}
 	}
 	
 	public static String convertDatabaseDateToUS(LocalDateTime databaseDate){
-		return databaseDate.format(DateTimeFormatter.ofPattern("MM/dd/YYYY"));
+		if (databaseDate != null){
+			return databaseDate.format(DateTimeFormatter.ofPattern("MM/dd/YYYY"));
+		}else{
+			return "";
+		}
 	}
 	
 	public static String convertDatabaseDateToUSTime(LocalDateTime databaseDate){
-		return databaseDate.format(DateTimeFormatter.ofPattern("hh:mm a"));
+		if (databaseDate != null){
+			return databaseDate.format(DateTimeFormatter.ofPattern("hh:mm a"));
+		}else{
+			return "";
+		}
 	}
 }

@@ -59,5 +59,18 @@ public class DatabaseUtilitiesTest {
 		String usTime = DatabaseUtilities.convertDatabaseDateToUSTime(localDateTime);
 		assertEquals(usTime,"03:30 PM");
 	}
+	
+	@Test
+	public void correctlyHandlesNull(){
+		LocalDate localDate = null;
+		LocalDateTime localDateTime = null;
+		
+		String usDate = DatabaseUtilities.convertDatabaseDateToUS(localDate);
+		assertEquals(usDate,"");
+		usDate = DatabaseUtilities.convertDatabaseDateToUS(localDateTime);
+		assertEquals(usDate,"");
+		String usTime = DatabaseUtilities.convertDatabaseDateToUSTime(localDateTime);
+		assertEquals(usTime,"");
+	}
 
 }

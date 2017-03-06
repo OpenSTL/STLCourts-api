@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -81,5 +80,19 @@ public class CitationDAOIntegrationTest {
         assertThat(citations, is(notNullValue()));
 		assertThat(citations.size(), is(2));
 		assertThat(citations.get(0).first_name, is("Brenda"));
+	}
+	
+	@Test
+	public void CitationWithNullDateValuesIsCorrectlyHandled() throws ParseException{
+		String dateString = "02/24/1987";
+        DateFormat  format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
+        Date date = format.parse(dateString);
+		
+		List<Citation> citations = dao.getByDOBAndLicense(date, "N806453191");
+		assertThat(citations.get(0).citation_date, is(nullValue()));
+		
+		date = format.parse("11/21/1994");
+		citations = dao.getByDOBAndLicense(date, "E501444452");
+		assertThat(citations.get(0).court_dateTime, is(nullValue()));
 	}
 }
