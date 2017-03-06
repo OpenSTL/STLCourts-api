@@ -1,18 +1,15 @@
 package svc.managers;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.joda.time.DateTime;
-import org.joda.time.Years;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -75,11 +72,11 @@ public class SMSManager {
 				errMsg = "The date you entered: '"+dob+"' was not a valid date.  Please re-enter your birthdate using MM/DD/YYYY";
 			}else{
 				//Check that the DOB is > 18 years old
-				DateTimeFormatter formatter = DateTimeFormat.forPattern("MM/dd/yyyy");
-				DateTime dobDT = formatter.parseDateTime(dob);
-				DateTime now = new DateTime();
-				Years age = Years.yearsBetween(dobDT, now);
-				if (age.getYears() < 18){
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+				LocalDate dobLD = LocalDate.parse(dob,formatter);
+				LocalDate now = LocalDate.now();
+				Period period = Period.between(dobLD, now);
+				if (period.getYears() < 18){
 					errMsg = "You must be at least 18 years old to use www.yourSTLcourts.com";
 				}
 			}
@@ -135,7 +132,7 @@ public class SMSManager {
 		return message;
 	}
 	
-	private String ListCitations(Date dob, String license){
+	private String ListCitations(LocalDate dob, String license){
 		CitationSearchCriteria criteria = new CitationSearchCriteria();
 		criteria.dateOfBirth = dob;
 		criteria.driversLicenseNumber = license;
@@ -149,16 +146,15 @@ public class SMSManager {
 	}
 	
 	private String generateReadLicenseMessage(HttpSession session, String licenseNumber){
-		SimpleDateFormat dateFormat;
 		String message = "";
 		SMS_STAGE nextTextStage;
 		
 		licenseNumber = (licenseNumber != null)?licenseNumber:(String)session.getAttribute("license_number");
 		String dob = (String)session.getAttribute("dob");
-		dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 		
 		try{
-			Date date_of_birth = dateFormat.parse(dob);
+			LocalDate date_of_birth = LocalDate.parse(dob,formatter);
 			session.setAttribute("license_number", licenseNumber);
 			message = ListCitations(date_of_birth, licenseNumber);
 			if (message == ""){
@@ -168,7 +164,7 @@ public class SMSManager {
 				nextTextStage = SMS_STAGE.VIEW_CITATION;
 			}
 			
-		}catch (ParseException e){
+		}catch (DateTimeParseException e){
 			//something went wrong here  this shouldn't happen since dob has already been parsed
 			message = "Sorry, something went wrong.  Please use the website www.yourSTLcourts.com.";
 			nextTextStage = SMS_STAGE.WELCOME;
@@ -217,7 +213,6 @@ public class SMSManager {
 	
 	private String generateViewCitationMessage(HttpSession session, String citationNumber){
 		CitationSearchCriteria criteria;
-		SimpleDateFormat dateFormat;
 		List<Citation> citations;
 		String message = "";
 		SMS_STAGE nextTextStage;
@@ -225,9 +220,9 @@ public class SMSManager {
 		String dob = (String)session.getAttribute("dob");
 		String license = (String)session.getAttribute("license_number");
 		criteria = new CitationSearchCriteria();
-		dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 		try{
-			criteria.dateOfBirth = dateFormat.parse(dob);
+			criteria.dateOfBirth = LocalDate.parse(dob, formatter);
 			criteria.driversLicenseNumber = license;
 			citations = citationManager.findCitations(criteria);
 			int citationNumberToView = Integer.parseInt(citationNumber) - 1;
@@ -247,7 +242,7 @@ public class SMSManager {
 			}
 			
 			
-		}catch (ParseException e){
+		}catch (DateTimeParseException e){
 			//something went wrong here  this shouldn't happen since dob has already been parsed
 			message = "Sorry, something went wrong with your birthdate.  Please use the website www.yourSTLcourts.com.";
 			nextTextStage = SMS_STAGE.WELCOME;

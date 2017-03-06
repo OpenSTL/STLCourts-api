@@ -1,10 +1,10 @@
 package svc.data.citations;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,11 +44,11 @@ public class CitationDAO extends BaseJdbcDao {
 		}
 	}
 	
-	public Citation getByCitationNumberAndDOB(String citationNumber, Date dob) {
+	public Citation getByCitationNumberAndDOB(String citationNumber, LocalDate dob) {
 		try {
 			Map<String, Object> parameterMap = new HashMap<String, Object>();
 			parameterMap.put("citationNumber", citationNumber);
-			parameterMap.put("dob", dob);
+			parameterMap.put("dob", Date.valueOf(dob));
 			String sql = "SELECT * FROM citations WHERE citation_number = :citationNumber AND date_of_birth = :dob";
 			Citation citation = jdbcTemplate.queryForObject(sql, parameterMap, new CitationSQLMapper());
 			
@@ -59,11 +59,11 @@ public class CitationDAO extends BaseJdbcDao {
 		}
 	}
 	
-	public List<Citation> getByDOBAndLicense(Date dob, String driversLicenseNumber) {
+	public List<Citation> getByDOBAndLicense(LocalDate dob, String driversLicenseNumber) {
 		try {
 			Map<String, Object> parameterMap = new HashMap<String, Object>();
 			parameterMap.put("driversLicenseNumber", driversLicenseNumber);
-			parameterMap.put("dob", dob);
+			parameterMap.put("dob", Date.valueOf(dob));
 			String sql = "SELECT * FROM citations WHERE date_of_birth = :dob AND drivers_license_number = :driversLicenseNumber";
 			List<Citation> citations = jdbcTemplate.query(sql, parameterMap, new CitationSQLMapper());
 			
@@ -74,11 +74,11 @@ public class CitationDAO extends BaseJdbcDao {
 		}
 	}
 	
-	public List<Citation> getByDOBAndNameAndMunicipalities(Date dob, String lastName, List<Long> municipalities) {
+	public List<Citation> getByDOBAndNameAndMunicipalities(LocalDate dob, String lastName, List<Long> municipalities) {
 		try {
 			Map<String, Object> parameterMap = new HashMap<>();
 			parameterMap.put("lastName", lastName.toLowerCase());
-			parameterMap.put("dob", new java.sql.Date(dob.getTime()).toString());
+			parameterMap.put("dob", Date.valueOf(dob));
 			parameterMap.put("municipalities", municipalities);
 
 			List<Citation> citations = jdbcTemplate.query(getSql("citation/get-by-location.sql"), parameterMap, new CitationSQLMapper());

@@ -1,4 +1,4 @@
-package svc.gson.configuration;
+package svc.configuration;
 
 import java.io.IOException;
 import java.util.List;

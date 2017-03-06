@@ -1,12 +1,11 @@
 package svc.controllers;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -45,7 +44,7 @@ public class CitationController {
 			                     @RequestParam(value = "firstName", required = false) String firstName,
 			                     @RequestParam(value = "lastName", required = false) String lastName,
 			                     @RequestParam(value = "municipalityIds", required = false) List<Long> municipalityIds,
-			                     @RequestParam(value = "dob", required = false) @DateTimeFormat(pattern="MM/dd/yyyy") Date dob) {
+			                     @RequestParam(value = "dob", required = false) LocalDate dob) {
 		CitationSearchCriteria criteria = new CitationSearchCriteria();
 		if (citationNumber != null) {
 			criteria.citationNumber = citationNumber;
