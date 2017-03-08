@@ -234,7 +234,7 @@ public class SMSManager {
 			if (citationNumberToView >= 0 && citationNumberToView < citations.size()){
 				Citation citationToView = citations.get(citationNumberToView);
 				List<Violation> violations = violationManager.getViolationsByCitationNumber(citationToView.citation_number);
-				Court court = courtManager.getCourtById(citationToView.court_id);
+				Court court = courtManager.getCourtById(citationToView.court_id.getValue());
 				CitationTextMessage citationTextMessage = new CitationTextMessage(citationToView,violations,court);
 				message = citationTextMessage.toTextMessage();
 				message += replyWithAdditionalViewingOptions();

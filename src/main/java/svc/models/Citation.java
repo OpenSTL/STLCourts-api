@@ -3,6 +3,8 @@ package svc.models;
 import java.util.Date;
 import java.util.List;
 
+import svc.types.HashableEntity;
+
 public class Citation {
 	public int id;
 	public String citation_number;
@@ -19,5 +21,5 @@ public class Citation {
 	public String court_address;
 	
 	public List<Violation> violations;
-	public Long court_id;
+	public HashableEntity<Court> court_id;
 }
