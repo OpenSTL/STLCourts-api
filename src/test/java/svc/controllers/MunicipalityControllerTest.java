@@ -9,9 +9,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
 
 import java.util.Arrays;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -28,6 +31,9 @@ public class MunicipalityControllerTest {
 	@InjectMocks
 	MunicipalityController controller;
 	
+	@Mock
+	HttpServletResponse response;
+	
 	HashUtil hashUtil = Mockito.mock(HashUtil.class);
 	
 	@Mock
@@ -37,7 +43,8 @@ public class MunicipalityControllerTest {
 		final List<Municipality> MUNICIPALITIES = Arrays.asList(new Municipality[]{new Municipality()});
 
 		when(managerMock.GetAllMunicipalities()).thenReturn(MUNICIPALITIES);
-		List<Municipality> municipalities = controller.GetMunicipalities();
+		List<Municipality> municipalities = controller.GetMunicipalities(response);
+		verify(response).setHeader("Cache-Control", "public, max-age=86400, must-revalidate");
 		assertThat(municipalities,equalTo(MUNICIPALITIES));
 	}
 	
