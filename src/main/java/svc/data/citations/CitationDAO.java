@@ -16,6 +16,8 @@ import svc.data.jdbc.BaseJdbcDao;
 import svc.logging.LogSystem;
 import svc.models.Citation;
 import svc.util.DatabaseUtilities;
+import svc.models.Court;
+import svc.types.HashableEntity;
 
 @Repository
 public class CitationDAO extends BaseJdbcDao {	
@@ -114,7 +116,7 @@ public class CitationDAO extends BaseJdbcDao {
 				}
 				citation.court_location = rs.getString("court_location");
 				citation.court_address = rs.getString("court_address");
-				citation.court_id = rs.getLong("court_id");
+				citation.court_id = new HashableEntity<Court>(Court.class,rs.getLong("court_id"));
 			} catch (Exception e) {
 				LogSystem.LogDBException(e);
 				return null;

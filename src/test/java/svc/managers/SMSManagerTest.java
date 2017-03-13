@@ -13,6 +13,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.mock.web.MockHttpSession;
 import svc.dto.CitationSearchCriteria;
 import svc.models.*;
+import svc.types.HashableEntity;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -130,7 +131,7 @@ public class SMSManagerTest {
 		citation.citation_number = "a1234";
 		DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
 		citation.court_dateTime = LocalDateTime.parse("11/20/2015 04:22", formatter2);
-		citation.court_id = 1L;
+		citation.court_id = new HashableEntity<Court>(Court.class,1L);
 		List<Citation> citations = new ArrayList<Citation>();
 		citations.add(citation);
 		
@@ -152,7 +153,7 @@ public class SMSManagerTest {
 		
 		
 		when(citationManagerMock.findCitations((CitationSearchCriteria)notNull())).thenReturn(citations);
-		when(courtManagerMock.getCourtById(citations.get(0).court_id)).thenReturn(court);
+		when(courtManagerMock.getCourtById(citations.get(0).court_id.getValue())).thenReturn(court);
 		when(violationManagerMock.getViolationsByCitationNumber(anyString())).thenReturn(violations);
 		TwimlMessageRequest twimlMessageRequest = new TwimlMessageRequest();
 		twimlMessageRequest.setBody("1");
