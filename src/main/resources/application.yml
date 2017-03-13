@@ -14,6 +14,10 @@ spring:
   profiles: local
 stlcourts:
   clientURL: http://localhost:9000
+  security:
+    municipalitySalt: salt1
+    judgeSalt: salt2
+    courtSalt: salt3
 ---
 spring:
   profiles: qa
@@ -27,6 +31,10 @@ spring.datasource:
   validationQuery: SELECT 1
 stlcourts:
   clientURL: http://test.yourstlcourts.com
+  security:
+    municipalitySalt: ${MUNICIPALITY_SALT}
+    judgeSalt: ${JUDGE_SALT}
+    courtSalt: ${COURT_SALT}
 ---
 spring:
   profiles: prod
@@ -40,3 +48,7 @@ spring.datasource:
   validationQuery: SELECT 1
 stlcourts:
   clientURL: http://www.yourstlcourts.com
+  security:
+    municipalitySalt: ${MUNICIPALITY_SALT}
+    judgeSalt: ${JUDGE_SALT}
+    courtSalt: ${COURT_SALT}

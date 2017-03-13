@@ -1,16 +1,15 @@
 package svc.managers;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Inject;
-
+import com.google.common.collect.Lists;
 import org.springframework.stereotype.Component;
-
 import svc.data.citations.CitationDAO;
 import svc.dto.CitationSearchCriteria;
 import svc.logging.LogSystem;
 import svc.models.Citation;
+
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class CitationManager {
@@ -20,7 +19,7 @@ public class CitationManager {
 	private ViolationManager violationManager;
 
 	
-	public Citation GetCitationById(Long citationId) {
+	public Citation getCitationById(Long citationId) {
 		Citation citation = citationDAO.getByCitationId(citationId);
 		if (citation != null) {
 			citation.violations = violationManager.getViolationsByCitationNumber(citation.citation_number);
@@ -29,35 +28,34 @@ public class CitationManager {
 		return citation;
 	}
 
-	public List<Citation> FindCitations(CitationSearchCriteria criteria) {
+	public List<Citation> findCitations(CitationSearchCriteria criteria) {
 		// Search by DOB & citation number
-		if (criteria.date_of_birth != null && criteria.citation_number != null) {
+		if (criteria.dateOfBirth != null && criteria.citationNumber != null) {
 			List<Citation> citations = new ArrayList<Citation>();
-			Citation citation = citationDAO.getByCitationNumberAndDOB(criteria.citation_number, criteria.date_of_birth);
+			Citation citation = citationDAO.getByCitationNumberAndDOB(criteria.citationNumber, criteria.dateOfBirth);
 			if (citation != null) {
 				citations.add(citation);
 			}
-			return PopulateViolations(citations);
+			return populateViolations(citations);
 		}
 		
 		// DOB & License No
-		if (criteria.date_of_birth != null && criteria.drivers_license_number != null) {
-			List<Citation> citations = citationDAO.getByDOBAndLicense(criteria.date_of_birth, criteria.drivers_license_number);
-			return PopulateViolations(citations);
+		if (criteria.dateOfBirth != null && criteria.driversLicenseNumber != null) {
+			List<Citation> citations = citationDAO.getByDOBAndLicense(criteria.dateOfBirth, criteria.driversLicenseNumber);
+			return populateViolations(citations);
 		}
 		
 		// DOB & Name & Municipality
-		if (criteria.date_of_birth != null && criteria.last_name != null && criteria.municipalities != null && criteria.municipalities.size() != 0) {
-			List<Citation> citations =  citationDAO.getByDOBAndNameAndMunicipalities(criteria.date_of_birth, criteria.last_name, criteria.municipalities);
-			citations = PopulateViolations(citations);
-			return citations;
+		if (criteria.dateOfBirth != null && criteria.lastName != null && criteria.municipalities != null && criteria.municipalities.size() != 0) {
+			List<Citation> citations =  citationDAO.getByDOBAndNameAndMunicipalities(criteria.dateOfBirth, criteria.lastName, criteria.municipalities);
+			return populateViolations(citations);
 		}
 		
-		LogSystem.LogEvent("Not enough information was passed as crtieria to find citations");
-		return null;
+		LogSystem.LogEvent("Not enough information was passed as criteria to find citations");
+		return Lists.newArrayList();
 	}
 	
-	private List<Citation> PopulateViolations(List<Citation> citations) {
+	private List<Citation> populateViolations(List<Citation> citations) {
 		if (citations == null) {
 			return null;
 		}

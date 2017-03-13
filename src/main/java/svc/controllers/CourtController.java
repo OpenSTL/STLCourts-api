@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import svc.managers.*;
 import svc.models.*;
+import svc.security.HashUtil;
 
 
 @RestController
@@ -26,28 +27,38 @@ public class CourtController {
 	@Inject
 	CourtManager courtManager;
 	
+	@Inject
+	HashUtil hashUtil;
+	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET, value="/courts")
 	List<Court> GetCourts() {
-		return courtManager.GetAllCourts();
+		return courtManager.getAllCourts();
 	}
 	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET, value="/courts/{id}")
-	Court GetCourt(@PathVariable("id") Long id) throws NotFoundException {
-		Court court = courtManager.GetCourtById(id);
+	Court GetCourt(@PathVariable("id") String idString) throws NotFoundException {
+		long id = hashUtil.decode(Court.class,idString);
+		Court court = courtManager.getCourtById(id);
 		if (court == null) {
 			throw new NotFoundException("Court Not Found");
 		}
 		return court;
 	}
-	
-	@ExceptionHandler(TypeMismatchException.class)
-	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason="Invalid Court ID")
-	public void typeMismatchExceptionHandler(TypeMismatchException e, HttpServletResponse response){	
+
+	@ResponseBody
+	@RequestMapping(method = RequestMethod.GET, value="municipalities/{municipalityId}/courts")
+	List<Court> GetCourtsByMunicipalityId(@PathVariable("municipalityId") String municipalityIdString) {
+		long municipalityId = hashUtil.decode(Municipality.class,municipalityIdString);
+		return courtManager.getCourtsByMunicipalityId(municipalityId);
 	}
 	
-	
+	@ExceptionHandler(TypeMismatchException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason="Invalid ID")
+	public void typeMismatchExceptionHandler(TypeMismatchException e, HttpServletResponse response) {
+
+	}
 }
 
 

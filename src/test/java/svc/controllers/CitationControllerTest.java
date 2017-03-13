@@ -27,7 +27,7 @@ public class CitationControllerTest {
 		final Long CITATION_ID = 1L;
 		final Citation CITATION = new Citation();
 		
-		when(managerMock.GetCitationById(CITATION_ID)).thenReturn(CITATION);
+		when(managerMock.getCitationById(CITATION_ID)).thenReturn(CITATION);
 		
 		Citation returnedCitation = controller.GetCitation(CITATION_ID);
 		
@@ -38,7 +38,7 @@ public class CitationControllerTest {
 	public void returnsNullWhenNotFound() {
 		final Long CITATION_ID = 1L;
 		
-		when(managerMock.GetCitationById(CITATION_ID)).thenReturn(null);
+		when(managerMock.getCitationById(CITATION_ID)).thenReturn(null);
 		
 		Citation returnedCitation = controller.GetCitation(CITATION_ID);
 		

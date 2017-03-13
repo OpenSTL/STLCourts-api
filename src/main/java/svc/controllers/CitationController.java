@@ -34,7 +34,7 @@ public class CitationController {
 			LogSystem.LogEvent("Null id passed to controller");
 		}
 		
-		return citationManager.GetCitationById(id);
+		return citationManager.getCitationById(id);
 	}
 	
 	@ResponseBody
@@ -44,33 +44,33 @@ public class CitationController {
 			                     @RequestParam(value = "licenseState", required = false) String licenseState,
 			                     @RequestParam(value = "firstName", required = false) String firstName,
 			                     @RequestParam(value = "lastName", required = false) String lastName,
-			                     @RequestParam(value = "municipalityNames", required = false) List<String> municipalityNames,
+			                     @RequestParam(value = "municipalityIds", required = false) List<Long> municipalityIds,
 			                     @RequestParam(value = "dob", required = false) @DateTimeFormat(pattern="MM/dd/yyyy") Date dob) {
 		CitationSearchCriteria criteria = new CitationSearchCriteria();
 		if (citationNumber != null) {
-			criteria.citation_number = citationNumber;
+			criteria.citationNumber = citationNumber;
 		}
 		
 		if (dob != null) {
-			criteria.date_of_birth = dob;
+			criteria.dateOfBirth = dob;
 		}
 		
 		if (licenseNumber != null && licenseState != null) {
-			criteria.drivers_license_number = licenseNumber;
-			criteria.drivers_license_state = licenseState;
+			criteria.driversLicenseNumber = licenseNumber;
+			criteria.driversLicenseState = licenseState;
 		}
 		
-		if (lastName != null && municipalityNames != null && municipalityNames.size() != 0) {
-			criteria.last_name = lastName;
-			criteria.municipalities = municipalityNames;
+		if (lastName != null && municipalityIds != null && municipalityIds.size() != 0) {
+			criteria.lastName = lastName;
+			criteria.municipalities = municipalityIds;
 		}
 		
 		if (firstName != null && lastName != null &&  licenseNumber != null) { //for the text/phone system
-			criteria.first_name = firstName;
-			criteria.last_name = lastName;
-			criteria.drivers_license_number = licenseNumber;
+			criteria.firstName = firstName;
+			criteria.lastName = lastName;
+			criteria.driversLicenseNumber = licenseNumber;
 		}
 		
-		return new CitationsDTO(citationManager.FindCitations(criteria));
+		return new CitationsDTO(citationManager.findCitations(criteria));
 	}
 }

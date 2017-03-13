@@ -22,7 +22,7 @@ public class CitationTextMessage {
 		message += "Ticket Date: " + DatabaseUtilities.convertDatabaseDateToUS(this.citation.citation_date);
 		message += "\nCourt Date: " + DatabaseUtilities.convertDatabaseDateToUS(this.citation.court_date);
 		message += "\nTicket #: " + this.citation.citation_number;
-		message += "\nCourt Address: "+court.address+" "+court.city+", "+court.state+" "+court.zip_code;
+		message += "\nCourt Address: "+court.address+" "+court.city+", "+court.state+" "+court.zip;
 		int violationCount = 0;
 		for(Violation violation:violations){
 			if (violationCount > 0){

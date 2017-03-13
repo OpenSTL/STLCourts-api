@@ -18,6 +18,7 @@ public class LocalProfile {
 				.addScript("sql/schema/schema-tables.sql")
 				.addScript("hsql/courts.sql")
 				.addScript("hsql/municipalities.sql")
+				.addScript("hsql/municipality-court.sql")
 				.addScript("hsql/judges.sql")
 				.addScript("hsql/opportunities.sql")
 				.addScript("hsql/opportunity-needs.sql")
