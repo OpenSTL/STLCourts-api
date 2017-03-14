@@ -32,7 +32,8 @@ public class MunicipalityController {
 	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET, value="/municipalities")
-	List<Municipality> GetMunicipalities() {
+	List<Municipality> GetMunicipalities(HttpServletResponse response) {
+		response.setHeader("Cache-Control", "public, max-age=86400, must-revalidate");
 		return municipalityManager.GetAllMunicipalities();
 	}
 	
