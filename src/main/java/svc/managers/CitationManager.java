@@ -18,16 +18,6 @@ public class CitationManager {
 	@Inject
 	private ViolationManager violationManager;
 
-	
-	public Citation getCitationById(Long citationId) {
-		Citation citation = citationDAO.getByCitationId(citationId);
-		if (citation != null) {
-			citation.violations = violationManager.getViolationsByCitationNumber(citation.citation_number);
-			LogSystem.LogEvent("Loaded " + citation.violations.size() + " violation(s) for this citation.");
-		}
-		return citation;
-	}
-
 	public List<Citation> findCitations(CitationSearchCriteria criteria) {
 		// Search by DOB & citation number
 		if (criteria.dateOfBirth != null && criteria.citationNumber != null) {
@@ -41,13 +31,13 @@ public class CitationManager {
 		
 		// DOB & License No
 		if (criteria.dateOfBirth != null && criteria.driversLicenseNumber != null) {
-			List<Citation> citations = citationDAO.getByDOBAndLicense(criteria.dateOfBirth, criteria.driversLicenseNumber);
+			List<Citation> citations = citationDAO.getByLicenseAndDOB(criteria.driversLicenseNumber, criteria.dateOfBirth);
 			return populateViolations(citations);
 		}
 		
 		// DOB & Name & Municipality
 		if (criteria.dateOfBirth != null && criteria.lastName != null && criteria.municipalities != null && criteria.municipalities.size() != 0) {
-			List<Citation> citations =  citationDAO.getByDOBAndNameAndMunicipalities(criteria.dateOfBirth, criteria.lastName, criteria.municipalities);
+			List<Citation> citations =  citationDAO.getByNameAndMunicipalitiesAndDOB(criteria.lastName, criteria.municipalities, criteria.dateOfBirth);
 			return populateViolations(citations);
 		}
 		

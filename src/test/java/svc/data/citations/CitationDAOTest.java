@@ -37,36 +37,6 @@ public class CitationDAOTest {
     
     @Mock
     NamedParameterJdbcTemplate jdbcTemplate;
-
-    @SuppressWarnings("unchecked")
-	@Test
-    public void returnsCitationGivenCitationId(){
-    	final Citation CITATION = new Citation();
-        CITATION.citation_number = "myCitationNumber";
-		final long CITATIONID = 123458L;
-		
-		when(jdbcTemplate.queryForObject(Matchers.anyString(), Matchers.anyMap(), Matchers.<RowMapper<Citation>>any()))
-        .thenReturn(CITATION);
-
-		Citation citation = citationDAO.getByCitationId(CITATIONID);
-		
-		assertThat(citation.citation_number, is("myCitationNumber"));
-    }
-    
-    @SuppressWarnings("unchecked")
-	@Test
-    public void returnsCitationGivenCitationNumber(){
-    	final Citation CITATION = new Citation();
-        CITATION.id = 3;
-		final String CITATIONNUMBER = "F3453";
-		
-		when(jdbcTemplate.queryForObject(Matchers.anyString(), Matchers.anyMap(), Matchers.<RowMapper<Citation>>any()))
-        .thenReturn(CITATION);
-
-		Citation citation = citationDAO.getByCitationNumber(CITATIONNUMBER);
-		
-		assertThat(citation.id, is(3));
-    }
     
     @SuppressWarnings("unchecked")
 	@Test
@@ -101,7 +71,7 @@ public class CitationDAOTest {
         DateFormat  format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
         Date date = format.parse(dateString);
 
-        List<Citation> citations = citationDAO.getByDOBAndLicense(date, "someLiscensNumber");
+        List<Citation> citations = citationDAO.getByLicenseAndDOB("someLiscensNumber", date);
         
         assertThat(citations.get(0).id, is(3));
     }
@@ -124,7 +94,7 @@ public class CitationDAOTest {
         DateFormat  format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
         Date date = format.parse(dateString);
 
-        List<Citation> citations = citationDAO.getByDOBAndNameAndMunicipalities(date, "someLastName", Lists.newArrayList(19L, 20L));
+        List<Citation> citations = citationDAO.getByNameAndMunicipalitiesAndDOB("someLastName", Lists.newArrayList(19L, 20L), date);
         
         assertThat(citations.get(0).id, is(3));
 	}

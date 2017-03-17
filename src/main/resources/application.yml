@@ -13,6 +13,9 @@ spring:
 spring:
   profiles: local
 stlcourts:
+  citationDataSources:
+    testEnabled: true
+    liveEnabled: true
   clientURL: http://localhost:9000
   security:
     municipalitySalt: salt1
@@ -30,6 +33,9 @@ spring.datasource:
   timeBetweenEvictionRunsMillis: 60000
   validationQuery: SELECT 1
 stlcourts:
+  citationDataSources:
+    testEnabled: true
+    liveEnabled: true
   clientURL: http://test.yourstlcourts.com
   security:
     municipalitySalt: ${MUNICIPALITY_SALT}
@@ -47,6 +53,9 @@ spring.datasource:
   timeBetweenEvictionRunsMillis: 60000
   validationQuery: SELECT 1
 stlcourts:
+  citationDataSources:
+    testEnabled: false
+    liveEnabled: true
   clientURL: http://www.yourstlcourts.com
   security:
     municipalitySalt: ${MUNICIPALITY_SALT}

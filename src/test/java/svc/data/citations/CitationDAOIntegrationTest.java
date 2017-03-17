@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -32,22 +31,6 @@ public class CitationDAOIntegrationTest {
     private CitationDAO dao;
 
 	@Test
-	public void GetCitationByIDSuccessful() {
-		Citation citation = dao.getByCitationId(837L);
-
-		assertThat(citation, is(notNullValue()));
-		assertThat(citation.citation_number, is("865365678"));
-	}
-	
-	@Test
-	public void GetCitationByNumberSuccessful(){
-		Citation citation = dao.getByCitationNumber("209092850");
-
-		assertThat(citation, is(notNullValue()));
-		assertThat(citation.id, is(911));
-	}
-
-	@Test
 	public void GetCitationByCitationNumberAndDOBSuccessful() throws ParseException{
 		String dateString = "04/10/1992";
         DateFormat  format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
@@ -64,7 +47,7 @@ public class CitationDAOIntegrationTest {
         DateFormat  format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
         Date date = format.parse(dateString);
         
-        List<Citation> citations = dao.getByDOBAndLicense(date, "S878479512");
+        List<Citation> citations = dao.getByLicenseAndDOB("S878479512", date);
         assertThat(citations, is(notNullValue()));
 		assertThat(citations.size(), is(3));
 		assertThat(citations.get(0).first_name, is("Brenda"));
@@ -77,7 +60,7 @@ public class CitationDAOIntegrationTest {
         Date date = format.parse(dateString);
         List<Long> municipalities = Lists.newArrayList(33L, 44L);
         
-        List<Citation> citations = dao.getByDOBAndNameAndMunicipalities(date, "Peterson", municipalities);
+        List<Citation> citations = dao.getByNameAndMunicipalitiesAndDOB("Peterson", municipalities, date);
         assertThat(citations, is(notNullValue()));
 		assertThat(citations.size(), is(2));
 		assertThat(citations.get(0).first_name, is("Brenda"));
