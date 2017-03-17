@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import svc.dto.CitationSearchCriteria;
-import svc.dto.CitationsDTO;
 import svc.logging.LogSystem;
 import svc.managers.*;
 import svc.models.*;
@@ -44,7 +43,7 @@ public class CitationController {
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET)
 	//DOB parameter must be an ISO dateString of format 'yyyy-MM-dd'  no Time on end of string
-	CitationsDTO FindCitations(@RequestParam(value = "citationNumber", required = false) String citationNumber,
+	List<Citation> FindCitations(@RequestParam(value = "citationNumber", required = false) String citationNumber,
 			                     @RequestParam(value = "licenseNumber", required = false) String licenseNumber,
 			                     @RequestParam(value = "licenseState", required = false) String licenseState,
 			                     @RequestParam(value = "firstName", required = false) String firstName,
@@ -79,6 +78,6 @@ public class CitationController {
 			criteria.driversLicenseNumber = licenseNumber;
 		}
 		
-		return new CitationsDTO(citationManager.findCitations(criteria));
+		return citationManager.findCitations(criteria);
 	}
 }
