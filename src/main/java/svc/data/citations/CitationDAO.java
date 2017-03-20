@@ -1,7 +1,10 @@
 package svc.data.citations;
 
+import java.sql.Date;
 import java.sql.ResultSet;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import svc.data.jdbc.BaseJdbcDao;
 import svc.logging.LogSystem;
 import svc.models.Citation;
+import svc.util.DatabaseUtilities;
 import svc.models.Court;
 import svc.types.HashableEntity;
 
@@ -43,11 +47,11 @@ public class CitationDAO extends BaseJdbcDao {
 		}
 	}
 	
-	public Citation getByCitationNumberAndDOB(String citationNumber, Date dob) {
+	public Citation getByCitationNumberAndDOB(String citationNumber, LocalDate dob) {
 		try {
 			Map<String, Object> parameterMap = new HashMap<String, Object>();
 			parameterMap.put("citationNumber", citationNumber);
-			parameterMap.put("dob", dob);
+			parameterMap.put("dob", Date.valueOf(dob));
 			String sql = "SELECT * FROM citations WHERE citation_number = :citationNumber AND date_of_birth = :dob";
 			Citation citation = jdbcTemplate.queryForObject(sql, parameterMap, new CitationSQLMapper());
 			
@@ -58,11 +62,11 @@ public class CitationDAO extends BaseJdbcDao {
 		}
 	}
 	
-	public List<Citation> getByDOBAndLicense(Date dob, String driversLicenseNumber) {
+	public List<Citation> getByDOBAndLicense(LocalDate dob, String driversLicenseNumber) {
 		try {
 			Map<String, Object> parameterMap = new HashMap<String, Object>();
 			parameterMap.put("driversLicenseNumber", driversLicenseNumber);
-			parameterMap.put("dob", dob);
+			parameterMap.put("dob", Date.valueOf(dob));
 			String sql = "SELECT * FROM citations WHERE date_of_birth = :dob AND drivers_license_number = :driversLicenseNumber";
 			List<Citation> citations = jdbcTemplate.query(sql, parameterMap, new CitationSQLMapper());
 			
@@ -73,11 +77,11 @@ public class CitationDAO extends BaseJdbcDao {
 		}
 	}
 	
-	public List<Citation> getByDOBAndNameAndMunicipalities(Date dob, String lastName, List<Long> municipalities) {
+	public List<Citation> getByDOBAndNameAndMunicipalities(LocalDate dob, String lastName, List<Long> municipalities) {
 		try {
 			Map<String, Object> parameterMap = new HashMap<>();
 			parameterMap.put("lastName", lastName.toLowerCase());
-			parameterMap.put("dob", new java.sql.Date(dob.getTime()).toString());
+			parameterMap.put("dob", Date.valueOf(dob));
 			parameterMap.put("municipalities", municipalities);
 
 			List<Citation> citations = jdbcTemplate.query(getSql("citation/get-by-location.sql"), parameterMap, new CitationSQLMapper());
@@ -95,15 +99,21 @@ public class CitationDAO extends BaseJdbcDao {
 			try {	
 				citation.id = rs.getInt("id");
 				citation.citation_number = rs.getString("citation_number");
-				citation.citation_date = rs.getDate("citation_date");
+				citation.citation_date = DatabaseUtilities.getDatabaseLocalDate(rs.getDate("citation_date"));
 				citation.first_name = rs.getString("first_name");
 				citation.last_name = rs.getString("last_name");
-				citation.date_of_birth = rs.getDate("date_of_birth");
+				citation.date_of_birth = DatabaseUtilities.getDatabaseLocalDate(rs.getDate("date_of_birth"));
 				citation.defendant_address = rs.getString("defendant_address");
 				citation.defendant_city = rs.getString("defendant_city");
 				citation.defendant_state = rs.getString("defendant_state");
 				citation.drivers_license_number = rs.getString("drivers_license_number");
-				citation.court_date = rs.getDate("court_date");
+				LocalDate courtDate = DatabaseUtilities.getDatabaseLocalDate(rs.getDate("court_date"));
+				LocalTime courtTime = DatabaseUtilities.getDatabaseLocalTime(rs.getTime("court_date"));
+				if (courtDate==null || courtTime==null){
+					citation.court_dateTime = null;
+				}else{
+					citation.court_dateTime = LocalDateTime.of(courtDate, courtTime);
+				}
 				citation.court_location = rs.getString("court_location");
 				citation.court_address = rs.getString("court_address");
 				citation.court_id = new HashableEntity<Court>(Court.class,rs.getLong("court_id"));
