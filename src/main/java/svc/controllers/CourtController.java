@@ -20,7 +20,6 @@ import svc.managers.*;
 import svc.models.*;
 import svc.security.HashUtil;
 
-
 @RestController
 @EnableAutoConfiguration
 public class CourtController {	
@@ -32,7 +31,8 @@ public class CourtController {
 	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET, value="/courts")
-	List<Court> GetCourts() {
+	List<Court> GetCourts(HttpServletResponse response) {
+		response.setHeader("Cache-Control", "public, max-age=86400, must-revalidate");
 		return courtManager.getAllCourts();
 	}
 	

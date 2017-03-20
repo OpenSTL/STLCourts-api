@@ -9,9 +9,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
 
 import java.util.Arrays;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.mockito.runners.MockitoJUnitRunner;
 
@@ -28,6 +31,9 @@ public class CourtControllerTest {
 	@InjectMocks
 	CourtController controller;
 	
+	@Mock
+	HttpServletResponse response;
+	
 	HashUtil hashUtil = Mockito.mock(HashUtil.class);
 	
 	@Mock
@@ -37,7 +43,8 @@ public class CourtControllerTest {
 		final List<Court> COURTS = Arrays.asList(new Court[]{new Court()});
 
 		when(managerMock.getAllCourts()).thenReturn(COURTS);
-		List<Court> courts = controller.GetCourts();
+		List<Court> courts = controller.GetCourts(response);
+		verify(response).setHeader("Cache-Control", "public, max-age=86400, must-revalidate");
 		assertThat(courts,equalTo(COURTS));
 	}
 	
