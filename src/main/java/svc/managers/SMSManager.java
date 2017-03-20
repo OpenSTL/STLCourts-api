@@ -1,13 +1,12 @@
 package svc.managers;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -138,7 +137,7 @@ public class SMSManager {
 		return message;
 	}
 	
-	private String ListCitations(Date dob, String license){
+	private String ListCitations(LocalDate dob, String license){
 		CitationSearchCriteria criteria = new CitationSearchCriteria();
 		criteria.dateOfBirth = dob;
 		criteria.driversLicenseNumber = license;
@@ -152,16 +151,15 @@ public class SMSManager {
 	}
 	
 	private String generateReadLicenseMessage(HttpSession session, String licenseNumber){
-		SimpleDateFormat dateFormat;
 		String message = "";
 		SMS_STAGE nextTextStage;
 		
 		licenseNumber = (licenseNumber != null)?licenseNumber:(String)session.getAttribute("license_number");
 		String dob = (String)session.getAttribute("dob");
-		dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 		
 		try{
-			Date date_of_birth = dateFormat.parse(dob);
+			LocalDate date_of_birth = LocalDate.parse(dob,formatter);
 			session.setAttribute("license_number", licenseNumber);
 			message = ListCitations(date_of_birth, licenseNumber);
 			if (message == ""){
@@ -171,7 +169,7 @@ public class SMSManager {
 				nextTextStage = SMS_STAGE.VIEW_CITATION;
 			}
 			
-		}catch (ParseException e){
+		}catch (DateTimeParseException e){
 			//something went wrong here  this shouldn't happen since dob has already been parsed
 			message = "Sorry, something went wrong.  Please use the website www.yourSTLcourts.com.";
 			nextTextStage = SMS_STAGE.WELCOME;
@@ -237,7 +235,6 @@ public class SMSManager {
 	
 	private String generateViewCitationMessage(HttpSession session, String citationNumber){
 		CitationSearchCriteria criteria;
-		SimpleDateFormat dateFormat;
 		List<Citation> citations;
 		String message = "";
 		SMS_STAGE nextTextStage;
@@ -245,16 +242,16 @@ public class SMSManager {
 		String dob = (String)session.getAttribute("dob");
 		String license = (String)session.getAttribute("license_number");
 		criteria = new CitationSearchCriteria();
-		dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 		try{
-			criteria.dateOfBirth = dateFormat.parse(dob);
+			criteria.dateOfBirth = LocalDate.parse(dob, formatter);
 			criteria.driversLicenseNumber = license;
 			citations = citationManager.findCitations(criteria);
 			int citationNumberToView = Integer.parseInt(citationNumber) - 1;
 			if (citationNumberToView >= 0 && citationNumberToView < citations.size()){
 				Citation citationToView = citations.get(citationNumberToView);
 				List<Violation> violations = violationManager.getViolationsByCitationNumber(citationToView.citation_number);
-				Court court = courtManager.getCourtById(citationToView.court_id);
+				Court court = courtManager.getCourtById(citationToView.court_id.getValue());
 				CitationTextMessage citationTextMessage = new CitationTextMessage(citationToView,violations,court);
 				message = citationTextMessage.toTextMessage();
 				message += replyWithAdditionalViewingOptions();
@@ -267,7 +264,7 @@ public class SMSManager {
 			}
 			
 			
-		}catch (ParseException e){
+		}catch (DateTimeParseException e){
 			//something went wrong here  this shouldn't happen since dob has already been parsed
 			message = "Sorry, something went wrong with your birthdate.  Please use the website www.yourSTLcourts.com.";
 			nextTextStage = SMS_STAGE.WELCOME;

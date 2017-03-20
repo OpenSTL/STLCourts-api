@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import svc.data.municipal.CourtDAO;
 import svc.models.Court;
+import svc.types.HashableEntity;
 
 import java.util.List;
 
@@ -25,8 +26,9 @@ public class CourtManagerTest {
     @Test
     public void getsCourtById() {
         Long courtId = 14L;
+        HashableEntity<Court> hashedCourtId = new HashableEntity<Court>(Court.class,courtId);
         Court court = new Court();
-        court.id = courtId;
+        court.id = hashedCourtId;
         court.name = "Some court";
         when(courtDAO.getCourtById(courtId)).thenReturn(court);
 
@@ -39,7 +41,7 @@ public class CourtManagerTest {
     public void getsCourtsByMuni() {
         Long municipalityId = 14L;
         Court court = new Court();
-        court.id = 10L;
+        court.id = new HashableEntity<Court>(Court.class,10L);
         court.name = "Some court";
         List<Court> courts = Lists.newArrayList(court);
         when(courtDAO.getCourtsByMunicipalityId(municipalityId)).thenReturn(courts);
@@ -52,7 +54,7 @@ public class CourtManagerTest {
     @Test
     public void getAllCourts() {
         Court court = new Court();
-        court.id = 10L;
+        court.id = new HashableEntity<Court>(Court.class,10L);
         court.name = "Some court";
         List<Court> courts = Lists.newArrayList(court);
         when(courtDAO.getAllCourts()).thenReturn(courts);

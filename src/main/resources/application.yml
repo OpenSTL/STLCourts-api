@@ -1,6 +1,7 @@
 server:
   port: 8080
   contextPath: /api
+
 ---
 spring:
   profiles.active: local
@@ -12,6 +13,11 @@ twilio:
   accountSid: ${TWILIO_SID}
   authToken: ${TWILIO_AUTH_TOKEN}
   phoneNumber: +13142548050
+stlcourts:
+  security:
+    municipalitySalt: salt1
+    judgeSalt: salt2
+    courtSalt: salt3
 ---
 spring:
   profiles: qa
@@ -28,6 +34,11 @@ spring.datasource:
   testWhileIdle: true
   timeBetweenEvictionRunsMillis: 60000
   validationQuery: SELECT 1
+stlcourts:
+  security:
+    municipalitySalt: ${MUNICIPALITY_SALT}
+    judgeSalt: ${JUDGE_SALT}
+    courtSalt: ${COURT_SALT}
 ---
 spring:
   profiles: prod
@@ -44,3 +55,8 @@ spring.datasource:
   testWhileIdle: true
   timeBetweenEvictionRunsMillis: 60000
   validationQuery: SELECT 1
+stlcourts:
+  security:
+    municipalitySalt: ${MUNICIPALITY_SALT}
+    judgeSalt: ${JUDGE_SALT}
+    courtSalt: ${COURT_SALT}

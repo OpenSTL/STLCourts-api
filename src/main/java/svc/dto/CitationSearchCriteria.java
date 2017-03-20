@@ -1,5 +1,7 @@
 package svc.dto;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -8,9 +10,9 @@ public class CitationSearchCriteria {
 	public String citationNumber;
 	
 	public Date citationDate;
-	public Date courtDate;
+	public LocalDateTime courtDate;
 	
-	public Date dateOfBirth;
+	public LocalDate dateOfBirth;
 
 	// Home Address Criteria (not used yet)
 	public String defendantAddress;

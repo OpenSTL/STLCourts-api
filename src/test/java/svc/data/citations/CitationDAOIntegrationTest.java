@@ -2,13 +2,10 @@ package svc.data.citations;
 
 import static org.junit.Assert.*;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Locale;
 
 import static org.hamcrest.CoreMatchers.*;
 
@@ -50,8 +47,8 @@ public class CitationDAOIntegrationTest {
 	@Test
 	public void GetCitationByCitationNumberAndDOBSuccessful() throws ParseException{
 		String dateString = "04/10/1992";
-        DateFormat  format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
-        Date date = format.parse(dateString);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        LocalDate date = LocalDate.parse(dateString,formatter);
         
         Citation citation = dao.getByCitationNumberAndDOB("13938567", date);
         assertThat(citation, is(notNullValue()));
@@ -61,8 +58,8 @@ public class CitationDAOIntegrationTest {
 	@Test
 	public void GetCitationsByDOBAndLicenseSuccessful() throws ParseException{
 		String dateString = "05/18/1987";
-        DateFormat  format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
-        Date date = format.parse(dateString);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        LocalDate date = LocalDate.parse(dateString,formatter);
         
         List<Citation> citations = dao.getByDOBAndLicense(date, "S878479512");
         assertThat(citations, is(notNullValue()));
@@ -73,13 +70,29 @@ public class CitationDAOIntegrationTest {
 	@Test
 	public void GetCitationsByDOBAndLastNameAndMunicipalitiesSuccessful() throws ParseException{
 		String dateString = "05/18/1987";
-        DateFormat  format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
-        Date date = format.parse(dateString);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        LocalDate date = LocalDate.parse(dateString,formatter);
+       
         List<Long> municipalities = Lists.newArrayList(33L, 44L);
         
         List<Citation> citations = dao.getByDOBAndNameAndMunicipalities(date, "Peterson", municipalities);
         assertThat(citations, is(notNullValue()));
 		assertThat(citations.size(), is(2));
 		assertThat(citations.get(0).first_name, is("Brenda"));
+	}
+	
+	@Test
+	public void CitationWithNullDateValuesIsCorrectlyHandled() throws ParseException{
+		String dateString = "02/24/1987";
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        LocalDate date = LocalDate.parse(dateString,formatter);
+        
+		List<Citation> citations = dao.getByDOBAndLicense(date, "N806453191");
+		assertThat(citations.get(0).citation_date, is(nullValue()));
+		
+		dateString = "11/21/1994";
+		date = LocalDate.parse(dateString,formatter);
+		citations = dao.getByDOBAndLicense(date, "E501444452");
+		assertThat(citations.get(0).court_dateTime, is(nullValue()));
 	}
 }
