@@ -1,11 +1,14 @@
 server:
   port: 8080
   contextPath: /api
+management:
+  context-path: /manage
+  port: -1
 stlcourts:
   citationDataSources:
     tyler:
-      rootURL: TODO
-      apiKey: TODO
+      rootUrl: http://TODOURL/api/citations
+      apiKey: TODOKEY
 ---
 spring:
   profiles.active: local
@@ -21,6 +24,8 @@ stlcourts:
     municipalitySalt: salt1
     judgeSalt: salt2
     courtSalt: salt3
+management:
+  port: 8080
 ---
 spring:
   profiles: qa

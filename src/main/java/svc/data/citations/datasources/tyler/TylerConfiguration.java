@@ -1,13 +1,14 @@
 package svc.data.citations.datasources.tyler;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-@Configuration
-@EnableConfigurationProperties
-@ConfigurationProperties(prefix = "stlcourts.citationDataSources.tyler")
+@Component
 public class TylerConfiguration {
-    public String rootUrl;
-    public String apyKey;
+
+	@Value("${stlcourts.citationDataSources.tyler.rootUrl}")
+	public String rootUrl;
+
+	@Value("${stlcourts.citationDataSources.tyler.apiKey}")
+	public String apiKey;
 }

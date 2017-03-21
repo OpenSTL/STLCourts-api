@@ -39,3 +39,4 @@ demo/src/main/resources/public/dist/*
 
 # IDEA
 *.iml
+/.apt_generated/
