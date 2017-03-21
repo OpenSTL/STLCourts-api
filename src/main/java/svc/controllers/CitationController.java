@@ -28,16 +28,6 @@ public class CitationController {
 	CitationManager citationManager;
 	
 	@ResponseBody
-	@RequestMapping(method = RequestMethod.GET, value="/{id}")
-	Citation GetCitation(@PathVariable("id") Long id) {
-		if (id == null) {
-			LogSystem.LogEvent("Null id passed to controller");
-		}
-		
-		return citationManager.getCitationById(id);
-	}
-	
-	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET)
 	CitationsDTO FindCitations(@RequestParam(value = "citationNumber", required = false) String citationNumber,
 			                     @RequestParam(value = "licenseNumber", required = false) String licenseNumber,
