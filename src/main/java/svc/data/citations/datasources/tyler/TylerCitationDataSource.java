@@ -27,7 +27,7 @@ public class TylerCitationDataSource implements CitationDataSource {
 
 	@SuppressWarnings("unused")
 	@Override
-	public Citation getByCitationNumberAndDOB(String citationNumber, Date dob) {
+	public List<Citation> getByCitationNumberAndDOB(String citationNumber, Date dob) {
 
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(tylerConfiguration.rootUrl)
 				.queryParam("citationNumber", citationNumber).queryParam("dob", dob);

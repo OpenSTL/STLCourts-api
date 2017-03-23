@@ -36,9 +36,9 @@ public class CitationDAOIntegrationTest {
         DateFormat  format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
         Date date = format.parse(dateString);
         
-        Citation citation = dao.getByCitationNumberAndDOB("13938567", date);
-        assertThat(citation, is(notNullValue()));
-		assertThat(citation.id, is(7));
+        List<Citation> citations = dao.getByCitationNumberAndDOB("13938567", date);
+        assertThat(citations.get(0), is(notNullValue()));
+		assertThat(citations.get(0).id, is(7));
 	}
 	
 	@Test

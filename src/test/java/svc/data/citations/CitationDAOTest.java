@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Locale;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -51,9 +52,10 @@ public class CitationDAOTest {
 		when(jdbcTemplate.queryForObject(Matchers.anyString(), Matchers.anyMap(), Matchers.<RowMapper<Citation>>any()))
         .thenReturn(CITATION);
 
-		Citation citation = citationDAO.getByCitationNumberAndDOB(CITATIONNUMBER, date);
-		
-		assertThat(citation.id, is(3));
+		List<Citation> citations = citationDAO.getByCitationNumberAndDOB(CITATIONNUMBER, date);
+
+		assertEquals(citations.size(), 1);
+		assertThat(citations.get(0).id, is(3));
     }
     
     @SuppressWarnings("unchecked")

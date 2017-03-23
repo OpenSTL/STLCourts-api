@@ -33,12 +33,16 @@ public final class CitationDataSourceFactory extends BaseJdbcDao {
     public List<CitationDataSource> getCitationDataSourcesForMunicipalities(List<Long> municipalityIds) {
         List<CITATION_DATASOURCE> sourcesForMunicipalities = getCitationDataSourceNames(municipalityIds);
 
-        //TODO: MOck
+        if(testCitationSourcesEnabled) {
+            sourcesForMunicipalities.add(CITATION_DATASOURCE.MOCK);
+        }
 
         List<CitationDataSource> dataSources = new ArrayList<>();
 
         for(CITATION_DATASOURCE source : sourcesForMunicipalities) {
             switch(source) {
+                case MOCK:
+                    dataSources.add(mockSource);
                 case TYLER:
                     dataSources.add(tylerSource);
                 default:

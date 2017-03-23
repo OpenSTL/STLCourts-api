@@ -21,11 +21,7 @@ public class CitationManager {
 	public List<Citation> findCitations(CitationSearchCriteria criteria) {
 		// Search by DOB & citation number
 		if (criteria.dateOfBirth != null && criteria.citationNumber != null) {
-			List<Citation> citations = new ArrayList<Citation>();
-			Citation citation = citationDAO.getByCitationNumberAndDOB(criteria.citationNumber, criteria.dateOfBirth);
-			if (citation != null) {
-				citations.add(citation);
-			}
+			List<Citation> citations = citationDAO.getByCitationNumberAndDOB(criteria.citationNumber, criteria.dateOfBirth);
 			return populateViolations(citations);
 		}
 		

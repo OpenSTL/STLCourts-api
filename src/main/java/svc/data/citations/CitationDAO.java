@@ -1,6 +1,8 @@
 package svc.data.citations;
 
+import com.google.common.collect.Lists;
 import org.springframework.stereotype.Component;
+import rx.Observable;
 import svc.models.Citation;
 
 import javax.inject.Inject;
@@ -12,11 +14,15 @@ public class CitationDAO {
 	@Inject
     private CitationDataSourceFactory citationDataSourceFactory;
 
-	public Citation getByCitationNumberAndDOB(String citationNumber, Date dob) {
+	public List<Citation> getByCitationNumberAndDOB(String citationNumber, Date dob) {
 	    List<CitationDataSource> sources = citationDataSourceFactory.getAllCitationDataSources();
 
-        //TODO
-        return null;
+        List<Observable<Citation>> citationSearches = Lists.newArrayList();
+		for(CitationDataSource source : sources) {
+            citationSearches.add(Observable.from(source.getByCitationNumberAndDOB(citationNumber, dob)));
+		}
+
+		return Observable.merge(citationSearches).toList().toBlocking().first();
 	}
 	
 	public List<Citation> getByLicenseAndDOB(String driversLicenseNumber, Date dob) {
