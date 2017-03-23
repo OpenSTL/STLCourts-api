@@ -3,7 +3,7 @@ DROP SCHEMA PUBLIC CASCADE
 
 CREATE TABLE citations 
 (
-    id 						INTEGER  		DEFAULT 0	NOT NULL,
+    id 						INTEGER  		IDENTITY PRIMARY KEY,
     citation_number 		VARCHAR(100)     				NULL,
     citation_date 			DATE     						NULL,
     first_name 				VARCHAR(50)     				NULL,
@@ -97,7 +97,7 @@ CREATE TABLE sponsors
 
 CREATE TABLE violations
 (
-	id 						INTEGER 		DEFAULT 0	NOT NULL,
+	id 						INTEGER 		IDENTITY PRIMARY KEY,
     citation_number 		VARCHAR(100),
     violation_number 		VARCHAR(100),
     violation_description 	VARCHAR(256),
@@ -111,8 +111,9 @@ CREATE TABLE violations
 
 CREATE TABLE sms_alerts
 (
-	id 						INTEGER 		NOT NULL AUTO_INCREMENT,
+	id 						INTEGER 		IDENTITY PRIMARY KEY,
     citation_number 		VARCHAR(25),
+    court_date 				DATETIME,
     phone_number			VARCHAR(25),
     date_of_birth 			DATE     						NULL
 );

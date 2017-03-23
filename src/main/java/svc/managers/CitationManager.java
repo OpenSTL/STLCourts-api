@@ -65,4 +65,12 @@ public class CitationManager {
 		}
 		return citations;
 	}
+	
+	public boolean insertDemoCitations(List<Citation> citations){
+		return citationDAO.insertDemoCitations(citations);
+	}
+	
+	public boolean removeDemoCitations(List<Citation> citations){
+		return citationDAO.removeDemoCitations(citations);
+	}
 }

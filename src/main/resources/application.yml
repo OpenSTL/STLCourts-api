@@ -18,6 +18,21 @@ stlcourts:
     municipalitySalt: salt1
     judgeSalt: salt2
     courtSalt: salt3
+    demoModeAllowed: true
+---
+spring:
+  profiles: localWithHSQLAccess
+  clientURL: http://localhost:9000
+twilio:
+  accountSid: ${TWILIO_SID}
+  authToken: ${TWILIO_AUTH_TOKEN}
+  phoneNumber: +13142548050
+stlcourts:
+  security:
+    municipalitySalt: salt1
+    judgeSalt: salt2
+    courtSalt: salt3
+    demoModeAllowed: true
 ---
 spring:
   profiles: qa
@@ -39,6 +54,7 @@ stlcourts:
     municipalitySalt: ${MUNICIPALITY_SALT}
     judgeSalt: ${JUDGE_SALT}
     courtSalt: ${COURT_SALT}
+    demoModeAllowed: true
 ---
 spring:
   profiles: prod
@@ -60,3 +76,4 @@ stlcourts:
     municipalitySalt: ${MUNICIPALITY_SALT}
     judgeSalt: ${JUDGE_SALT}
     courtSalt: ${COURT_SALT}
+    demoModeAllowed: false

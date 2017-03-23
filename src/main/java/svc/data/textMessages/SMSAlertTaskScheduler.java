@@ -1,5 +1,6 @@
 package svc.data.textMessages;
 
+
 import javax.inject.Inject;
 
 import org.springframework.scheduling.annotation.Async;
@@ -13,11 +14,15 @@ public class SMSAlertTaskScheduler {
 	@Inject
 	SMSAlertManager smsAlertManager;
 	
+	@Inject
+	SMSNotificationMessageSender smsNotificationMessageSender;
+	
 	//http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/scheduling/support/CronSequenceGenerator.html
 	//8AM every day
-	@Scheduled(cron="0*8***", zone="America/Chicago")
+	@Scheduled(cron="0 0 8 * * *", zone="America/Chicago")
 	@Async
 	public void sendAlerts(){
-		smsAlertManager.sendAlerts();
+		smsAlertManager.removeExpiredAlerts();
+		smsNotificationMessageSender.sendAlerts();
 	}
 }
