@@ -1,3 +1,25 @@
+DROP TABLE citations;
+
+# Create new citations tables
+CREATE TABLE citations 
+(
+    id 						INTEGER  		DEFAULT 0	NOT NULL,
+    citation_number 		VARCHAR(100)     				NULL,
+    citation_date 			DATE     						NULL,
+    first_name 				VARCHAR(50)     				NULL,
+    last_name 				VARCHAR(50)     				NULL,
+    date_of_birth 			DATE     						NULL,
+    defendant_address 		VARCHAR(50)     				NULL,
+    defendant_city 			VARCHAR(50)    					NULL,
+    defendant_state 		VARCHAR(25)     				NULL,
+    drivers_license_number 	VARCHAR(25),
+    court_date 				DATETIME   						NULL,
+    court_location 			VARCHAR(50)     				NULL,
+    court_address 			VARCHAR(50)     				NULL,
+    court_id 				INTEGER  						NULL
+)ENGINE=InnoDB;
+
+#Insert new citations data
 INSERT INTO citations (id,citation_number,citation_date,first_name,last_name,date_of_birth,defendant_address,defendant_city,defendant_state,drivers_license_number,court_date,court_location,court_address,court_id) VALUES (91,'747199692','2015-06-18','Sandra','Hunter','1981-06-05','9 Orin Parkway','NORWOOD COURT','MO','H233189734','2015-11-29 12:20:00','BELLA VILLA','751 Avenue H',2);
 INSERT INTO citations (id,citation_number,citation_date,first_name,last_name,date_of_birth,defendant_address,defendant_city,defendant_state,drivers_license_number,court_date,court_location,court_address,court_id) VALUES (837,'865365678','2015-08-28','Carlos','Freeman','1981-10-10','5 3rd Terrace','CLARKSON VALLEY','MO','U074533730','2015-10-27 14:09:00','CALVERTON PARK','52 Young Drive',13);
 INSERT INTO citations (id,citation_number,citation_date,first_name,last_name,date_of_birth,defendant_address,defendant_city,defendant_state,drivers_license_number,court_date,court_location,court_address,court_id) VALUES (911,'209092850','2015-03-31','Phyllis','Jones','1975-09-27','68 Burrows Place','MARYLAND HEIGHTS','MO','A824924934','2015-09-15 18:52:00','MANCHESTER','200 Highlands Blvd. Dr.',45);

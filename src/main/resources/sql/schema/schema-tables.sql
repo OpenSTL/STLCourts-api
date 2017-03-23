@@ -12,7 +12,7 @@ CREATE TABLE citations (
   defendant_city 			      VARCHAR(50)    		NULL,
   defendant_state 		      VARCHAR(25)     	NULL,
   drivers_license_number 	  VARCHAR(25),
-  court_date 				        DATE     					NULL,
+  court_date 				        DATETIME     					NULL,
   court_location 			      VARCHAR(50)     	NULL,
   court_address 			      VARCHAR(50)     	NULL,
   court_id 				          INTEGER  					NULL

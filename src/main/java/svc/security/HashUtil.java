@@ -42,6 +42,7 @@ public class HashUtil{
 	}
 	
 	public long decode(Class<?> fieldClass, String hashValue){
+		initializeSalts();
 		long idValue = 0L;
 		switch (fieldClass.getSimpleName()){
 			case "Municipality":

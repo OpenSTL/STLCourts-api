@@ -3,11 +3,9 @@ package svc.util;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,14 +34,43 @@ public class DatabaseUtilitiesTest {
 	}
 	
 	@Test
-	public void correctlyConvertsDateObjToUSDateString() throws ParseException{
-        String dateString = "08/05/1965";
-        DateFormat  format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
-        Date date = format.parse(dateString);
-
-		String usDate = DatabaseUtilities.convertDatabaseDateToUS(date);
+	public void correctlyConvertsDateObjToUSDateString(){
+		String dateString = "08/05/1965";
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+		LocalDate localDate = LocalDate.parse(dateString, formatter);
+    
+		String usDate = DatabaseUtilities.convertDatabaseDateToUS(localDate);
 		assertEquals(dateString,usDate);
 		
+		String dateTimeString = dateString+" 15:30:22";
+		DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
+		LocalDateTime localDateTime = LocalDateTime.parse(dateTimeString, formatter2);
+		
+		usDate = DatabaseUtilities.convertDatabaseDateToUS(localDateTime);
+		assertEquals(dateString,usDate);	
+	}
+	
+	@Test
+	public void correctlyConvertsDateTimeObjToUSTime(){
+		String dateTimeString = "08/05/1965 15:30:22";
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
+		LocalDateTime localDateTime = LocalDateTime.parse(dateTimeString, formatter);
+		
+		String usTime = DatabaseUtilities.convertDatabaseDateToUSTime(localDateTime);
+		assertEquals(usTime,"03:30 PM");
+	}
+	
+	@Test
+	public void correctlyHandlesNull(){
+		LocalDate localDate = null;
+		LocalDateTime localDateTime = null;
+		
+		String usDate = DatabaseUtilities.convertDatabaseDateToUS(localDate);
+		assertEquals(usDate,"");
+		usDate = DatabaseUtilities.convertDatabaseDateToUS(localDateTime);
+		assertEquals(usDate,"");
+		String usTime = DatabaseUtilities.convertDatabaseDateToUSTime(localDateTime);
+		assertEquals(usTime,"");
 	}
 
 }

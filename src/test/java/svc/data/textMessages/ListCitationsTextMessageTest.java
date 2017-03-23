@@ -2,11 +2,9 @@ package svc.data.textMessages;
 
 import static org.junit.Assert.*;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
-import java.util.Locale;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,12 +16,12 @@ import svc.models.Citation;
 public class ListCitationsTextMessageTest {
 	
 	@Test
-	public void correctlyInitializesAndReturnsCorrectListOfCitations() throws ParseException{
+	public void correctlyInitializesAndReturnsCorrectListOfCitations(){
 		String dateString = "08/05/1965";
-        DateFormat  format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 		
 		Citation CITATION = new Citation();
-		CITATION.citation_date = format.parse(dateString);;
+		CITATION.citation_date = LocalDate.parse(dateString, formatter);
 		
 		ListCitationsTextMessage listCitationsTextMessage = new ListCitationsTextMessage(Arrays.asList(new Citation[]{CITATION}));
 		String returnedString = listCitationsTextMessage.toTextMessage();
@@ -36,7 +34,7 @@ public class ListCitationsTextMessageTest {
 		String dateString2 = "01/01/2000";
 		
 		Citation CITATION2 = new Citation();
-		CITATION2.citation_date = format.parse(dateString2);;
+		CITATION2.citation_date = LocalDate.parse(dateString2, formatter);
 		
 		listCitationsTextMessage = new ListCitationsTextMessage(Arrays.asList(new Citation[]{CITATION,CITATION2}));
 		returnedString = listCitationsTextMessage.toTextMessage();

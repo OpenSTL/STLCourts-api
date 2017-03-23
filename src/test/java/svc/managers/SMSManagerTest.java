@@ -13,12 +13,15 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.mock.web.MockHttpSession;
 import svc.dto.CitationSearchCriteria;
 import svc.models.*;
+import svc.types.HashableEntity;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,8 +105,8 @@ public class SMSManagerTest {
 		setStageInSession(session,SMS_STAGE.READ_LICENSE);
 		session.setAttribute("dob", "06/01/1963");
 		Citation citation = new Citation();
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-		citation.citation_date = sdf.parse("02/03/1990");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+		citation.citation_date = LocalDate.parse("02/03/1990", formatter);
 		List<Citation> citations = new ArrayList<Citation>();
 		citations.add(citation);
 		
@@ -123,11 +126,12 @@ public class SMSManagerTest {
 		session.setAttribute("license_number", "F917801962");
 		
 		Citation citation = new Citation();
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-		citation.citation_date = sdf.parse("02/03/1990");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+		citation.citation_date = LocalDate.parse("02/03/1990", formatter);
 		citation.citation_number = "a1234";
-		citation.court_date = sdf.parse("11/20/2015");
-		citation.court_id = 1L;
+		DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
+		citation.court_dateTime = LocalDateTime.parse("11/20/2015 04:22", formatter2);
+		citation.court_id = new HashableEntity<Court>(Court.class,1L);
 		List<Citation> citations = new ArrayList<Citation>();
 		citations.add(citation);
 		
@@ -140,7 +144,7 @@ public class SMSManagerTest {
 		Violation violation = new Violation();
 		violation.violation_number = "Y246";
 		violation.violation_description = "myDescription";
-		violation.status_date = sdf.parse("12/01/2015");
+		violation.status_date = LocalDate.parse("12/01/2015", formatter);
 		violation.status = VIOLATION_STATUS.CONT_FOR_PAYMENT;
 		violation.fine_amount = new BigDecimal(200.54);
 		violation.court_cost = new BigDecimal(22.34);
@@ -149,11 +153,11 @@ public class SMSManagerTest {
 		
 		
 		when(citationManagerMock.findCitations((CitationSearchCriteria)notNull())).thenReturn(citations);
-		when(courtManagerMock.getCourtById(citations.get(0).court_id)).thenReturn(court);
+		when(courtManagerMock.getCourtById(citations.get(0).court_id.getValue())).thenReturn(court);
 		when(violationManagerMock.getViolationsByCitationNumber(anyString())).thenReturn(violations);
 		TwimlMessageRequest twimlMessageRequest = new TwimlMessageRequest();
 		twimlMessageRequest.setBody("1");
-		String message = "Ticket Date: 02/03/1990\nCourt Date: 11/20/2015\nTicket #: "+citation.citation_number;
+		String message = "Ticket Date: 02/03/1990\nCourt Date: 11/20/2015\nCourt Time: 04:22 AM\nTicket #: "+citation.citation_number;
 		message += "\nCourt Address: "+court.address+" "+court.city+", "+court.state+" "+court.zip;
 		message += "\nViolation #: "+violation.violation_number+"\nViolation: "+violation.violation_description;
 		message += "\nStatus (as of 12/01/2015): "+violation.status.toString();
@@ -171,8 +175,8 @@ public class SMSManagerTest {
 		session.setAttribute("dob", "06/01/1963");
 		session.setAttribute("license_number", "F917801962");
 		Citation citation = new Citation();
-		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
-		citation.citation_date = sdf.parse("02/03/1990");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+		citation.citation_date = LocalDate.parse("02/03/1990", formatter);
 		List<Citation> citations = new ArrayList<Citation>();
 		citations.add(citation);
 		

@@ -6,6 +6,7 @@ import rx.Observable;
 import svc.models.Citation;
 
 import javax.inject.Inject;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +15,7 @@ public class CitationDAO {
 	@Inject
     private CitationDataSourceFactory citationDataSourceFactory;
 
-	public List<Citation> getByCitationNumberAndDOB(String citationNumber, Date dob) {
+	public List<Citation> getByCitationNumberAndDOB(String citationNumber, LocalDate dob) {
 	    List<CitationDataSource> sources = citationDataSourceFactory.getAllCitationDataSources();
 
         List<Observable<Citation>> citationSearches = Lists.newArrayList();
@@ -24,15 +25,15 @@ public class CitationDAO {
 
 		return Observable.merge(citationSearches).toList().toBlocking().first();
 	}
-	
-	public List<Citation> getByLicenseAndDOB(String driversLicenseNumber, Date dob) {
+
+	public List<Citation> getByLicenseAndDOB(String driversLicenseNumber, LocalDate dob) {
         List<CitationDataSource> sources = citationDataSourceFactory.getAllCitationDataSources();
 
         //TODO
         return null;
 	}
 	
-	public List<Citation> getByNameAndMunicipalitiesAndDOB(String lastName, List<Long> municipalities, Date dob) {
+	public List<Citation> getByNameAndMunicipalitiesAndDOB(String lastName, List<Long> municipalities, LocalDate dob) {
         List<CitationDataSource> sources = citationDataSourceFactory.getCitationDataSourcesForMunicipalities(municipalities);
 
         //TODO

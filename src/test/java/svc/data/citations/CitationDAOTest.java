@@ -14,12 +14,10 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import svc.models.Citation;
 
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Locale;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
@@ -46,8 +44,8 @@ public class CitationDAOTest {
         CITATION.id = 3;
 		final String CITATIONNUMBER = "F3453";
 		String dateString = "08/05/1965";
-        DateFormat  format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
-        Date date = format.parse(dateString);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        LocalDate date = LocalDate.parse(dateString,formatter);
 		
 		when(jdbcTemplate.queryForObject(Matchers.anyString(), Matchers.anyMap(), Matchers.<RowMapper<Citation>>any()))
         .thenReturn(CITATION);
@@ -70,8 +68,8 @@ public class CitationDAOTest {
         .thenReturn(CITATIONS);
         
         String dateString = "08/05/1965";
-        DateFormat  format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
-        Date date = format.parse(dateString);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        LocalDate date = LocalDate.parse(dateString,formatter);
 
         List<Citation> citations = citationDAO.getByLicenseAndDOB("someLiscensNumber", date);
         
@@ -93,8 +91,8 @@ public class CitationDAOTest {
         when(jdbcTemplate.query(Matchers.anyString(),Matchers.anyMap(), Matchers.<RowMapper<Citation>>any())).thenReturn(CITATIONS);
         
         String dateString = "08/05/1965";
-        DateFormat  format = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
-        Date date = format.parse(dateString);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        LocalDate date = LocalDate.parse(dateString,formatter);
 
         List<Citation> citations = citationDAO.getByNameAndMunicipalitiesAndDOB("someLastName", Lists.newArrayList(19L, 20L), date);
         
