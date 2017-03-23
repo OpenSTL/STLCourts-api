@@ -1,5 +1,6 @@
 package svc.data.citations.datasources.tyler;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import org.junit.Test;
@@ -22,6 +23,6 @@ public class TylerCitationDataSourceIntegrationTest {
 
 	@Test
 	public void test() {
-		tylerCitationDataSource.getByCitationNumberAndDOB("1", new Date());
+		tylerCitationDataSource.getByCitationNumberAndDOB("1", LocalDate.now());
 	}
 }

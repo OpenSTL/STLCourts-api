@@ -73,12 +73,12 @@ public class CitationDAOIntegrationTest {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         LocalDate date = LocalDate.parse(dateString,formatter);
 
-		List<Citation> citations = dao.getByDOBAndLicense(date, "N806453191");
+		List<Citation> citations = dao.getByLicenseAndDOB("N806453191", date);
 		assertThat(citations.get(0).citation_date, is(nullValue()));
 
 		dateString = "11/21/1994";
 		date = LocalDate.parse(dateString,formatter);
-		citations = dao.getByDOBAndLicense(date, "E501444452");
+		citations = dao.getByLicenseAndDOB("E501444452", date);
 		assertThat(citations.get(0).court_dateTime, is(nullValue()));
 	}
 }

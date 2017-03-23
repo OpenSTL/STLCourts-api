@@ -1,8 +1,5 @@
 package svc.data.citations.datasources.tyler;
 
-import java.util.Date;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -12,9 +9,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-
 import svc.data.citations.CitationDataSource;
 import svc.models.Citation;
+
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.List;
 
 @Repository
 public class TylerCitationDataSource implements CitationDataSource {
@@ -27,10 +27,10 @@ public class TylerCitationDataSource implements CitationDataSource {
 
 	@SuppressWarnings("unused")
 	@Override
-	public List<Citation> getByCitationNumberAndDOB(String citationNumber, Date dob) {
+	public List<Citation> getByCitationNumberAndDOB(String citationNumber, LocalDate dob) {
 
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(tylerConfiguration.rootUrl)
-				.queryParam("citationNumber", citationNumber).queryParam("dob", dob);
+				.queryParam("citationNumber", citationNumber).queryParam("dob", Date.valueOf(dob));
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("apikey", tylerConfiguration.apiKey);
 		HttpEntity<?> query = new HttpEntity<>(headers);
@@ -48,12 +48,12 @@ public class TylerCitationDataSource implements CitationDataSource {
 	}
 
 	@Override
-	public List<Citation> getByLicenseAndDOB(String driversLicenseNumber, Date dob) {
+	public List<Citation> getByLicenseAndDOB(String driversLicenseNumber, LocalDate dob) {
 		return null; // TODO
 	}
 
 	@Override
-	public List<Citation> getByNameAndMunicipalitiesAndDOB(String lastName, List<Long> municipalities, Date dob) {
+	public List<Citation> getByNameAndMunicipalitiesAndDOB(String lastName, List<Long> municipalities, LocalDate dob) {
 		return null; // TODO
 	}
 }

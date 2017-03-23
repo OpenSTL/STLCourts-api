@@ -5,11 +5,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 import svc.data.citations.datasources.CITATION_DATASOURCE;
-import svc.data.citations.datasources.mock.MockCitationDataSource;
-import svc.data.citations.datasources.tyler.TylerCitationDataSource;
 import svc.data.jdbc.BaseJdbcDao;
 import svc.logging.LogSystem;
 
+import javax.inject.Inject;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +22,11 @@ public final class CitationDataSourceFactory extends BaseJdbcDao {
     @Value("${stlcourts.citationDataSources.liveEnabled}")
     Boolean liveCitationSourcesEnabled;
 
-    private static final CitationDataSource mockSource = new MockCitationDataSource();
-    private static final CitationDataSource tylerSource = new TylerCitationDataSource();
+    @Inject
+    private CitationDataSource mockCitationDataSource;
+
+    @Inject
+    private CitationDataSource tylerCitationDataSource;
 
     public List<CitationDataSource> getAllCitationDataSources() {
         return Lists.newArrayList(getEnabledSources());
@@ -42,9 +44,9 @@ public final class CitationDataSourceFactory extends BaseJdbcDao {
         for(CITATION_DATASOURCE source : sourcesForMunicipalities) {
             switch(source) {
                 case MOCK:
-                    dataSources.add(mockSource);
+                    dataSources.add(mockCitationDataSource);
                 case TYLER:
-                    dataSources.add(tylerSource);
+                    dataSources.add(tylerCitationDataSource);
                 default:
                     LogSystem.LogCitationDataSourceException("Source '" + source.toString() + "' is not supported");
             }
@@ -57,11 +59,11 @@ public final class CitationDataSourceFactory extends BaseJdbcDao {
         List<CitationDataSource> sources = Lists.newArrayList();
 
         if(testCitationSourcesEnabled) {
-            sources.add(mockSource);
+            sources.add(mockCitationDataSource);
         }
 
         if(liveCitationSourcesEnabled) {
-            sources.add(tylerSource);
+            sources.add(tylerCitationDataSource);
         }
 
         return sources;
