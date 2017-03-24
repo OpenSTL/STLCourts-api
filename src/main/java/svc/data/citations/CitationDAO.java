@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import java.time.LocalDate;
 import java.util.List;
 
+//NOTE: If we switch to groovy, we can greatly reduce code here since we can pass the function as an argument to a method
 @Component
 public class CitationDAO {
 	@Inject
@@ -19,23 +20,31 @@ public class CitationDAO {
 
         List<Observable<Citation>> citationSearches = Lists.newArrayList();
 		for(CitationDataSource source : sources) {
-            citationSearches.add(Observable.from(source.getByCitationNumberAndDOB(citationNumber, dob)));
+            citationSearches.add(Observable.from(source.getByCitationNumberAndDOB(citationNumber, dob)).onExceptionResumeNext(Observable.just(null)));
 		}
 
-		return Observable.merge(citationSearches).toList().toBlocking().first();
+		return Observable.merge(citationSearches).onExceptionResumeNext(Observable.just(null)).toList().toBlocking().first();
 	}
 
 	public List<Citation> getByLicenseAndDOB(String driversLicenseNumber, LocalDate dob) {
         List<CitationDataSource> sources = citationDataSourceFactory.getAllCitationDataSources();
 
-        //TODO
-        return null;
+        List<Observable<Citation>> citationSearches = Lists.newArrayList();
+        for(CitationDataSource source : sources) {
+            citationSearches.add(Observable.from(source.getByLicenseAndDOB(driversLicenseNumber, dob)));
+        }
+
+        return Observable.merge(citationSearches).onExceptionResumeNext(Observable.just(null)).toList().toBlocking().first();
 	}
 	
 	public List<Citation> getByNameAndMunicipalitiesAndDOB(String lastName, List<Long> municipalities, LocalDate dob) {
         List<CitationDataSource> sources = citationDataSourceFactory.getCitationDataSourcesForMunicipalities(municipalities);
 
-        //TODO
-        return null;
+        List<Observable<Citation>> citationSearches = Lists.newArrayList();
+        for(CitationDataSource source : sources) {
+            citationSearches.add(Observable.from(source.getByNameAndMunicipalitiesAndDOB(lastName, municipalities, dob)));
+        }
+
+        return Observable.merge(citationSearches).onExceptionResumeNext(Observable.just(null)).toList().toBlocking().first();
 	}
 }

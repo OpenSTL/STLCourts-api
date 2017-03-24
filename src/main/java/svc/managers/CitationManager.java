@@ -8,7 +8,6 @@ import svc.logging.LogSystem;
 import svc.models.Citation;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
