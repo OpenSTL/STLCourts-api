@@ -62,7 +62,6 @@ public class CitationController {
 			}
 		}
 
-		// for the text system
 		if (firstName != null && lastName != null && licenseNumber != null) {
 			criteria.firstName = firstName;
 			criteria.lastName = lastName;
