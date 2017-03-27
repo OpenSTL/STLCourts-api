@@ -10,12 +10,10 @@ import svc.logging.LogSystem;
 
 import javax.inject.Inject;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringJoiner;
+import java.util.*;
 
 @Component
-public final class CitationDataSourceFactory extends BaseJdbcDao {
+public class CitationDataSourceFactory extends BaseJdbcDao {
     @Value("${stlcourts.citationDataSources.testEnabled}")
     Boolean testCitationSourcesEnabled;
 
@@ -33,7 +31,11 @@ public final class CitationDataSourceFactory extends BaseJdbcDao {
     }
 
     public List<CitationDataSource> getCitationDataSourcesForMunicipalities(List<Long> municipalityIds) {
-        List<CITATION_DATASOURCE> sourcesForMunicipalities = getCitationDataSourceNames(municipalityIds);
+        List<CITATION_DATASOURCE> sourcesForMunicipalities = Lists.newArrayList();
+
+        if(liveCitationSourcesEnabled) {
+            sourcesForMunicipalities.addAll(getCitationDataSourceNames(municipalityIds));
+        }
 
         if(testCitationSourcesEnabled) {
             sourcesForMunicipalities.add(CITATION_DATASOURCE.MOCK);
@@ -45,8 +47,10 @@ public final class CitationDataSourceFactory extends BaseJdbcDao {
             switch(source) {
                 case MOCK:
                     dataSources.add(mockCitationDataSource);
+                    break;
                 case TYLER:
                     dataSources.add(tylerCitationDataSource);
+                    break;
                 default:
                     LogSystem.LogCitationDataSourceException("Source '" + source.toString() + "' is not supported");
             }
@@ -75,8 +79,11 @@ public final class CitationDataSourceFactory extends BaseJdbcDao {
             //NOTE: The following 2 lines could be 1 if we use Groovy
             StringJoiner joiner  = new StringJoiner(",");
             for(Long id : municipalityIds) { joiner.add(id.toString()); }
-            String sql = "SELECT cd.name FROM citation_datasource_municipality cdm INNER JOIN citation_datasource cd ON cd.id = cdm.citation_datasource_id WHERE cd.id IN(" + joiner.toString() + ")";
-            sourceNames = jdbcTemplate.query(sql, new CitationDataSourceMapper());
+
+            Map<String, Object> parameterMap = new HashMap<>();
+            parameterMap.put("municipalities", joiner.toString());
+
+            sourceNames = jdbcTemplate.query(getSql("citation/datasources/get-all.sql"), parameterMap, new CitationDataSourceMapper());
         } catch (Exception e) {
             LogSystem.LogDBException(e);
         }

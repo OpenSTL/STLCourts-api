@@ -3,6 +3,7 @@ package svc.data.citations.datasources.tyler;
 import java.time.LocalDate;
 import java.util.Date;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import svc.Application;
 
+//TODO
+@Ignore
 @SpringBootTest
 @ContextConfiguration(classes = Application.class, initializers = ConfigFileApplicationContextInitializer.class)
 @RunWith(SpringRunner.class)
