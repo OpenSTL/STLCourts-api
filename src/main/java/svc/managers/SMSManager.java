@@ -42,7 +42,7 @@ public class SMSManager {
 	@Inject
 	SMSNotificationMessageSender smsNotificationMessageSender;
 	
-	@Value("${spring.clientURL}")
+	@Value("${stlcourts.clientURL}")
 	String clientURL;
 	
 	private enum SMS_STAGE{

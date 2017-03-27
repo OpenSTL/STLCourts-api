@@ -114,7 +114,7 @@ public class ViolationDAO
 				violation.warrant_status = rs.getBoolean("warrant_status");
 				violation.warrant_number = rs.getString("warrant_number");
 				violation.status = VIOLATION_STATUS.convertDatabaseStatusToEnum(rs.getString("status"));
-				violation.status_date = DatabaseUtilities.getFromDatabase(rs, "status_date");
+				violation.status_date = DatabaseUtilities.getDatabaseLocalDate(rs.getDate("status_date"));
 				String fineAmountStr = rs.getString("fine_amount");
 				if (fineAmountStr != null)
 				{

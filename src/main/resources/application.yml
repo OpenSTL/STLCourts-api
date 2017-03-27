@@ -1,24 +1,36 @@
 server:
   port: 8080
   contextPath: /api
-
+management:
+  context-path: /manage
+  port: -1
+stlcourts:
+  citationDataSources:
+    tyler:
+      rootUrl: http://TODOURL/api/citations
+      apiKey: TODOKEY
 ---
 spring:
   profiles.active: local
 ---
 spring:
   profiles: local
-  clientURL: http://localhost:9000
 twilio:
   accountSid: ${TWILIO_SID}
   authToken: ${TWILIO_AUTH_TOKEN}
   phoneNumber: +13142548050
 stlcourts:
+  citationDataSources:
+    testEnabled: true
+    liveEnabled: true
+  clientURL: http://localhost:9000
   security:
     municipalitySalt: salt1
     judgeSalt: salt2
     courtSalt: salt3
     demoModeAllowed: true
+management:
+  port: 8080
 ---
 spring:
   profiles: localWithHSQLAccess
@@ -36,7 +48,6 @@ stlcourts:
 ---
 spring:
   profiles: qa
-  clientURL: http://test.yourstlcourts.com
 twilio:
   accountSid: ${TWILIO_SID}
   authToken: ${TWILIO_AUTH_TOKEN}
@@ -50,6 +61,10 @@ spring.datasource:
   timeBetweenEvictionRunsMillis: 60000
   validationQuery: SELECT 1
 stlcourts:
+  citationDataSources:
+    testEnabled: ${TEST_SOURCES_ENABLED}
+    liveEnabled: ${LIVE_SOURCES_ENABLED}
+  clientURL: http://test.yourstlcourts.com
   security:
     municipalitySalt: ${MUNICIPALITY_SALT}
     judgeSalt: ${JUDGE_SALT}
@@ -58,7 +73,6 @@ stlcourts:
 ---
 spring:
   profiles: prod
-  clientURL: http://www.yourstlcourts.com
 twilio:
   accountSid: ${TWILIO_SID}
   authToken: ${TWILIO_AUTH_TOKEN}
@@ -72,6 +86,10 @@ spring.datasource:
   timeBetweenEvictionRunsMillis: 60000
   validationQuery: SELECT 1
 stlcourts:
+  citationDataSources:
+    testEnabled: false
+    liveEnabled: true
+  clientURL: http://www.yourstlcourts.com
   security:
     municipalitySalt: ${MUNICIPALITY_SALT}
     judgeSalt: ${JUDGE_SALT}

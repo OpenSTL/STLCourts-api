@@ -23,23 +23,13 @@ import svc.security.HashUtil;
 @RestController
 @EnableAutoConfiguration
 @RequestMapping("/citations")
-public class CitationController {	
+public class CitationController {
 	@Inject
 	CitationManager citationManager;
 	
 	@Inject
 	HashUtil hashUtil;
-	
-	@ResponseBody
-	@RequestMapping(method = RequestMethod.GET, value="/{id}")
-	Citation GetCitation(@PathVariable("id") Long id) {
-		if (id == null) {
-			LogSystem.LogEvent("Null id passed to controller");
-		}
-		
-		return citationManager.getCitationById(id);
-	}
-	
+
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET)
 	//DOB parameter must be an ISO dateString of format 'yyyy-MM-dd'  no Time on end of string
@@ -54,16 +44,16 @@ public class CitationController {
 		if (citationNumber != null) {
 			criteria.citationNumber = citationNumber;
 		}
-		
+
 		if (dob != null) {
 			criteria.dateOfBirth = dob;
 		}
-		
+
 		if (licenseNumber != null && licenseState != null) {
 			criteria.driversLicenseNumber = licenseNumber;
 			criteria.driversLicenseState = licenseState;
 		}
-		
+
 		if (lastName != null && municipalityIds != null && municipalityIds.size() != 0) {
 			criteria.lastName = lastName;
 			criteria.municipalities = new ArrayList<Long>();
@@ -71,8 +61,8 @@ public class CitationController {
 				criteria.municipalities.add(hashUtil.decode(Municipality.class,municipalityId));
 			}
 		}
-		
-		if (firstName != null && lastName != null &&  licenseNumber != null) { //for the text/phone system
+
+		if (firstName != null && lastName != null && licenseNumber != null) {
 			criteria.firstName = firstName;
 			criteria.lastName = lastName;
 			criteria.driversLicenseNumber = licenseNumber;
