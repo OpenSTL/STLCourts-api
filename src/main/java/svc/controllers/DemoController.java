@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import svc.managers.*;
 import svc.models.DemoCitation;
 
-@ConditionalOnProperty("stlcourts.security.demoModeAllowed")
+@ConditionalOnProperty("stlcourts.demoMode")
 @RestController
 @EnableAutoConfiguration
 @RequestMapping("/Demo")
@@ -22,7 +22,6 @@ public class DemoController {
 	@Inject
 	DemoManager demoManager;
 
-	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET, value="/citations")
 	List<DemoCitation> Citations() {

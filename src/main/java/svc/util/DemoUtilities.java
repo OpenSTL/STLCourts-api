@@ -8,10 +8,11 @@ import svc.models.Citation;
 import svc.models.Court;
 import svc.models.VIOLATION_STATUS;
 import svc.models.Violation;
-import svc.security.Hashids;
+import org.hashids.Hashids;
 import svc.types.HashableEntity;
 
 public class DemoUtilities {
+	
 	private Hashids demoRandomizer = new Hashids(DatabaseUtilities.convertLocalDateTimeToDatabaseDateString(DatabaseUtilities.getCurrentDateTime()),5);
 	
 	public List<Citation> generateRandomCitations(){

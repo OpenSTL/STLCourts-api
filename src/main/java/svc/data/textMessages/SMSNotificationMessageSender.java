@@ -19,13 +19,13 @@ public class SMSNotificationMessageSender {
 	@Inject
 	SMSAlertManager smsAlertManager;
 	
-	@Value("${twilio.accountSid}")
+	@Value("${stlcourts.twilio.accountSid}")
 	String accountSid;
 	
-	@Value("${twilio.authToken}")
+	@Value("${stlcourts.twilio.authToken}")
 	String authToken;
 	
-	@Value("${twilio.phoneNumber}")
+	@Value("${stlcourts.twilio.phoneNumber}")
 	String twilioPhone;
 	
 	public void sendAlerts() {

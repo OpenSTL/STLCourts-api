@@ -47,7 +47,8 @@ public class CitationDataSourceFactoryTest {
         assertEquals(sources.size(), 2);
     }
 
-    @Test
+    @SuppressWarnings("unchecked")
+	@Test
     public void getsCitationSourcesForMunicipalities() throws IOException {
         List<Long> munis = Lists.newArrayList(10L, 20L);
         final List<CITATION_DATASOURCE> sources = Lists.newArrayList(CITATION_DATASOURCE.TYLER);
