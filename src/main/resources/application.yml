@@ -1,23 +1,34 @@
 server:
   port: 8080
   contextPath: /api
-
+management:
+  context-path: /manage
+  port: -1
+stlcourts:
+  citationDataSources:
+    tyler:
+      rootUrl: http://TODOURL/api/citations
+      apiKey: TODOKEY
 ---
 spring:
   profiles.active: local
 ---
 spring:
   profiles: local
-  clientURL: http://localhost:9000
 stlcourts:
+  citationDataSources:
+    testEnabled: true
+    liveEnabled: true
+  clientURL: http://localhost:9000
   security:
     municipalitySalt: salt1
     judgeSalt: salt2
     courtSalt: salt3
+management:
+  port: 8080
 ---
 spring:
   profiles: qa
-  clientURL: http://test.yourstlcourts.com
 spring.datasource:
   driverClassName: com.mysql.jdbc.Driver
   url: jdbc:mysql:${MYSQL_URL}?useUnicode=true&amp;characterEncoding=UTF-8
@@ -27,6 +38,10 @@ spring.datasource:
   timeBetweenEvictionRunsMillis: 60000
   validationQuery: SELECT 1
 stlcourts:
+  citationDataSources:
+    testEnabled: ${TEST_SOURCES_ENABLED}
+    liveEnabled: ${LIVE_SOURCES_ENABLED}
+  clientURL: http://test.yourstlcourts.com
   security:
     municipalitySalt: ${MUNICIPALITY_SALT}
     judgeSalt: ${JUDGE_SALT}
@@ -34,7 +49,6 @@ stlcourts:
 ---
 spring:
   profiles: prod
-  clientURL: http://www.yourstlcourts.com
 spring.datasource:
   driverClassName: com.mysql.jdbc.Driver
   url: jdbc:mysql:${MYSQL_URL}?useUnicode=true&amp;characterEncoding=UTF-8
@@ -44,6 +58,10 @@ spring.datasource:
   timeBetweenEvictionRunsMillis: 60000
   validationQuery: SELECT 1
 stlcourts:
+  citationDataSources:
+    testEnabled: false
+    liveEnabled: true
+  clientURL: http://www.yourstlcourts.com
   security:
     municipalitySalt: ${MUNICIPALITY_SALT}
     judgeSalt: ${JUDGE_SALT}
