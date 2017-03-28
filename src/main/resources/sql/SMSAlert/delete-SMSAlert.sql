@@ -1,0 +1,1 @@
+DELETE FROM sms_alerts WHERE citation_number=:citationNumber  AND phone_number=:phoneNumber AND date_of_birth=:dob

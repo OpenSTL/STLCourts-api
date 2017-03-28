@@ -15,7 +15,7 @@ import svc.managers.SMSAlertManager;
 import svc.models.SMSAlertNotification;
 
 @Component
-public class SMSNotificationMessageSender {
+public class SMSNotifier {
 	@Inject
 	SMSAlertManager smsAlertManager;
 	

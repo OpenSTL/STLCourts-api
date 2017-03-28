@@ -1,0 +1,1 @@
+SELECT * FROM sms_alerts WHERE citation_number = :citationNumber AND phone_number = :phoneNumber

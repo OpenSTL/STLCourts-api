@@ -27,5 +27,4 @@ public class DemoController {
 	List<DemoCitation> Citations() {
 		return demoManager.createCitationsAndViolations();
 	}
-
 }

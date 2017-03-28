@@ -32,7 +32,7 @@ public class SMSAlertManager {
 	@Inject
 	private CourtManager courtManager;
 	
-	@Value("${spring.clientURL}")
+	@Value("${stlcourts.clientURL}")
 	String clientURL;
 	
 	public boolean add(String citationNumber, LocalDateTime courtDateTime, String phoneNumber, LocalDate dob){

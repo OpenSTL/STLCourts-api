@@ -35,7 +35,6 @@ management:
 ---
 spring:
   profiles: localWithHSQLAccess
-  clientURL: http://localhost:9000
 stlcourts:
   citationDataSources:
     testEnabled: true

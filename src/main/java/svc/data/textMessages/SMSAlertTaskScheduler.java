@@ -15,7 +15,7 @@ public class SMSAlertTaskScheduler {
 	SMSAlertManager smsAlertManager;
 	
 	@Inject
-	SMSNotificationMessageSender smsNotificationMessageSender;
+	SMSNotifier smsNotificationMessageSender;
 	
 	//http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/scheduling/support/CronSequenceGenerator.html
 	//8AM every day

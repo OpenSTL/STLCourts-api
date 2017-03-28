@@ -60,7 +60,7 @@ public class ViolationDAO
 		return violations;
 	}
 	
-	public boolean insertDemoViolations(List<Violation> violations){
+	public boolean insertViolations(List<Violation> violations){
 		try{
 			for(int i = 0; i < violations.size(); i++){
 				Violation v = violations.get(i);
@@ -80,7 +80,7 @@ public class ViolationDAO
 		return true;
 	}
 	
-	public boolean removeDemoViolations(List<Violation> violations){
+	public boolean removeViolations(List<Violation> violations){
 		try{
 			for(int i = 0; i < violations.size(); i++){
 				Violation v = violations.get(i);

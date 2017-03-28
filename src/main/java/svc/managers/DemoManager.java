@@ -11,6 +11,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Component;
 
+import svc.data.citations.datasources.mock.MockCitationDataSource;
 import svc.models.Citation;
 import svc.models.DemoCitation;
 import svc.models.Violation;
@@ -20,7 +21,7 @@ import svc.util.DemoUtilities;
 @Component
 public class DemoManager {
 	@Inject
-	private CitationManager citationManager;
+    private MockCitationDataSource mockCitationDataSource;
 	
 	@Inject
 	private ViolationManager violationManager;
@@ -32,8 +33,8 @@ public class DemoManager {
 		List<Citation> citations = demoUtilities.generateRandomCitations();
 		List<Violation> violations = demoUtilities.generateRandomViolations();
 		
-		citationManager.insertDemoCitations(citations);
-		violationManager.insertDemoViolations(violations);
+		mockCitationDataSource.insertCitations(citations);
+		violationManager.insertViolations(violations);
 		
 		for(int citationCount = 0; citationCount < citations.size(); citationCount++){
 			Citation citation = citations.get(citationCount);
@@ -59,13 +60,12 @@ public class DemoManager {
 
 			@Override
 			public void run() {
-				citationManager.removeDemoCitations(citations);
-				violationManager.removeDemoViolations(violations);
+				mockCitationDataSource.removeCitations(citations);
+				violationManager.removeViolations(violations);
 			}
 			
 		}, 60*60*1000);
 		
 		return demoCitations;
-	
 	}
 }

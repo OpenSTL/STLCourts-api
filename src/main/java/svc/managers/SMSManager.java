@@ -27,7 +27,7 @@ import svc.models.Violation;
 import svc.util.DatabaseUtilities;
 import svc.data.textMessages.CitationTextMessage;
 import svc.data.textMessages.ListCitationsTextMessage;
-import svc.data.textMessages.SMSNotificationMessageSender;
+import svc.data.textMessages.SMSNotifier;
 
 @Component
 public class SMSManager {
@@ -40,7 +40,7 @@ public class SMSManager {
 	@Inject
 	SMSAlertManager smsAlertManager;
 	@Inject
-	SMSNotificationMessageSender smsNotificationMessageSender;
+	SMSNotifier smsNotificationMessageSender;
 	
 	@Value("${stlcourts.clientURL}")
 	String clientURL;
