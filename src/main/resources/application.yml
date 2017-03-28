@@ -1,14 +1,24 @@
 server:
   port: 8080
   contextPath: /api
+
 management:
   context-path: /manage
   port: -1
+
 stlcourts:
   citationDataSources:
     tyler:
       rootUrl: http://TODOURL/api/citations
       apiKey: TODOKEY
+
+logging:
+  level:
+    root: 'WARN'
+    org.springframework.http.client: 'OFF'
+    org.springframework.web.client: 'OFF'
+    sun.net.www.protocol.http: 'OFF'
+
 ---
 spring:
   profiles.active: local

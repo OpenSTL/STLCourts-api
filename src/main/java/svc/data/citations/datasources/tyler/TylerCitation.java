@@ -3,14 +3,26 @@ package svc.data.citations.datasources.tyler;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TylerCitation {
+
+	@JsonProperty
 	public String citationNumber;
-	public String firstname;
+
+	@JsonProperty
+	public String firstName;
+
+	@JsonProperty
 	public String lastName;
+
+	@JsonProperty
 	public String driversLicenseNumber;
+
+	@JsonProperty
 	public String dob;
 
+	@JsonProperty
 	public List<TylerViolation> violations;
 }
