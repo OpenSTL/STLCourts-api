@@ -25,7 +25,7 @@ public class SMSAlertMessageCreator {
 		message += court.address+"\n";
 		message += court.city+", "+court.state+" "+court.zip+"\n";
 		
-		message += "For more information about your citation, legal rights, how to dress, etc, please visit: \n"+additionalInfoLink;
+		message += "For more information about your citation, legal rights, how to dress, etc, please visit: \n\n"+additionalInfoLink;
 		
 		SMSAlertNotification notification = new SMSAlertNotification();
 		notification.defendantPhone = "+"+dailyAlert.defendantPhoneNumber;
