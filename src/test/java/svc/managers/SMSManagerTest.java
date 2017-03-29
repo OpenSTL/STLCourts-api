@@ -198,7 +198,7 @@ public class SMSManagerTest {
 		
 		TwimlMessageRequest twimlMessageRequest = new TwimlMessageRequest();
 		twimlMessageRequest.setBody("2");
-		String message = "Visit null/paymentOptions/ABC";
+		String message = "Visit null/citations/ABC";
 		message += "\nReply with '1' to view another ticket";
 		message += "\nReply with '2' for payment options";
 		message += "\nReply with '3' to receive text message reminders about this court date";

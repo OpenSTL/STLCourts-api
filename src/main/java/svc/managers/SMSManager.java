@@ -213,7 +213,7 @@ public class SMSManager {
 				break;
 			case "2":
 				message = "Visit ";
-				message += clientURL+"/paymentOptions";
+				message += clientURL+"/citations";
 				message += "/"+citationNumber;
 				message += replyWithAdditionalViewingOptions();
 				setNextStageInSession(session,SMS_STAGE.READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN);
