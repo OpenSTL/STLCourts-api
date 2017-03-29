@@ -41,7 +41,15 @@ public class CitationDataSourceFactoryTest {
     }
 
     @Test
-    public void getsAllCitationSources() {
+    public void getsAllCitationSources() throws IOException {
+        final List<CITATION_DATASOURCE> sourceNames = Lists.newArrayList(CITATION_DATASOURCE.TYLER);
+
+        Resource resource = mock(Resource.class);
+        when(resource.getInputStream()).thenReturn(null);
+        when(resourceLoader.getResource(CLASSPATH_URL_PREFIX + "sql/citation/datasources/get-all.sql")).thenReturn(resource);
+
+        when(jdbcTemplate.query(Matchers.anyString(),Matchers.anyMap(), Matchers.<RowMapper<CITATION_DATASOURCE>>any())).thenReturn(sourceNames);
+
         List<CitationDataSource> sources = citationDataSourceFactory.getAllCitationDataSources();
 
         assertEquals(sources.size(), 2);
