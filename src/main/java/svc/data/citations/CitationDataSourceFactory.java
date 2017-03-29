@@ -27,23 +27,35 @@ public class CitationDataSourceFactory extends BaseJdbcDao {
     private CitationDataSource tylerCitationDataSource;
 
     public List<CitationDataSource> getAllCitationDataSources() {
-        return Lists.newArrayList(getEnabledSources());
+        return getDataSources();
     }
 
     public List<CitationDataSource> getCitationDataSourcesForMunicipalities(List<Long> municipalityIds) {
-        List<CITATION_DATASOURCE> sourcesForMunicipalities = Lists.newArrayList();
+        return getDataSources(municipalityIds);
+    }
 
-        if(liveCitationSourcesEnabled) {
-            sourcesForMunicipalities.addAll(getCitationDataSourceNames(municipalityIds));
-        }
+    private List<CitationDataSource> getDataSources() {
+        return getDataSources(Lists.newArrayList());
+    }
+
+    private List<CitationDataSource> getDataSources(List<Long> municipalityIds) {
+        List<CITATION_DATASOURCE> sourcesNames = Lists.newArrayList();
 
         if(testCitationSourcesEnabled) {
-            sourcesForMunicipalities.add(CITATION_DATASOURCE.MOCK);
+            sourcesNames.add(CITATION_DATASOURCE.MOCK);
         }
 
-        List<CitationDataSource> dataSources = new ArrayList<>();
+        if(liveCitationSourcesEnabled) {
+            sourcesNames.addAll(getCitationDataSourceNames(municipalityIds));
+        }
 
-        for(CITATION_DATASOURCE source : sourcesForMunicipalities) {
+        return getSourcesFromNames(sourcesNames);
+    }
+
+    private List<CitationDataSource> getSourcesFromNames(List<CITATION_DATASOURCE> sourceNames) {
+        List<CitationDataSource> dataSources = Lists.newArrayList();
+
+        for(CITATION_DATASOURCE source : sourceNames) {
             switch(source) {
                 case MOCK:
                     dataSources.add(mockCitationDataSource);
@@ -59,31 +71,22 @@ public class CitationDataSourceFactory extends BaseJdbcDao {
         return dataSources;
     }
 
-    private List<CitationDataSource> getEnabledSources() {
-        List<CitationDataSource> sources = Lists.newArrayList();
-
-        if(testCitationSourcesEnabled) {
-            sources.add(mockCitationDataSource);
-        }
-
-        if(liveCitationSourcesEnabled) {
-            sources.add(tylerCitationDataSource);
-        }
-
-        return sources;
-    }
-
     private List<CITATION_DATASOURCE> getCitationDataSourceNames(List<Long> municipalityIds) {
         List<CITATION_DATASOURCE> sourceNames = new ArrayList<>();
         try  {
-            //NOTE: The following 2 lines could be 1 if we use Groovy
-            StringJoiner joiner  = new StringJoiner(",");
-            for(Long id : municipalityIds) { joiner.add(id.toString()); }
-
             Map<String, Object> parameterMap = new HashMap<>();
-            parameterMap.put("municipalities", joiner.toString());
 
-            sourceNames = jdbcTemplate.query(getSql("citation/datasources/get-all.sql"), parameterMap, new CitationDataSourceMapper());
+            String sql = getSql("citation/datasources/get-all.sql");
+
+            if(municipalityIds.size() > 0) {
+                //NOTE: The following 2 lines could be 1 if we use Groovy
+                StringJoiner joiner  = new StringJoiner(",");
+                for(Long id : municipalityIds) { joiner.add(id.toString()); }
+                parameterMap.put("municipalities", joiner.toString());
+
+                sql += " WHERE cd.id IN(:municipalities)";
+            }
+            sourceNames = jdbcTemplate.query(sql, parameterMap, new CitationDataSourceMapper());
         } catch (Exception e) {
             LogSystem.LogDBException(e);
         }
