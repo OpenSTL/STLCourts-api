@@ -107,6 +107,26 @@ public class SMSAlertDAO extends BaseJdbcDao {
 		}
 	}
 	
+	public List<SMSAlert> getDailyAlerts(String citationNumber, String phoneNumberToSendTo){
+		LocalDateTime today = DatabaseUtilities.getCurrentDateTime();
+		Map<String, Object> parameterMap = new HashMap<String, Object>();
+		parameterMap.put("twoWeekPlus", DatabaseUtilities.convertLocalDateTimeToDatabaseDateString(today.plusDays(15)));
+		parameterMap.put("twoWeekMinus", DatabaseUtilities.convertLocalDateTimeToDatabaseDateString(today.plusDays(13)));
+		parameterMap.put("oneWeekPlus", DatabaseUtilities.convertLocalDateTimeToDatabaseDateString(today.plusDays(8)));
+		parameterMap.put("oneWeekMinus", DatabaseUtilities.convertLocalDateTimeToDatabaseDateString(today.plusDays(6)));
+		parameterMap.put("todayPlus", DatabaseUtilities.convertLocalDateTimeToDatabaseDateString(today.plusDays(2)));
+		parameterMap.put("today", DatabaseUtilities.convertLocalDateTimeToDatabaseDateString(today));
+		parameterMap.put("citationNumber", citationNumber);
+		parameterMap.put("phoneNumber", phoneNumberToSendTo);
+		try {
+			List<SMSAlert> smsAlerts = jdbcTemplate.query(getSql("SMSAlert/get-specific-daily-SMSAlerts.sql"), parameterMap, new SMSAlertSQLMapper());
+			return smsAlerts;
+		} catch (Exception e) {
+			LogSystem.LogDBException(e);
+			return null;
+		}
+	}
+	
 	public boolean updateSMSAlertWithUpdatedCourtDate(SMSAlert dailyAlert){
 		Map<String, Object> parameterMap = new HashMap<String, Object>();
 		parameterMap.put("courtDate", DatabaseUtilities.convertLocalDateTimeToDatabaseDate(dailyAlert.courtDate));

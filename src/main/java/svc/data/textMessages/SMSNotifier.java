@@ -30,6 +30,15 @@ public class SMSNotifier {
 	
 	public void sendAlerts() {
 		List<SMSAlertNotification> notificationsToSend = smsAlertManager.getAlertMessagesToSend();
+		createAndSendMessages(notificationsToSend);
+	}
+	
+	public void sendAlerts(String citationNumber, String phoneNumberToSendTo){
+		List<SMSAlertNotification> notificationsToSend = smsAlertManager.getAlertMessagesToSend(citationNumber, phoneNumberToSendTo);
+		createAndSendMessages(notificationsToSend);
+	}
+	
+	private void createAndSendMessages(List<SMSAlertNotification> notificationsToSend){
 		for(int notificationCount = 0; notificationCount < notificationsToSend.size(); notificationCount++){
 			SMSAlertNotification notification = notificationsToSend.get(notificationCount);
 			Twilio.init(accountSid,authToken);

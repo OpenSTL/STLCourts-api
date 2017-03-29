@@ -48,8 +48,17 @@ public class SMSAlertManager {
 	}
 	
 	public List<SMSAlertNotification> getAlertMessagesToSend(){
-		List<SMSAlertNotification> notificationsToSend = new ArrayList<SMSAlertNotification>();
 		List<SMSAlert> dailyAlerts = smsAlertsDAO.getDailyAlerts();
+		return getNotificationsToSend(dailyAlerts);
+	}
+	
+	public List<SMSAlertNotification> getAlertMessagesToSend(String citationNumber, String phoneNumberToSendTo){
+		List<SMSAlert> dailyAlerts = smsAlertsDAO.getDailyAlerts(citationNumber, phoneNumberToSendTo);
+		return getNotificationsToSend(dailyAlerts);
+	}
+	
+	private List<SMSAlertNotification> getNotificationsToSend(List<SMSAlert> dailyAlerts){
+		List<SMSAlertNotification> notificationsToSend = new ArrayList<SMSAlertNotification>();
 		for (int alertCount = 0; alertCount < dailyAlerts.size(); alertCount++){
 			SMSAlert dailyAlert = dailyAlerts.get(alertCount);
 			CitationSearchCriteria criteria = new CitationSearchCriteria();

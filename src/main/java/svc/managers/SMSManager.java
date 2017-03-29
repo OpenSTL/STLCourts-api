@@ -40,7 +40,7 @@ public class SMSManager {
 	@Inject
 	SMSAlertManager smsAlertManager;
 	@Inject
-	SMSNotifier smsNotificationMessageSender;
+	SMSNotifier smsNotifier;
 	
 	@Value("${stlcourts.clientURL}")
 	String clientURL;
@@ -227,7 +227,7 @@ public class SMSManager {
 
 							@Override
 							public void run() {
-								smsNotificationMessageSender.sendAlerts();
+								smsNotifier.sendAlerts(citationNumber, phoneNumber);
 							}
 							
 						}, 1*60*1000);
