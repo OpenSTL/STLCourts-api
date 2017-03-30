@@ -1,10 +1,12 @@
 package svc.managers;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +27,7 @@ import svc.models.Violation;
 import svc.util.DatabaseUtilities;
 import svc.data.textMessages.CitationTextMessage;
 import svc.data.textMessages.ListCitationsTextMessage;
+import svc.data.textMessages.SMSNotifier;
 
 @Component
 public class SMSManager {
@@ -34,6 +37,10 @@ public class SMSManager {
 	CourtManager courtManager;
 	@Inject
 	ViolationManager violationManager;
+	@Inject
+	SMSAlertManager smsAlertManager;
+	@Inject
+	SMSNotifier smsNotifier;
 	
 	@Value("${stlcourts.clientURL}")
 	String clientURL;
@@ -72,11 +79,10 @@ public class SMSManager {
 				errMsg = "The date you entered: '"+dob+"' was not a valid date.  Please re-enter your birthdate using MM/DD/YYYY";
 			}else{
 				//Check that the DOB is > 18 years old
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-				LocalDate dobLD = LocalDate.parse(dob,formatter);
-				LocalDate now = LocalDate.now();
-				Period period = Period.between(dobLD, now);
-				if (period.getYears() < 18){
+				LocalDate dobLD = DatabaseUtilities.convertUSStringDateToLD(dob);
+				LocalDate nowLD = DatabaseUtilities.getCurrentDate();
+				Period age = dobLD.until(nowLD);
+				if (age.getYears() < 18){
 					errMsg = "You must be at least 18 years old to use www.yourSTLcourts.com";
 				}
 			}
@@ -151,10 +157,9 @@ public class SMSManager {
 		
 		licenseNumber = (licenseNumber != null)?licenseNumber:(String)session.getAttribute("license_number");
 		String dob = (String)session.getAttribute("dob");
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 		
 		try{
-			LocalDate date_of_birth = LocalDate.parse(dob,formatter);
+			LocalDate date_of_birth = DatabaseUtilities.convertUSStringDateToLD(dob);
 			session.setAttribute("license_number", licenseNumber);
 			message = ListCitations(date_of_birth, licenseNumber);
 			if (message == ""){
@@ -181,13 +186,26 @@ public class SMSManager {
 	
 	private String replyWithAdditionalViewingOptions(){
 		String message = "";
-		message += "\nReply with '1' to view another Ticket";
-		message += "\nReply with '2' for payment Options";
+		message += "\nReply with '1' to view another ticket";
+		message += "\nReply with '2' for payment options";
+		message += "\nReply with '3' to receive text message reminders about this court date";
+		message += "\nReply with '4' to remove text message reminders about this court date";
+		return message;
+	}
+	
+	private String replyWithAdditionalViewingOptionsNoText(){
+		String message = "";
+		message += "\nReply with '1' to view another ticket";
+		message += "\nReply with '2' for payment options";
 		return message;
 	}
 	
 	private String generateViewCitationsAgainMessage(HttpSession session, HttpServletRequest request, String menuChoice){
 		String message = "";
+		String citationNumber = (String)session.getAttribute("citationNumber");
+		String courtDateTime = (String)session.getAttribute("courtDateTime");
+		String phoneNumber = (String)session.getAttribute("phoneNumber");
+		String dob = (String)session.getAttribute("dob");
 		
 		switch(menuChoice){
 			case "1":
@@ -195,11 +213,43 @@ public class SMSManager {
 				break;
 			case "2":
 				message = "Visit ";
-				message += clientURL+"/paymentOptions";
-				
-				String citation = (String)session.getAttribute("citation");
-				message += "/"+citation;
-				setNextStageInSession(session,SMS_STAGE.WELCOME);
+				message += clientURL+"/citations";
+				message += "/"+citationNumber;
+				message += replyWithAdditionalViewingOptions();
+				setNextStageInSession(session,SMS_STAGE.READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN);
+				break;
+			case "3":
+				if (smsAlertManager.add(citationNumber, LocalDateTime.parse(courtDateTime), phoneNumber,DatabaseUtilities.convertUSStringDateToLD(dob))){
+					//if a demo citation was created automatically send out an sms alert in 1 minute.
+					if (citationNumber.startsWith("STLC")){
+						Timer timer = new Timer();
+						timer.schedule(new TimerTask(){
+
+							@Override
+							public void run() {
+								smsNotifier.sendAlerts(citationNumber, phoneNumber);
+							}
+							
+						}, 1*60*1000);
+					}
+					
+					message = "You will receive 3 text message reminders about your court date.  The first one will be sent two weeks prior to your court date.  The second will be send one week prior and the final one will be sent the day before your court date.";
+					message += replyWithAdditionalViewingOptionsNoText();
+					setNextStageInSession(session,SMS_STAGE.READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN);
+				}else{
+					message = "Sorry, something went wrong in processing your request for text message reminders.";
+					setNextStageInSession(session,SMS_STAGE.WELCOME);
+				}
+				break;
+			case "4":
+				if (smsAlertManager.remove(citationNumber, phoneNumber, DatabaseUtilities.convertUSStringDateToLD(dob))){
+					message = "You have been removed from receiving text message reminders about this court date.  If there are other court dates you have signed up to receive text message reminders for and you would like to be removed from receiving updates about those dates, please look them up by your citation number and remove them too.";
+					message += replyWithAdditionalViewingOptionsNoText();
+					setNextStageInSession(session,SMS_STAGE.READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN);
+				}else{
+					message = "Sorry, something went wrong in processing your request to be removed from text message reminders.";
+					setNextStageInSession(session,SMS_STAGE.WELCOME);
+				}
 				break;
 			default:
 				message = "Option not recognized.";
@@ -220,9 +270,8 @@ public class SMSManager {
 		String dob = (String)session.getAttribute("dob");
 		String license = (String)session.getAttribute("license_number");
 		criteria = new CitationSearchCriteria();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 		try{
-			criteria.dateOfBirth = LocalDate.parse(dob, formatter);
+			criteria.dateOfBirth = DatabaseUtilities.convertUSStringDateToLD(dob);
 			criteria.driversLicenseNumber = license;
 			citations = citationManager.findCitations(criteria);
 			int citationNumberToView = Integer.parseInt(citationNumber) - 1;
@@ -233,7 +282,8 @@ public class SMSManager {
 				CitationTextMessage citationTextMessage = new CitationTextMessage(citationToView,violations,court);
 				message = citationTextMessage.toTextMessage();
 				message += replyWithAdditionalViewingOptions();
-				session.setAttribute("citation", citationToView.citation_number);
+				session.setAttribute("citationNumber", citationToView.citation_number);
+				session.setAttribute("courtDateTime", citationToView.court_dateTime.toString());
 				nextTextStage = SMS_STAGE.READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN;
 				
 			}else{
@@ -262,6 +312,7 @@ public class SMSManager {
 		SMS_STAGE currentTextStage = getStageFromSession(session);
 		String message = "";
 		String content = twimlMessageRequest.getBody().trim();
+		session.setAttribute("phoneNumber", twimlMessageRequest.getFrom());
 		
 		switch(currentTextStage){
 		case WELCOME:

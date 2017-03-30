@@ -7,7 +7,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import svc.dto.CitationSearchCriteria;
-import svc.logging.LogSystem;
 import svc.managers.*;
 import svc.models.*;
 import svc.security.HashUtil;

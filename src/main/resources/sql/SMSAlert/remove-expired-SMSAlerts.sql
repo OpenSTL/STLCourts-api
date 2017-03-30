@@ -1,0 +1,1 @@
+DELETE FROM sms_alerts WHERE court_date < :expiredDate
