@@ -1,6 +1,7 @@
 package svc.data.citations.datasources.mock;
 
 import com.google.common.collect.Lists;
+
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import svc.data.citations.CitationDataSource;
@@ -16,6 +17,7 @@ import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,6 +74,51 @@ public class MockCitationDataSource extends BaseJdbcDao implements CitationDataS
         }
     }
 
+    public boolean insertCitations(List<Citation> citations){
+ 		List<String> newCitationNumbers = new ArrayList<String>();
+ 		
+ 		try{
+ 			for(int i = 0; i < citations.size(); i++){
+ 				Citation c = citations.get(i);
+ 				Map<String, Object> parameterMap = new HashMap<>();
+ 	            parameterMap.put("citationNumber",c.citation_number);
+ 	            parameterMap.put("citationDate", DatabaseUtilities.convertLocalDateToDatabaseDateString(c.citation_date));
+ 	            parameterMap.put("firstName", c.first_name);
+ 	            parameterMap.put("lastName",c.last_name);
+ 	            parameterMap.put("dob", DatabaseUtilities.convertLocalDateToDatabaseDateString(c.date_of_birth));
+ 	            parameterMap.put("address", c.defendant_address);
+ 	            parameterMap.put("city", c.defendant_city);
+ 	            parameterMap.put("state", c.defendant_state);
+ 	            parameterMap.put("driversLicenseNumber", c.drivers_license_number);
+ 	            parameterMap.put("courtDate", DatabaseUtilities.convertLocalDateTimeToDatabaseDateString(c.court_dateTime));
+ 	            parameterMap.put("courtLocation", c.court_location);
+ 	            parameterMap.put("courtAddress", c.court_address);
+ 	            parameterMap.put("courtId", c.court_id.getValue());
+ 	            jdbcTemplate.update(getSql("citation/insert-citation.sql"), parameterMap); 
+ 	            newCitationNumbers.add(c.citation_number);
+ 			}
+ 		}catch(Exception e){
+ 			LogSystem.LogDBException(e);
+ 			return false;
+ 		}
+ 		return true;
+ 	}
+		 	
+ 	public boolean removeCitations(List<Citation> citations){
+ 		try{
+ 			for(int i = 0; i < citations.size(); i++){
+ 				Citation c = citations.get(i);
+ 				Map<String, Object> parameterMap = new HashMap<>();
+ 	            parameterMap.put("citationNumber",c.citation_number);
+ 	            jdbcTemplate.update(getSql("citation/delete-citation-by-citationNumber.sql"), parameterMap); 
+ 			}
+ 		}catch(Exception e){
+ 			LogSystem.LogDBException(e);
+ 			return false;
+ 		}
+ 		return true;
+ 	}
+ 	
     private class CitationSQLMapper implements RowMapper<Citation> {
         public Citation mapRow(ResultSet rs, int i) {
             Citation citation = new Citation();

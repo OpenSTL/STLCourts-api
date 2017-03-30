@@ -1,8 +1,11 @@
 package svc.data.citations;
 
 import org.springframework.stereotype.Repository;
+
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -57,6 +60,47 @@ public class ViolationDAO
 		return violations;
 	}
 	
+	public boolean insertViolations(List<Violation> violations){
+		try{
+			for(int i = 0; i < violations.size(); i++){
+				Violation v = violations.get(i);
+				String sql = "INSERT INTO violations (citation_number,violation_number,violation_description,warrant_status,warrant_number,status,status_date,fine_amount,court_cost) VALUES ('"+v.citation_number+"','"+v.violation_number+"','"+v.violation_description+"',"+v.warrant_status+",'"+v.warrant_number+"','"+v.status.name()+"','"+DatabaseUtilities.convertLocalDateTimeToDatabaseDateString(v.status_date)+"',"+v.fine_amount.toString()+","+v.court_cost.toString()+")";
+				jdbcTemplate.execute(sql, new PreparedStatementCallback<Boolean>(){
+					@Override
+					public Boolean doInPreparedStatement(java.sql.PreparedStatement ps)
+							throws SQLException, DataAccessException {
+						return ps.execute();
+					}
+				});
+			}	
+		}catch(Exception e){
+			LogSystem.LogDBException(e);
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean removeViolations(List<Violation> violations){
+		try{
+			for(int i = 0; i < violations.size(); i++){
+				Violation v = violations.get(i);
+				String sql = "DELETE FROM violations WHERE citation_number = '"+v.citation_number+"'";
+				jdbcTemplate.execute(sql, new PreparedStatementCallback<Boolean>(){
+					@Override
+					public Boolean doInPreparedStatement(java.sql.PreparedStatement ps)
+							throws SQLException, DataAccessException {
+						return ps.execute();
+					}
+				});
+			}
+		}catch(Exception e){
+			LogSystem.LogDBException(e);
+			return false;
+		}
+		return true;
+	}
+	
+		 
 	private class ViolationSQLMapper implements RowMapper<Violation>
 	{
 		public Violation mapRow(ResultSet rs, int i) throws SQLException
@@ -71,7 +115,7 @@ public class ViolationDAO
 				violation.warrant_status = rs.getBoolean("warrant_status");
 				violation.warrant_number = rs.getString("warrant_number");
 				violation.status = VIOLATION_STATUS.convertDatabaseStatusToEnum(rs.getString("status"));
-				violation.status_date = DatabaseUtilities.getDatabaseLocalDate(rs.getDate("status_date"));
+				violation.status_date = DatabaseUtilities.getFromDatabase(rs,"status_date");
 				String fineAmountStr = rs.getString("fine_amount");
 				if (fineAmountStr != null)
 				{

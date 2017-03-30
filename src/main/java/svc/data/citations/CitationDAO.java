@@ -3,15 +3,17 @@ package svc.data.citations;
 import com.google.common.collect.Lists;
 import org.springframework.stereotype.Component;
 import rx.Observable;
+import svc.data.jdbc.BaseJdbcDao;
 import svc.models.Citation;
 
 import javax.inject.Inject;
+
 import java.time.LocalDate;
 import java.util.List;
 
 //NOTE: If we switch to groovy, we can greatly reduce code here since we can pass the function as an argument to a method
 @Component
-public class CitationDAO {
+public class CitationDAO extends BaseJdbcDao {
 	@Inject
     private CitationDataSourceFactory citationDataSourceFactory;
 
@@ -47,4 +49,5 @@ public class CitationDAO {
 
         return Observable.merge(citationSearches).onExceptionResumeNext(Observable.just(null)).toList().toBlocking().first();
 	}
+	
 }

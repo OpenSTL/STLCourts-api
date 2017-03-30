@@ -36,6 +36,9 @@ public/
 
 .metadata/*
 demo/src/main/resources/public/dist/*
+testdb.lck
+testdb.properties
+testdb.script
 
 # IDEA
 *.iml

@@ -22,4 +22,12 @@ public class ViolationManager {
 		return violationDAO.getViolationsByCitationNumber(citationNumber);
 	}
 	
+	public boolean insertViolations(List<Violation> violations){
+		return violationDAO.insertViolations(violations);
+	}
+	
+	public boolean removeViolations(List<Violation> violations){
+		return violationDAO.removeViolations(violations);
+	}
+	
 }

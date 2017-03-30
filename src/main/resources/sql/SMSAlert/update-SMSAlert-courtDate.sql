@@ -1,0 +1,1 @@
+UPDATE sms_alerts SET court_date = :courtDate WHERE id = :smsAlertId
