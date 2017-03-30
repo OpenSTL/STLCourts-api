@@ -21,6 +21,8 @@ public class Citation {
 	public String court_location;
 	public String court_address;
 	
+	public HashableEntity<Municipality> municipalityId;
+	
 	public List<Violation> violations;
 	public HashableEntity<Court> court_id;
 }
