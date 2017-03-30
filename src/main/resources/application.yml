@@ -16,13 +16,17 @@ stlcourts:
 ---
 spring:
   profiles.active: local
+  cache:
+    cache-names: courtsById,courtsByMunicipalityId,allCourts
+    caffeine:
+      spec: expireAfterWrite=86400s
 ---
 spring:
   profiles: local
 stlcourts:
   citationDataSources:
     testEnabled: true
-    liveEnabled: true
+    liveEnabled: false
   clientURL: http://localhost:9000
   demoMode: true
   runHeadless: true
