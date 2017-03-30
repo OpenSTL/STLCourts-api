@@ -228,6 +228,7 @@ public class SMSManager {
 							@Override
 							public void run() {
 								smsNotifier.sendAlerts(citationNumber, phoneNumber);
+								smsAlertManager.remove(citationNumber, phoneNumber, DatabaseUtilities.convertUSStringDateToLD(dob));
 							}
 							
 						}, 1*60*1000);
