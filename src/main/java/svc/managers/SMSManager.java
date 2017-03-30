@@ -21,6 +21,7 @@ import com.twilio.twiml.MessagingResponse;
 
 import svc.dto.CitationSearchCriteria;
 import svc.models.Citation;
+import svc.models.CitationDataSourceWrapper;
 import svc.models.Court;
 import svc.models.TwimlMessageRequest;
 import svc.models.Violation;
@@ -203,6 +204,7 @@ public class SMSManager {
 	private String generateViewCitationsAgainMessage(HttpSession session, HttpServletRequest request, String menuChoice){
 		String message = "";
 		String citationNumber = (String)session.getAttribute("citationNumber");
+		String citationDataSource = (String)session.getAttribute("citationDataSource");
 		String courtDateTime = (String)session.getAttribute("courtDateTime");
 		String phoneNumber = (String)session.getAttribute("phoneNumber");
 		String dob = (String)session.getAttribute("dob");
@@ -219,7 +221,7 @@ public class SMSManager {
 				setNextStageInSession(session,SMS_STAGE.READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN);
 				break;
 			case "3":
-				if (smsAlertManager.add(citationNumber, LocalDateTime.parse(courtDateTime), phoneNumber,DatabaseUtilities.convertUSStringDateToLD(dob))){
+				if (smsAlertManager.add(citationNumber,citationDataSource, LocalDateTime.parse(courtDateTime), phoneNumber,DatabaseUtilities.convertUSStringDateToLD(dob))){
 					//if a demo citation was created automatically send out an sms alert in 1 minute.
 					if (citationNumber.startsWith("STLC")){
 						Timer timer = new Timer();
@@ -228,6 +230,7 @@ public class SMSManager {
 							@Override
 							public void run() {
 								smsNotifier.sendAlerts(citationNumber, phoneNumber);
+								smsAlertManager.remove(citationNumber, phoneNumber, DatabaseUtilities.convertUSStringDateToLD(dob));
 							}
 							
 						}, 1*60*1000);
@@ -263,7 +266,7 @@ public class SMSManager {
 	
 	private String generateViewCitationMessage(HttpSession session, String citationNumber){
 		CitationSearchCriteria criteria;
-		List<Citation> citations;
+		List<CitationDataSourceWrapper> citationDataSourceWrappers;
 		String message = "";
 		SMS_STAGE nextTextStage;
 		
@@ -273,16 +276,17 @@ public class SMSManager {
 		try{
 			criteria.dateOfBirth = DatabaseUtilities.convertUSStringDateToLD(dob);
 			criteria.driversLicenseNumber = license;
-			citations = citationManager.findCitations(criteria);
+			citationDataSourceWrappers = citationManager.findCitationsInDataSourceWrapper(criteria);
 			int citationNumberToView = Integer.parseInt(citationNumber) - 1;
-			if (citationNumberToView >= 0 && citationNumberToView < citations.size()){
-				Citation citationToView = citations.get(citationNumberToView);
+			if (citationNumberToView >= 0 && citationNumberToView < citationDataSourceWrappers.size()){
+				Citation citationToView = citationDataSourceWrappers.get(citationNumberToView).citation;
 				List<Violation> violations = violationManager.getViolationsByCitationNumber(citationToView.citation_number);
 				Court court = courtManager.getCourtById(citationToView.court_id.getValue());
 				CitationTextMessage citationTextMessage = new CitationTextMessage(citationToView,violations,court);
 				message = citationTextMessage.toTextMessage();
 				message += replyWithAdditionalViewingOptions();
 				session.setAttribute("citationNumber", citationToView.citation_number);
+				session.setAttribute("citationDataSource",citationDataSourceWrappers.get(citationNumberToView).citationDataSource.toString());
 				session.setAttribute("courtDateTime", citationToView.court_dateTime.toString());
 				nextTextStage = SMS_STAGE.READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN;
 				

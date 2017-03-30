@@ -11,6 +11,7 @@ import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import svc.data.citations.datasources.CITATION_DATASOURCE;
 import svc.data.jdbc.BaseJdbcDao;
 import svc.logging.LogSystem;
 import svc.models.SMSAlert;
@@ -33,10 +34,11 @@ public class SMSAlertDAO extends BaseJdbcDao {
 		}
 	}
 	
-	public boolean add(String citationNumber, LocalDateTime courtDateTime, String phoneNumber, LocalDate dob){
+	public boolean add(String citationNumber, String citationDataSource, LocalDateTime courtDateTime, String phoneNumber, LocalDate dob){
 		if (!doesAlertExist(citationNumber,phoneNumber)){
 			Map<String, Object> parameterMap = new HashMap<String, Object>();
 			parameterMap.put("citationNumber", citationNumber);
+			parameterMap.put("citationDataSource", citationDataSource);
 			parameterMap.put("courtDateTime", DatabaseUtilities.convertLocalDateTimeToDatabaseDate(courtDateTime));
 			parameterMap.put("phoneNumber", phoneNumber);
 			parameterMap.put("dob", DatabaseUtilities.convertLocalDateToDatabaseDate(dob));
@@ -146,6 +148,7 @@ public class SMSAlertDAO extends BaseJdbcDao {
 			try {	
 				smsAlert.id = rs.getInt("id");
 				smsAlert.citationNumber = rs.getString("citation_number");
+				smsAlert.citationDataSource = CITATION_DATASOURCE.valueOf(rs.getString("citation_data_source"));
 				smsAlert.dob = DatabaseUtilities.getDatabaseLocalDate(rs.getDate("date_of_birth"));
 				smsAlert.courtDate = DatabaseUtilities.getFromDatabase(rs, "court_date");
 				smsAlert.defendantPhoneNumber = rs.getString("phone_number");

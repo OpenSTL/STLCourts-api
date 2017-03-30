@@ -35,8 +35,8 @@ public class SMSAlertManager {
 	@Value("${stlcourts.clientURL}")
 	String clientURL;
 	
-	public boolean add(String citationNumber, LocalDateTime courtDateTime, String phoneNumber, LocalDate dob){
-		return smsAlertsDAO.add(citationNumber, courtDateTime, phoneNumber, dob);
+	public boolean add(String citationNumber,String citationDataSource, LocalDateTime courtDateTime, String phoneNumber, LocalDate dob){
+		return smsAlertsDAO.add(citationNumber, citationDataSource, courtDateTime, phoneNumber, dob);
 	}
 	
 	public boolean remove(String citationNumber, String phoneNumber, LocalDate dob){
@@ -64,9 +64,9 @@ public class SMSAlertManager {
 			CitationSearchCriteria criteria = new CitationSearchCriteria();
 			criteria.dateOfBirth = dailyAlert.dob;
 			criteria.citationNumber = dailyAlert.citationNumber;
-			List<Citation> citations = citationManager.findCitations(criteria);
+			List<Citation> citations = citationManager.findCitations(criteria,dailyAlert.citationDataSource.toString());
 			Court court = courtManager.getCourtById(citations.get(0).court_id.getValue());
-			String link = clientURL+"/paymentOptions/"+citations.get(0).citation_number;
+			String link = clientURL+"/citations/"+citations.get(0).citation_number;
 			
 			boolean canSendMessage = true;
 			if (!isAlertDateStillCurrent(dailyAlert.courtDate,citations.get(0))){

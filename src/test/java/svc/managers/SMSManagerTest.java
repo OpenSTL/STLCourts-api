@@ -1,5 +1,6 @@
 package svc.managers;
 
+import com.google.common.collect.Lists;
 import com.twilio.twiml.Body;
 import com.twilio.twiml.Message;
 import com.twilio.twiml.MessagingResponse;
@@ -11,6 +12,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.mock.web.MockHttpSession;
+
+import svc.data.citations.datasources.CITATION_DATASOURCE;
 import svc.dto.CitationSearchCriteria;
 import svc.models.*;
 import svc.types.HashableEntity;
@@ -132,8 +135,10 @@ public class SMSManagerTest {
 		DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
 		citation.court_dateTime = LocalDateTime.parse("11/20/2015 04:22", formatter2);
 		citation.court_id = new HashableEntity<Court>(Court.class,1L);
-		List<Citation> citations = new ArrayList<Citation>();
-		citations.add(citation);
+		CitationDataSourceWrapper citationDataSourceWrapper = new CitationDataSourceWrapper();
+		citationDataSourceWrapper.citationDataSource = CITATION_DATASOURCE.MOCK;
+		citationDataSourceWrapper.citation = citation;
+		List<CitationDataSourceWrapper> citationDataSourceWrappers = Lists.newArrayList(citationDataSourceWrapper);
 		
 		Court court = new Court();
 		court.address = "1 Anystreet";
@@ -152,8 +157,8 @@ public class SMSManagerTest {
 		violations.add(violation);
 		
 		
-		when(citationManagerMock.findCitations((CitationSearchCriteria)notNull())).thenReturn(citations);
-		when(courtManagerMock.getCourtById(citations.get(0).court_id.getValue())).thenReturn(court);
+		when(citationManagerMock.findCitationsInDataSourceWrapper((CitationSearchCriteria)notNull())).thenReturn(citationDataSourceWrappers);
+		when(courtManagerMock.getCourtById(citationDataSourceWrappers.get(0).citation.court_id.getValue())).thenReturn(court);
 		when(violationManagerMock.getViolationsByCitationNumber(anyString())).thenReturn(violations);
 		TwimlMessageRequest twimlMessageRequest = new TwimlMessageRequest();
 		twimlMessageRequest.setBody("1");
