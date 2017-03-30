@@ -3,7 +3,7 @@ DROP TABLE sms_alerts;
 # Create new sms_alerts table
 CREATE TABLE sms_alerts
 (
-	id 						INTEGER 		IDENTITY PRIMARY KEY,
+	id 						      INTEGER 		        NOT NULL AUTO_INCREMENT PRIMARY KEY,
     citation_number 		VARCHAR(25),
     citation_data_source	VARCHAR(50),
     court_date 				DATETIME,
