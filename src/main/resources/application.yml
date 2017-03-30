@@ -26,7 +26,7 @@ spring:
 stlcourts:
   citationDataSources:
     testEnabled: true
-    liveEnabled: false
+    liveEnabled: true
   clientURL: http://localhost:9000
   demoMode: true
   runHeadless: true
@@ -42,7 +42,7 @@ spring:
 stlcourts:
   citationDataSources:
     testEnabled: true
-    liveEnabled: false
+    liveEnabled: true
   clientURL: http://localhost:9000
   demoMode: true
   runHeadless: false
@@ -66,7 +66,7 @@ stlcourts:
     testEnabled: ${TEST_SOURCES_ENABLED}
     liveEnabled: ${LIVE_SOURCES_ENABLED}
   clientURL: http://test.yourstlcourts.com
-  demoMode: false
+  demoMode: true
   runHeadless: true
   security:
     municipalitySalt: ${MUNICIPALITY_SALT}
