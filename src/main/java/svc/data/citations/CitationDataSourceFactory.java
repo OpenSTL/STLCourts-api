@@ -33,6 +33,12 @@ public class CitationDataSourceFactory extends BaseJdbcDao {
     public List<CitationDataSource> getCitationDataSourcesForMunicipalities(List<Long> municipalityIds) {
         return getDataSources(municipalityIds);
     }
+    
+    public Integer getMunicipalityIdFromCitationDataSource(CITATION_DATASOURCE citationDataSource){
+    	
+    	
+    	return null;
+    }
 
     private List<CitationDataSource> getDataSources() {
         return getDataSources(Lists.newArrayList());

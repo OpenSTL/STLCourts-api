@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import svc.data.citations.CitationDataSource;
+import svc.data.citations.datasources.CITATION_DATASOURCE;
 import svc.models.Citation;
 
 import java.sql.Date;
@@ -24,6 +25,11 @@ public class TylerCitationDataSource implements CitationDataSource {
 
 	@Autowired
 	private RestTemplate restTemplate;
+	
+	@Override
+	public CITATION_DATASOURCE getCitationDataSource(){
+		return CITATION_DATASOURCE.TYLER;
+	}
 
 	@SuppressWarnings("unused")
 	@Override
