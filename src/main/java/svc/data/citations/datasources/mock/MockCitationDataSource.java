@@ -1,7 +1,5 @@
 package svc.data.citations.datasources.mock;
 
-import com.google.common.collect.Lists;
-
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import svc.data.citations.CitationDataSource;
@@ -32,9 +30,9 @@ public class MockCitationDataSource extends BaseJdbcDao implements CitationDataS
             parameterMap.put("citationNumber", citationNumber);
             parameterMap.put("dob", Date.valueOf(dob));
             String sql = "SELECT * FROM citations WHERE citation_number = :citationNumber AND date_of_birth = :dob";
-            Citation citation = jdbcTemplate.queryForObject(sql, parameterMap, new CitationSQLMapper());
+            List<Citation> citations = jdbcTemplate.query(sql, parameterMap, new CitationSQLMapper());
 
-            return Lists.newArrayList(citation);
+            return citations;
         } catch (Exception e) {
             LogSystem.LogDBException(e);
             return null;
