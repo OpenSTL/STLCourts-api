@@ -16,6 +16,7 @@
 		<config>java:svc.controllers.CitationController</config>
 		<config>java:svc.controllers.ViolationController</config>
 		<config>java:svc.controllers.CourtController</config>
+		<config>java:svc.controllers.DemoController</config>
 		<config>java:svc.controllers.SMSController</config>
 	</autoconfigs>
 	<configSets>

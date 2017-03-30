@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import svc.data.citations.datasources.mock.MockCitationDataSource;
 import svc.models.Citation;
+import svc.models.CitationDataSourceWrapper;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -46,10 +47,10 @@ public class CitationDAOTest {
 
         when(citationDataSourceFactory.getAllCitationDataSources()).thenReturn(SOURCES);
 
-		List<Citation> citations = citationDAO.getByCitationNumberAndDOB(CITATIONNUMBER, date);
+		List<CitationDataSourceWrapper> citationDataSourceWrappers = citationDAO.getByCitationNumberAndDOB(CITATIONNUMBER, date);
 
-		assertEquals(citations.size(), 1);
-		assertThat(citations.get(0).id, is(3));
+		assertEquals(citationDataSourceWrappers.size(), 1);
+		assertThat(citationDataSourceWrappers.get(0).citation.id, is(3));
     }
     
 	@Test
@@ -68,9 +69,9 @@ public class CitationDAOTest {
 
         when(citationDataSourceFactory.getAllCitationDataSources()).thenReturn(SOURCES);
 
-        List<Citation> citations = citationDAO.getByLicenseAndDOB(licenseNunmber, date);
+        List<CitationDataSourceWrapper> citationDataSourceWrappers = citationDAO.getByLicenseAndDOB(licenseNunmber, date);
 
-        assertThat(citations.get(0).id, is(3));
+        assertThat(citationDataSourceWrappers.get(0).citation.id, is(3));
     }
 
 	@Test
@@ -90,8 +91,8 @@ public class CitationDAOTest {
 
         when(citationDataSourceFactory.getCitationDataSourcesForMunicipalities(munis)).thenReturn(SOURCES);
 
-        List<Citation> citations = citationDAO.getByNameAndMunicipalitiesAndDOB(name, munis, date);
+        List<CitationDataSourceWrapper> citationDataSourceWrappers = citationDAO.getByNameAndMunicipalitiesAndDOB(name, munis, date);
 
-        assertThat(citations.get(0).id, is(3));
+        assertThat(citationDataSourceWrappers.get(0).citation.id, is(3));
 	}
 }

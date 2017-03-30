@@ -106,6 +106,7 @@ CREATE TABLE sms_alerts
 (
 	id 						INTEGER 		IDENTITY PRIMARY KEY,
     citation_number 		VARCHAR(25),
+    citation_data_source	VARCHAR(50),
     court_date 				DATETIME,
     phone_number			VARCHAR(25),
     date_of_birth 			DATE     						NULL
