@@ -1,5 +1,8 @@
 package svc.data.citations.datasources.tyler;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -24,22 +27,33 @@ public class TylerCitationDataSourceIntegrationTest {
 	@Autowired
 	private TylerCitationDataSource tylerCitationDataSource;
 
-	@SuppressWarnings("unused")
 	@Test
 	public void testCitationNumber() {
-		List<Citation> citations = tylerCitationDataSource.getByCitationNumberAndDOB("", LocalDate.parse("1900-01-01"));
+		List<Citation> citations = tylerCitationDataSource.getByCitationNumberAndDOB("",
+				LocalDate.parse(""));
+
+		assertNotEquals(citations.size(), 0);
+		assertEquals(citations.get(0).citation_number, "120499230");
+		assertEquals(citations.get(0).drivers_license_number, "337543025");
 	}
 
-	@SuppressWarnings("unused")
 	@Test
 	public void testDriversLicense() {
-		List<Citation> citations = tylerCitationDataSource.getByLicenseAndDOB("", LocalDate.parse("1900-01-01"));
+		List<Citation> citations = tylerCitationDataSource.getByLicenseAndDOB("",
+				LocalDate.parse(""));
+
+		assertNotEquals(citations.size(), 0);
+		assertEquals(citations.get(0).citation_number, "120499230");
+		assertEquals(citations.get(0).drivers_license_number, "337543025");
 	}
 
-	@SuppressWarnings("unused")
 	@Test
 	public void testName() {
 		List<Citation> citations = tylerCitationDataSource.getByNameAndMunicipalitiesAndDOB("", null,
-				LocalDate.parse("1900-01-01"));
+				LocalDate.parse(""));
+
+		assertNotEquals(citations.size(), 0);
+		assertEquals(citations.get(0).citation_number, "120499230");
+		assertEquals(citations.get(0).drivers_license_number, "337543025");
 	}
 }

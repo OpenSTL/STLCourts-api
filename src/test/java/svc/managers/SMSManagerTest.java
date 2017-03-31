@@ -144,7 +144,7 @@ public class SMSManagerTest {
 		Violation violation = new Violation();
 		violation.violation_number = "Y246";
 		violation.violation_description = "myDescription";
-		violation.status_date = LocalDate.parse("12/01/2015", formatter);
+		violation.status_date = LocalDateTime.parse("12/01/2015 09:14", formatter2);
 		violation.status = VIOLATION_STATUS.CONT_FOR_PAYMENT;
 		violation.fine_amount = new BigDecimal(200.54);
 		violation.court_cost = new BigDecimal(22.34);
@@ -163,8 +163,10 @@ public class SMSManagerTest {
 		message += "\nStatus (as of 12/01/2015): "+violation.status.toString();
 		message += "\nFine Amount: $"+violation.fine_amount;
 		message += "\nCourt Costs: $"+violation.court_cost;
-		message += "\nReply with '1' to view another Ticket";
-		message += "\nReply with '2' for payment Options";
+		message += "\nReply with '1' to view another ticket";
+		message += "\nReply with '2' for payment options";
+		message += "\nReply with '3' to receive text message reminders about this court date";
+		message += "\nReply with '4' to remove text message reminders about this court date";
 		MessagingResponse twimlResponse = manager.getTwimlResponse(twimlMessageRequest,requestMock, session);
 		assertEquals(createTwimlResponse(message).toXml(),twimlResponse.toXml());
 	}
@@ -192,11 +194,15 @@ public class SMSManagerTest {
 	@Test
 	public void checkPaymentURL() throws TwiMLException{
 		setStageInSession(session,SMS_STAGE.READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN);
-		session.setAttribute("citation", "ABC");
+		session.setAttribute("citationNumber", "ABC");
 		
 		TwimlMessageRequest twimlMessageRequest = new TwimlMessageRequest();
 		twimlMessageRequest.setBody("2");
-		String message = "Visit null/paymentOptions/ABC";
+		String message = "Visit null/citations/ABC";
+		message += "\nReply with '1' to view another ticket";
+		message += "\nReply with '2' for payment options";
+		message += "\nReply with '3' to receive text message reminders about this court date";
+		message += "\nReply with '4' to remove text message reminders about this court date";
 		MessagingResponse twimlResponse = manager.getTwimlResponse(twimlMessageRequest,requestMock, session);
 		assertEquals(createTwimlResponse(message).toXml(),twimlResponse.toXml());
 	}

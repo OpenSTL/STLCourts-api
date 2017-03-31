@@ -11,6 +11,10 @@ stlcourts:
     tyler:
       rootUrl: http://TODOURL/api/citations
       apiKey: TODOKEY
+  twilio:
+    accountSid: ${TWILIO_SID}
+    authToken: ${TWILIO_AUTH_TOKEN}
+    phoneNumber: +13142548050
 
 logging:
   level:
@@ -22,6 +26,10 @@ logging:
 ---
 spring:
   profiles.active: local
+  cache:
+    cache-names: courtsById,courtsByMunicipalityId,allCourts
+    caffeine:
+      spec: expireAfterWrite=86400s
 ---
 spring:
   profiles: local
@@ -30,12 +38,28 @@ stlcourts:
     testEnabled: true
     liveEnabled: true
   clientURL: http://localhost:9000
+  demoMode: true
+  runHeadless: true
   security:
     municipalitySalt: salt1
     judgeSalt: salt2
     courtSalt: salt3
 management:
   port: 8080
+---
+spring:
+  profiles: localWithHSQLAccess
+stlcourts:
+  citationDataSources:
+    testEnabled: true
+    liveEnabled: true
+  clientURL: http://localhost:9000
+  demoMode: true
+  runHeadless: false
+  security:
+    municipalitySalt: salt1
+    judgeSalt: salt2
+    courtSalt: salt3
 ---
 spring:
   profiles: qa
@@ -52,6 +76,8 @@ stlcourts:
     testEnabled: ${TEST_SOURCES_ENABLED}
     liveEnabled: ${LIVE_SOURCES_ENABLED}
   clientURL: http://test.yourstlcourts.com
+  demoMode: true
+  runHeadless: true
   security:
     municipalitySalt: ${MUNICIPALITY_SALT}
     judgeSalt: ${JUDGE_SALT}
@@ -72,6 +98,8 @@ stlcourts:
     testEnabled: false
     liveEnabled: true
   clientURL: http://www.yourstlcourts.com
+  demoMode: false
+  runHeadless: true
   security:
     municipalitySalt: ${MUNICIPALITY_SALT}
     judgeSalt: ${JUDGE_SALT}

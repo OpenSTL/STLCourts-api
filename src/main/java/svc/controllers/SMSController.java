@@ -1,6 +1,7 @@
 package svc.controllers;
 
 import java.io.IOException;
+
 import com.twilio.twiml.MessagingResponse;
 import com.twilio.twiml.TwiMLException;
 
@@ -25,6 +26,7 @@ import svc.models.*;
 public class SMSController {
 	@Inject
 	SMSManager smsManager;	
+	
 		
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.POST)
@@ -41,6 +43,5 @@ public class SMSController {
 	    	e.printStackTrace();
 	    }
 	}
-	
 		
 }

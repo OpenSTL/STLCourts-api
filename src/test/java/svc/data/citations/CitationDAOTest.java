@@ -31,7 +31,6 @@ public class CitationDAOTest {
     @Mock
     MockCitationDataSource mockCitationDataSource;
     
-    @SuppressWarnings("unchecked")
 	@Test
     public void returnsCitationGivenCitationNumberAndDOB() throws ParseException{
     	final Citation CITATION = new Citation();
@@ -53,7 +52,6 @@ public class CitationDAOTest {
 		assertThat(citations.get(0).id, is(3));
     }
     
-    @SuppressWarnings("unchecked")
 	@Test
     public void returnsCitationsGivenLicenseAndDOB() throws ParseException{
     	final Citation CITATION = new Citation();
@@ -75,7 +73,6 @@ public class CitationDAOTest {
         assertThat(citations.get(0).id, is(3));
     }
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void returnsCitationsWhenGivenDOBLastNameAndMultipleMunicipalities() throws ParseException, IOException {
         final Citation CITATION = new Citation();
