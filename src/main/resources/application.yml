@@ -9,8 +9,8 @@ management:
 stlcourts:
   citationDataSources:
     tyler:
-      rootUrl: http://TODOURL/api/citations
-      apiKey: TODOKEY
+      rootUrl: ${TYLER_ROOT_URL}
+      apiKey: ${TYLER_API_KEY}
   twilio:
     accountSid: ${TWILIO_SID}
     authToken: ${TWILIO_AUTH_TOKEN}
