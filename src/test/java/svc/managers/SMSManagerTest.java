@@ -144,7 +144,6 @@ public class SMSManagerTest {
 		Violation violation = new Violation();
 		violation.violation_number = "Y246";
 		violation.violation_description = "myDescription";
-		violation.status_date = LocalDateTime.parse("12/01/2015 09:14", formatter2);
 		violation.status = VIOLATION_STATUS.CONT_FOR_PAYMENT;
 		violation.fine_amount = new BigDecimal(200.54);
 		violation.court_cost = new BigDecimal(22.34);
@@ -160,7 +159,7 @@ public class SMSManagerTest {
 		String message = "Ticket Date: 02/03/1990\nCourt Date: 11/20/2015\nCourt Time: 04:22 AM\nTicket #: "+citation.citation_number;
 		message += "\nCourt Address: "+court.address+" "+court.city+", "+court.state+" "+court.zip;
 		message += "\nViolation #: "+violation.violation_number+"\nViolation: "+violation.violation_description;
-		message += "\nStatus (as of 12/01/2015): "+violation.status.toString();
+		message += "\nStatus: "+violation.status.toString();
 		message += "\nFine Amount: $"+violation.fine_amount;
 		message += "\nCourt Costs: $"+violation.court_cost;
 		message += "\nReply with '1' to view another ticket";

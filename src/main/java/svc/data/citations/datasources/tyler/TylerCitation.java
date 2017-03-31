@@ -22,6 +22,9 @@ public class TylerCitation {
 
 	@JsonProperty
 	public String dob;
+	
+	@JsonProperty
+	public String violationDate;
 
 	@JsonProperty
 	public List<TylerViolation> violations;

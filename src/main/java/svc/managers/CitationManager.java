@@ -14,40 +14,24 @@ import java.util.List;
 public class CitationManager {
 	@Inject
 	private CitationDAO citationDAO;
-	@Inject
-	private ViolationManager violationManager;
 
 	public List<Citation> findCitations(CitationSearchCriteria criteria) {
 		// Search by DOB & citation number
 		if (criteria.dateOfBirth != null && criteria.citationNumber != null) {
-			List<Citation> citations = citationDAO.getByCitationNumberAndDOB(criteria.citationNumber, criteria.dateOfBirth);
-			return populateViolations(citations);
+			return citationDAO.getByCitationNumberAndDOB(criteria.citationNumber, criteria.dateOfBirth);
 		}
 		
 		// DOB & License No
 		if (criteria.dateOfBirth != null && criteria.driversLicenseNumber != null) {
-			List<Citation> citations = citationDAO.getByLicenseAndDOB(criteria.driversLicenseNumber, criteria.dateOfBirth);
-			return populateViolations(citations);
+			return citationDAO.getByLicenseAndDOB(criteria.driversLicenseNumber, criteria.dateOfBirth);
 		}
 		
 		// DOB & Name & Municipality
 		if (criteria.dateOfBirth != null && criteria.lastName != null && criteria.municipalities != null && criteria.municipalities.size() != 0) {
-			List<Citation> citations =  citationDAO.getByNameAndMunicipalitiesAndDOB(criteria.lastName, criteria.municipalities, criteria.dateOfBirth);
-			return populateViolations(citations);
+			return  citationDAO.getByNameAndMunicipalitiesAndDOB(criteria.lastName, criteria.municipalities, criteria.dateOfBirth);
 		}
 		
 		LogSystem.LogEvent("Not enough information was passed as criteria to find citations");
 		return Lists.newArrayList();
-	}
-	
-	private List<Citation> populateViolations(List<Citation> citations) {
-		if (citations == null) {
-			return null;
-		}
-		
-		for (Citation citation:citations) {
-			citation.violations = violationManager.getViolationsByCitationNumber(citation.citation_number);
-		}
-		return citations;
 	}
 }

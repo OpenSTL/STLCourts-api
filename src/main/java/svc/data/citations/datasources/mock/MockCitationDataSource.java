@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import svc.data.citations.CitationDataSource;
 import svc.data.jdbc.BaseJdbcDao;
 import svc.logging.LogSystem;
+import svc.managers.ViolationManager;
 import svc.models.Citation;
 import svc.models.Court;
 import svc.types.HashableEntity;
@@ -20,8 +21,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 @Repository
 public class MockCitationDataSource extends BaseJdbcDao implements CitationDataSource {
+	@Inject
+	private ViolationManager violationManager;
 
     @Override
     public List<Citation> getByCitationNumberAndDOB(String citationNumber, LocalDate dob) {
@@ -31,8 +36,8 @@ public class MockCitationDataSource extends BaseJdbcDao implements CitationDataS
             parameterMap.put("dob", Date.valueOf(dob));
             String sql = "SELECT * FROM citations WHERE citation_number = :citationNumber AND date_of_birth = :dob";
             List<Citation> citations = jdbcTemplate.query(sql, parameterMap, new CitationSQLMapper());
-
-            return citations;
+            	
+            return populateViolations(citations);
         } catch (Exception e) {
             LogSystem.LogDBException(e);
             return null;
@@ -48,7 +53,7 @@ public class MockCitationDataSource extends BaseJdbcDao implements CitationDataS
             String sql = "SELECT * FROM citations WHERE date_of_birth = :dob AND drivers_license_number = :driversLicenseNumber";
             List<Citation> citations = jdbcTemplate.query(sql, parameterMap, new CitationSQLMapper());
 
-            return citations;
+            return populateViolations(citations);
         } catch (Exception e) {
             LogSystem.LogDBException(e);
             return null;
@@ -65,7 +70,7 @@ public class MockCitationDataSource extends BaseJdbcDao implements CitationDataS
 
             List<Citation> citations = jdbcTemplate.query(getSql("citation/get-by-location.sql"), parameterMap, new CitationSQLMapper());
 
-            return citations;
+            return populateViolations(citations);
         } catch (Exception e) {
             LogSystem.LogDBException(e);
             return null;
@@ -89,8 +94,6 @@ public class MockCitationDataSource extends BaseJdbcDao implements CitationDataS
  	            parameterMap.put("state", c.defendant_state);
  	            parameterMap.put("driversLicenseNumber", c.drivers_license_number);
  	            parameterMap.put("courtDate", DatabaseUtilities.convertLocalDateTimeToDatabaseDateString(c.court_dateTime));
- 	            parameterMap.put("courtLocation", c.court_location);
- 	            parameterMap.put("courtAddress", c.court_address);
  	            parameterMap.put("courtId", c.court_id.getValue());
  	            jdbcTemplate.update(getSql("citation/insert-citation.sql"), parameterMap); 
  	            newCitationNumbers.add(c.citation_number);
@@ -138,8 +141,6 @@ public class MockCitationDataSource extends BaseJdbcDao implements CitationDataS
                 }else{
                     citation.court_dateTime = LocalDateTime.of(courtDate, courtTime);
                 }
-                citation.court_location = rs.getString("court_location");
-                citation.court_address = rs.getString("court_address");
                 citation.court_id = new HashableEntity<Court>(Court.class,rs.getLong("court_id"));
             } catch (Exception e) {
                 LogSystem.LogDBException(e);
@@ -149,4 +150,15 @@ public class MockCitationDataSource extends BaseJdbcDao implements CitationDataS
             return citation;
         }
     }
+    
+    private List<Citation> populateViolations(List<Citation> citations) {
+		if (citations == null) {
+			return null;
+		}
+		
+		for (Citation citation:citations) {
+			citation.violations = violationManager.getViolationsByCitationNumber(citation.citation_number);
+		}
+		return citations;
+	}
 }

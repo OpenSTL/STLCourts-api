@@ -45,7 +45,7 @@ public class CitationTextMessage {
 		if ((violation.status != VIOLATION_STATUS.CLOSED) && (violation.status != VIOLATION_STATUS.DISMISS_WITHOUT_COSTS || showDismissedViolations)){
 			message += "\nViolation #: "+violation.violation_number;
 			message += "\nViolation: "+violation.violation_description;
-			message += "\nStatus (as of "+DatabaseUtilities.convertDatabaseDateToUS(violation.status_date)+"): "+violation.status.toString();
+			message += "\nStatus: "+violation.status.toString();
 			if (violation.status != VIOLATION_STATUS.DISMISS_WITHOUT_COSTS){
 				message += "\nFine Amount: $"+violation.fine_amount;
 				message += "\nCourt Costs: $"+violation.court_cost;

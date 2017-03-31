@@ -31,6 +31,9 @@ public class LocalWithHSQLAccessProfile {
 				.addScript("hsql/sponsors.sql")
 				.addScript("hsql/violations.sql")
 				.addScript("hsql/citations.sql")
+				.addScript("hsql/citation-datasource-municipality.sql")
+				.addScript("hsql/citation-datasource.sql")
+				.addScript("hsql/courtMappers/tyler-court-mapper.sql")
 				.build();
 	}
 	

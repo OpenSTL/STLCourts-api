@@ -28,8 +28,6 @@ public class DemoUtilities {
 		citation0.defendant_state = "MO";
 		citation0.drivers_license_number = "STLDL"+demoRandomizer.encode(11L);
 		citation0.court_dateTime = DatabaseUtilities.getCurrentDateTime().plusDays(1);
-		citation0.court_location = "BELLA VILLA";
-		citation0.court_address = "751 Avenue H";
 		citation0.court_id = new HashableEntity<Court>(Court.class,2L);
 		
 		Citation citation1 = new Citation();
@@ -43,8 +41,6 @@ public class DemoUtilities {
 		citation1.defendant_state = "MO";
 		citation1.drivers_license_number = "STLDL"+demoRandomizer.encode(22L);
 		citation1.court_dateTime = DatabaseUtilities.getCurrentDateTime().plusDays(7);
-		citation1.court_location = "HAZELWOOD";
-		citation1.court_address = "415 Elm Grove Lane";
 		citation1.court_id = new HashableEntity<Court>(Court.class,37L);
 		
 		Citation citation2 = new Citation();
@@ -58,8 +54,6 @@ public class DemoUtilities {
 		citation2.defendant_state = "MO";
 		citation2.drivers_license_number = "STLDL"+demoRandomizer.encode(33L);
 		citation2.court_dateTime = DatabaseUtilities.getCurrentDateTime().plusDays(5);
-		citation2.court_location = "UNINCORPORATED CENTRAL ST. LOUIS COUNTY";
-		citation2.court_address = "7900 Carondelet Avenue";
 		citation2.court_id = new HashableEntity<Court>(Court.class,79L);
 		
 		Citation citation3 = new Citation();
@@ -73,8 +67,6 @@ public class DemoUtilities {
 		citation3.defendant_state = "MO";
 		citation3.drivers_license_number = "STLDL"+demoRandomizer.encode(44L);
 		citation3.court_dateTime = DatabaseUtilities.getCurrentDateTime().plusDays(14);
-		citation3.court_location = "BALLWIN";
-		citation3.court_address = "300 Park Drive";
 		citation3.court_id = new HashableEntity<Court>(Court.class,1L);
 		
 		Citation citation4 = new Citation();
@@ -88,8 +80,6 @@ public class DemoUtilities {
 		citation4.defendant_state = "MO";
 		citation4.drivers_license_number = "STLDL"+demoRandomizer.encode(55L);
 		citation4.court_dateTime = DatabaseUtilities.getCurrentDateTime().plusDays(12);
-		citation4.court_location = "BEL-RIDGE";
-		citation4.court_address = "8920 Natural Bridge Road";
 		citation4.court_id = new HashableEntity<Court>(Court.class,6L);
 		
 		Citation citation5 = new Citation();
@@ -103,8 +93,6 @@ public class DemoUtilities {
 		citation5.defendant_state = "MO";
 		citation5.drivers_license_number = "STLDL"+demoRandomizer.encode(55L);
 		citation5.court_dateTime = DatabaseUtilities.getCurrentDateTime().plusDays(4);
-		citation5.court_location = "FRONTENAC";
-		citation5.court_address = "10555 Clayton Road";
 		citation5.court_id = new HashableEntity<Court>(Court.class,23L);
 		
 		List <Citation> citations = Arrays.asList(citation0,citation1,citation2,citation3,citation4, citation5);
@@ -120,7 +108,6 @@ public class DemoUtilities {
 		violation0.warrant_status = false;
 		violation0.warrant_number = "";
 		violation0.status = VIOLATION_STATUS.CONT_FOR_PAYMENT;
-		violation0.status_date = DatabaseUtilities.getCurrentDateTime().minusDays(3);
 		violation0.fine_amount = new BigDecimal("139.04");
 		violation0.court_cost = new BigDecimal("24.50");
 		
@@ -131,7 +118,6 @@ public class DemoUtilities {
 		violation1.warrant_status = false;
 		violation1.warrant_number = "";
 		violation1.status = VIOLATION_STATUS.CONT_FOR_PAYMENT;
-		violation1.status_date = DatabaseUtilities.getCurrentDateTime().minusDays(3);
 		violation1.fine_amount = new BigDecimal("80.45");
 		violation1.court_cost = new BigDecimal("24.50");
 		
@@ -142,7 +128,6 @@ public class DemoUtilities {
 		violation2.warrant_status = false;
 		violation2.warrant_number = "";
 		violation2.status = VIOLATION_STATUS.CONT_FOR_PAYMENT;
-		violation2.status_date = DatabaseUtilities.getCurrentDateTime().minusDays(3);
 		violation2.fine_amount = new BigDecimal("77.44");
 		violation2.court_cost = new BigDecimal("24.50");
 		
@@ -153,7 +138,6 @@ public class DemoUtilities {
 		violation3.warrant_status = false;
 		violation3.warrant_number = "";
 		violation3.status = VIOLATION_STATUS.CONT_FOR_PAYMENT;
-		violation3.status_date = DatabaseUtilities.getCurrentDateTime().minusDays(3);
 		violation3.fine_amount = new BigDecimal("84.32");
 		violation3.court_cost = new BigDecimal("24.50");
 		
@@ -164,7 +148,6 @@ public class DemoUtilities {
 		violation4.warrant_status = false;
 		violation4.warrant_number = "";
 		violation4.status = VIOLATION_STATUS.CONT_FOR_PAYMENT;
-		violation4.status_date = DatabaseUtilities.getCurrentDateTime().minusDays(3);
 		violation4.fine_amount = new BigDecimal("58.88");
 		violation4.court_cost = new BigDecimal("24.50");
 		
@@ -175,7 +158,6 @@ public class DemoUtilities {
 		violation5.warrant_status = false;
 		violation5.warrant_number = "";
 		violation5.status = VIOLATION_STATUS.CONT_FOR_PAYMENT;
-		violation5.status_date = DatabaseUtilities.getCurrentDateTime().minusDays(3);
 		violation5.fine_amount = new BigDecimal("153.89");
 		violation5.court_cost = new BigDecimal("24.50");
 		
@@ -186,7 +168,6 @@ public class DemoUtilities {
 		violation6.warrant_status = false;
 		violation6.warrant_number = "";
 		violation6.status = VIOLATION_STATUS.CONT_FOR_PAYMENT;
-		violation6.status_date = DatabaseUtilities.getCurrentDateTime().minusDays(3);
 		violation6.fine_amount = new BigDecimal("153.89");
 		violation6.court_cost = new BigDecimal("24.50");
 		
@@ -197,7 +178,6 @@ public class DemoUtilities {
 		violation7.warrant_status = false;
 		violation7.warrant_number = "";
 		violation7.status = VIOLATION_STATUS.CONT_FOR_PAYMENT;
-		violation7.status_date = DatabaseUtilities.getCurrentDateTime().minusDays(3);
 		violation7.fine_amount = new BigDecimal("153.89");
 		violation7.court_cost = new BigDecimal("24.50");
 		
@@ -208,7 +188,6 @@ public class DemoUtilities {
 		violation8.warrant_status = false;
 		violation8.warrant_number = "";
 		violation8.status = VIOLATION_STATUS.CONT_FOR_PAYMENT;
-		violation8.status_date = DatabaseUtilities.getCurrentDateTime().minusDays(3);
 		violation8.fine_amount = new BigDecimal("155.07");
 		violation8.court_cost = new BigDecimal("24.50");
 		

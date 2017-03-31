@@ -11,4 +11,5 @@ public class TylerViolation {
 	public double fineAmount;
 	public String status;
 	public String courtDate;
+	public String courtName;
 }

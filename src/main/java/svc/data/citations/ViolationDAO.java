@@ -17,7 +17,6 @@ import org.springframework.jdbc.core.RowMapper;
 
 import svc.logging.LogSystem;
 import svc.models.*;
-import svc.util.DatabaseUtilities;
 
 import javax.sql.DataSource;
 
@@ -64,7 +63,7 @@ public class ViolationDAO
 		try{
 			for(int i = 0; i < violations.size(); i++){
 				Violation v = violations.get(i);
-				String sql = "INSERT INTO violations (citation_number,violation_number,violation_description,warrant_status,warrant_number,status,status_date,fine_amount,court_cost) VALUES ('"+v.citation_number+"','"+v.violation_number+"','"+v.violation_description+"',"+v.warrant_status+",'"+v.warrant_number+"','"+v.status.name()+"','"+DatabaseUtilities.convertLocalDateTimeToDatabaseDateString(v.status_date)+"',"+v.fine_amount.toString()+","+v.court_cost.toString()+")";
+				String sql = "INSERT INTO violations (citation_number,violation_number,violation_description,warrant_status,warrant_number,status,fine_amount,court_cost) VALUES ('"+v.citation_number+"','"+v.violation_number+"','"+v.violation_description+"',"+v.warrant_status+",'"+v.warrant_number+"','"+v.status.name()+"',"+v.fine_amount.toString()+","+v.court_cost.toString()+")";
 				jdbcTemplate.execute(sql, new PreparedStatementCallback<Boolean>(){
 					@Override
 					public Boolean doInPreparedStatement(java.sql.PreparedStatement ps)
@@ -115,7 +114,6 @@ public class ViolationDAO
 				violation.warrant_status = rs.getBoolean("warrant_status");
 				violation.warrant_number = rs.getString("warrant_number");
 				violation.status = VIOLATION_STATUS.convertDatabaseStatusToEnum(rs.getString("status"));
-				violation.status_date = DatabaseUtilities.getFromDatabase(rs,"status_date");
 				String fineAmountStr = rs.getString("fine_amount");
 				if (fineAmountStr != null)
 				{
