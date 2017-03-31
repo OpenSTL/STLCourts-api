@@ -47,8 +47,8 @@ public class MockCitationDataSourceTest {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         LocalDate date = LocalDate.parse(dateString,formatter);
 
-        when(jdbcTemplate.queryForObject(Matchers.anyString(), Matchers.anyMap(), Matchers.<RowMapper<Citation>>any()))
-            .thenReturn(CITATION);
+        when(jdbcTemplate.query(Matchers.anyString(), Matchers.anyMap(), Matchers.<RowMapper<Citation>>any()))
+            .thenReturn(Lists.newArrayList(CITATION));
 
         List<Citation> citations = mockCitationDataSource.getByCitationNumberAndDOB(CITATIONNUMBER, date);
 
