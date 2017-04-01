@@ -39,34 +39,56 @@ public class CitationTransformer extends BaseJdbcDao {
 	}
 
 	private LocalDateTime parseViolationCourtDate(String violationCourtDateString) {
+
+		if (violationCourtDateString == null) {
+			return null;
+		}
+
+		LocalDateTime violationCourtDate = null;
 		try {
-			return LocalDateTime.parse(violationCourtDateString);
+			violationCourtDate = LocalDateTime.parse(violationCourtDateString);
 		} catch (DateTimeParseException ex) {
 			LogSystem.LogEvent("Failed to parse tyler violation court date: " + ex.getLocalizedMessage());
 		}
-		return null;
+		return violationCourtDate;
 	}
 
 	public Citation fromTylerCitation(TylerCitation tylerCitation) {
+		if (tylerCitation == null) {
+			return null;
+		}
 
 		Citation genericCitation = new Citation();
 		genericCitation.citation_number = tylerCitation.citationNumber;
 		genericCitation.first_name = tylerCitation.firstName;
 		genericCitation.last_name = tylerCitation.lastName;
-		genericCitation.date_of_birth = LocalDate.parse(tylerCitation.dob, localDateFormatter);
+
+		if (tylerCitation.dob == null) {
+			LogSystem.LogEvent("Received tyler citation with no DOB.");
+		} else {
+			genericCitation.date_of_birth = LocalDate.parse(tylerCitation.dob, localDateFormatter);
+		}
 		genericCitation.drivers_license_number = tylerCitation.driversLicenseNumber;
-		genericCitation.citation_date = LocalDate.parse(tylerCitation.violationDate, localDateFormatter);
 
-		List<LocalDateTime> violationCourtDates = null;
-		violationCourtDates = tylerCitation.violations.stream()
-				.map((violation) -> violation.courtDate)
-				.distinct()
-				.map(this::parseViolationCourtDate)
-				.collect(Collectors.toList());
-		genericCitation.court_dateTime = violationCourtDates.size() > 0 ? violationCourtDates.get(0) : null;
+		if (tylerCitation.violationDate == null) {
+			LogSystem.LogEvent("Received tyler citation with no violation date.");
+		} else {
+			genericCitation.citation_date = LocalDate.parse(tylerCitation.violationDate, localDateFormatter);
+		}
 
-		genericCitation.violations = violationTransformer.fromTylerCitation(tylerCitation);
-		genericCitation.court_id = lookupCourtId(getTylerCourtIdentifier(tylerCitation));
+		if (tylerCitation.violations == null) {
+			LogSystem.LogEvent("No violations received with Tyler citation. Skipping fields that require them.");
+		} else {
+			List<LocalDateTime> violationCourtDates = null;
+			violationCourtDates = tylerCitation.violations.stream()
+					.map((violation) -> violation.courtDate)
+					.distinct()
+					.map(this::parseViolationCourtDate)
+					.collect(Collectors.toList());
+			genericCitation.court_dateTime = violationCourtDates.size() > 0 ? violationCourtDates.get(0) : null;
+			genericCitation.violations = violationTransformer.fromTylerCitation(tylerCitation);
+			genericCitation.court_id = lookupCourtId(getTylerCourtIdentifier(tylerCitation));
+		}
 
 		// These could probably be added to the Tyler API
 		// citation time?
