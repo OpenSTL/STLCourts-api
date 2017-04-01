@@ -1,4 +1,4 @@
-package svc.data.citations.datasources.tyler;
+package svc.data.citations.datasources.tyler.models;
 
 import svc.models.VIOLATION_STATUS;
 

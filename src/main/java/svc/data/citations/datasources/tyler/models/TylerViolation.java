@@ -1,4 +1,4 @@
-package svc.data.citations.datasources.tyler;
+package svc.data.citations.datasources.tyler.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
