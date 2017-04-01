@@ -18,7 +18,10 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+
+import svc.managers.ViolationManager;
 import svc.models.Citation;
+import svc.models.Violation;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -30,6 +33,9 @@ import java.util.List;
 public class MockCitationDataSourceTest {
     @InjectMocks
     MockCitationDataSource mockCitationDataSource;
+    
+    @Mock
+    ViolationManager violationManagerMock;
 
     @Mock
     private ResourceLoader resourceLoader;
@@ -40,6 +46,10 @@ public class MockCitationDataSourceTest {
     @SuppressWarnings("unchecked")
     @Test
     public void returnsCitationGivenCitationNumberAndDOB() throws ParseException {
+    	final Violation VIOLATION = new Violation();
+        VIOLATION.id = 4;
+        final List<Violation> VIOLATIONS = Lists.newArrayList(VIOLATION);
+        
         final Citation CITATION = new Citation();
         CITATION.id = 3;
         final String CITATIONNUMBER = "F3453";
@@ -51,6 +61,7 @@ public class MockCitationDataSourceTest {
             .thenReturn(Lists.newArrayList(CITATION));
 
         List<Citation> citations = mockCitationDataSource.getByCitationNumberAndDOB(CITATIONNUMBER, date);
+        when(violationManagerMock.getViolationsByCitationNumber(Matchers.anyString())).thenReturn(VIOLATIONS);
 
         assertEquals(citations.size(), 1);
         assertThat(citations.get(0).id, is(3));
@@ -58,14 +69,19 @@ public class MockCitationDataSourceTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void returnsCitationsGivengeDOBAndLicense() throws ParseException{
-        final Citation CITATION = new Citation();
+    public void returnsCitationsGivenDOBAndLicense() throws ParseException{
+    	final Violation VIOLATION = new Violation();
+        VIOLATION.id = 4;
+        final List<Violation> VIOLATIONS = Lists.newArrayList(VIOLATION);
+        
+    	final Citation CITATION = new Citation();
         CITATION.id = 3;
 
         final List<Citation> CITATIONS = Lists.newArrayList(CITATION);
 
         when(jdbcTemplate.query(Matchers.anyString(),Matchers.anyMap(), Matchers.<RowMapper<Citation>>any()))
             .thenReturn(CITATIONS);
+        when(violationManagerMock.getViolationsByCitationNumber(Matchers.anyString())).thenReturn(VIOLATIONS);
 
         String dateString = "08/05/1965";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
@@ -79,7 +95,11 @@ public class MockCitationDataSourceTest {
     @SuppressWarnings("unchecked")
     @Test
     public void returnsCitationsWhenGivenDOBLastNameAndMultipleMunicipalities() throws ParseException, IOException {
-        final Citation CITATION = new Citation();
+    	final Violation VIOLATION = new Violation();
+        VIOLATION.id = 4;
+        final List<Violation> VIOLATIONS = Lists.newArrayList(VIOLATION);
+        
+    	final Citation CITATION = new Citation();
         CITATION.id = 3;
 
         final List<Citation> CITATIONS = Lists.newArrayList(CITATION);
@@ -95,6 +115,7 @@ public class MockCitationDataSourceTest {
         LocalDate date = LocalDate.parse(dateString,formatter);
 
         List<Citation> citations = mockCitationDataSource.getByNameAndMunicipalitiesAndDOB("someLastName", Lists.newArrayList(19L, 20L), date);
+        when(violationManagerMock.getViolationsByCitationNumber(Matchers.anyString())).thenReturn(VIOLATIONS);
 
         assertThat(citations.get(0).id, is(3));
     }

@@ -71,6 +71,7 @@ public class TylerTransformer extends BaseJdbcDao {
 		// public String defendant_address;  - not in XML
 		// public String defendant_city; - not in XML
 		// public String defendant_state; - not in XML
+		// Nice to add to our api DL State.
 
 		// There is no property for muni_id, but there probably should be
 

@@ -51,7 +51,7 @@ spring:
   profiles: localWithHSQLAccess
 stlcourts:
   citationDataSources:
-    testEnabled: false
+    testEnabled: true
     liveEnabled: true
   clientURL: http://localhost:9000
   demoMode: true
