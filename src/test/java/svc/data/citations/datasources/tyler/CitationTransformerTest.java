@@ -4,7 +4,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.Test;
@@ -18,6 +21,7 @@ import com.google.common.collect.Lists;
 import svc.data.citations.datasources.tyler.models.TylerCitation;
 import svc.data.citations.datasources.tyler.models.TylerViolation;
 import svc.data.citations.datasources.tyler.transformers.CitationTransformer;
+import svc.data.citations.datasources.tyler.transformers.CourtIdTransformer;
 import svc.data.citations.datasources.tyler.transformers.ViolationTransformer;
 import svc.models.Citation;
 
@@ -27,10 +31,12 @@ public class CitationTransformerTest {
 	@Mock
 	ViolationTransformer violationTransformer;
 
+	@Mock
+	CourtIdTransformer courtIdTransformer;
+
 	@InjectMocks
 	CitationTransformer citationTransformer;
 
-	// public List<Citation> fromTylerCitations(List<TylerCitation> tylerCitations) {
 	@Test
 	public void citationTransformerReturnsNullForEmptyLists() {
 
@@ -39,30 +45,30 @@ public class CitationTransformerTest {
 		assertNull(genericCitations);
 	}
 
-	private List<TylerCitation> GenerateListOfTylerCitations() {
-		return GenerateListOfTylerCitations(true);
+	private List<TylerCitation> generateListOfTylerCitations() {
+		return generateListOfTylerCitations(true);
 	}
 
-	private List<TylerCitation> GenerateListOfTylerCitations(boolean withCitations) {
+	private List<TylerCitation> generateListOfTylerCitations(boolean withCitations) {
 		List<TylerCitation> listOfCitations = Lists.newArrayList(mock(TylerCitation.class));
 
 		if (withCitations) {
 			for (TylerCitation citation : listOfCitations) {
-				citation.violations = GenerateListOfTylerViolations();
+				citation.violations = generateListOfTylerViolations();
 			}
 		}
 
 		return listOfCitations;
 	}
 
-	private List<TylerViolation> GenerateListOfTylerViolations() {
+	private List<TylerViolation> generateListOfTylerViolations() {
 		return Lists.newArrayList(mock(TylerViolation.class));
 	}
 
 	@Test
 	public void citationTransformerTransformsAllCitationsPassedIn() {
 
-		List<TylerCitation> tylerCitations = GenerateListOfTylerCitations();
+		List<TylerCitation> tylerCitations = generateListOfTylerCitations();
 
 		List<Citation> genericCitations = citationTransformer.fromTylerCitations(tylerCitations);
 
@@ -77,5 +83,36 @@ public class CitationTransformerTest {
 		Citation genericCitation = citationTransformer.fromTylerCitation(null);
 
 		assertNull(genericCitation);
+	}
+
+	private TylerCitation generateFullTylerCitation() {
+		TylerCitation mockCitation = mock(TylerCitation.class);
+		mockCitation.dob = "06/17/1900";
+		mockCitation.violationDate = "06/17/1901";
+
+		mockCitation.violations = generateListOfTylerViolations();
+		mockCitation.violations.get(0).courtDate = "1902-06-17T19:00:00.000";
+		mockCitation.violations.get(0).courtName = "A";
+
+		return mockCitation;
+	}
+
+	@Test
+	public void citationTransformerCopiesCitationFieldsCorrectly() {
+		TylerCitation tylerCitation = generateFullTylerCitation();
+
+		Citation genericCitation = citationTransformer.fromTylerCitation(tylerCitation);
+
+		assertNotNull(genericCitation);
+		assertEquals(genericCitation.citation_number, tylerCitation.citationNumber);
+		assertEquals(genericCitation.first_name, tylerCitation.firstName);
+		assertEquals(genericCitation.last_name, tylerCitation.lastName);
+		assertEquals(genericCitation.drivers_license_number, tylerCitation.driversLicenseNumber);
+		assertEquals(genericCitation.date_of_birth, LocalDate.parse("1900-06-17"));
+		assertEquals(genericCitation.citation_date, LocalDate.parse("1901-06-17"));
+		assertEquals(genericCitation.court_dateTime, LocalDateTime.parse("1902-06-17T19:00:00.000"));
+
+		verify(violationTransformer).fromTylerCitation(tylerCitation);
+		verify(courtIdTransformer).lookupCourtId("A");
 	}
 }

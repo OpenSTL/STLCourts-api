@@ -1,31 +1,27 @@
 package svc.data.citations.datasources.tyler.transformers;
 
-import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import svc.data.citations.datasources.tyler.models.TylerCitation;
-import svc.data.jdbc.BaseJdbcDao;
 import svc.logging.LogSystem;
 import svc.models.Citation;
-import svc.models.Court;
-import svc.types.HashableEntity;
 
 @Component
-public class CitationTransformer extends BaseJdbcDao {
+public class CitationTransformer {
 
 	@Autowired
 	ViolationTransformer violationTransformer;
+
+	@Autowired
+	CourtIdTransformer courtIdTransformer;
 
 	private DateTimeFormatter localDateFormatter = DateTimeFormatter.ofPattern("MM/dd/uuuu");
 
@@ -62,13 +58,13 @@ public class CitationTransformer extends BaseJdbcDao {
 		genericCitation.citation_number = tylerCitation.citationNumber;
 		genericCitation.first_name = tylerCitation.firstName;
 		genericCitation.last_name = tylerCitation.lastName;
+		genericCitation.drivers_license_number = tylerCitation.driversLicenseNumber;
 
 		if (tylerCitation.dob == null) {
 			LogSystem.LogEvent("Received tyler citation with no DOB.");
 		} else {
 			genericCitation.date_of_birth = LocalDate.parse(tylerCitation.dob, localDateFormatter);
 		}
-		genericCitation.drivers_license_number = tylerCitation.driversLicenseNumber;
 
 		if (tylerCitation.violationDate == null) {
 			LogSystem.LogEvent("Received tyler citation with no violation date.");
@@ -86,8 +82,11 @@ public class CitationTransformer extends BaseJdbcDao {
 					.map(this::parseViolationCourtDate)
 					.collect(Collectors.toList());
 			genericCitation.court_dateTime = violationCourtDates.size() > 0 ? violationCourtDates.get(0) : null;
+
 			genericCitation.violations = violationTransformer.fromTylerCitation(tylerCitation);
-			genericCitation.court_id = lookupCourtId(getTylerCourtIdentifier(tylerCitation));
+
+			String tylerCourtIdentifier = getTylerCourtIdentifier(tylerCitation);
+			genericCitation.court_id = courtIdTransformer.lookupCourtId(tylerCourtIdentifier);
 		}
 
 		// These could probably be added to the Tyler API
@@ -120,37 +119,6 @@ public class CitationTransformer extends BaseJdbcDao {
 				LogSystem.LogEvent("Multiple court names provided on tyler violations. Defaulting to first value.");
 			}
 			return tylerCourtIdentifiers.get(0);
-		}
-	}
-
-	private HashableEntity<Court> lookupCourtId(String tylerCourtIdentifier) {
-		if (tylerCourtIdentifier != null) {
-			try {
-				Map<String, Object> parameterMap = new HashMap<String, Object>();
-				parameterMap.put("tylerCourtIdentifier", tylerCourtIdentifier);
-				String sql = "SELECT court_id FROM tyler_court_mapping WHERE datasource_identifier = :tylerCourtIdentifier";
-				Long courtId = jdbcTemplate.queryForObject(sql, parameterMap, new CourtIdSQLMapper());
-				return new HashableEntity<Court>(Court.class, courtId);
-			} catch (Exception e) {
-				LogSystem.LogDBException(e);
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
-
-	private class CourtIdSQLMapper implements RowMapper<Long> {
-		public Long mapRow(ResultSet rs, int i) {
-			Long courtId;
-			try {
-				courtId = Long.parseLong(rs.getString("court_id"));
-			} catch (Exception e) {
-				LogSystem.LogDBException(e);
-				return null;
-			}
-
-			return courtId;
 		}
 	}
 }
