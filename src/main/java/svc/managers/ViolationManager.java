@@ -6,7 +6,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Component;
 
-import svc.data.citations.ViolationDAO;
+import svc.data.citations.datasources.mock.ViolationDAO;
 import svc.models.Violation;
 
 @Component

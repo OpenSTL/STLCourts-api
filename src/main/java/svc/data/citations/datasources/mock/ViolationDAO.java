@@ -1,4 +1,4 @@
-package svc.data.citations;
+package svc.data.citations.datasources.mock;
 
 import org.springframework.stereotype.Repository;
 

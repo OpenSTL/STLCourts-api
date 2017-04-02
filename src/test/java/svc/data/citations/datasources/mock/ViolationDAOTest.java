@@ -1,4 +1,4 @@
-package svc.data.citations;
+package svc.data.citations.datasources.mock;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -22,6 +22,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import com.google.common.collect.Lists;
 
+import svc.data.citations.datasources.mock.ViolationDAO;
 import svc.models.Violation;
 
 @RunWith(MockitoJUnitRunner.class)
