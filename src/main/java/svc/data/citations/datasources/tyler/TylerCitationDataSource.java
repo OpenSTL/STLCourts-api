@@ -13,8 +13,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import com.google.common.collect.Lists;
 
 import svc.data.citations.CitationDataSource;
 import svc.data.citations.datasources.tyler.models.TylerCitation;
@@ -73,11 +76,12 @@ public class TylerCitationDataSource implements CitationDataSource {
 		try {
 			tylerCitationsResponse = restTemplate.exchange(uri, HttpMethod.GET, query, type);
 			tylerCitations = tylerCitationsResponse.getBody();
-		} catch (HttpClientErrorException ex) {
+			return citationTransformer.fromTylerCitations(tylerCitations);
+		} catch (RestClientException ex) {
 			System.out.println(ex.getMessage());
-			System.out.print(ex.getResponseBodyAsString());
+			return Lists.newArrayList();
 		}
 
-		return citationTransformer.fromTylerCitations(tylerCitations);
+		
 	}
 }
