@@ -77,7 +77,7 @@ public class TylerCitationDataSource implements CitationDataSource {
 			tylerCitations = tylerCitationsResponse.getBody();
 			return citationTransformer.fromTylerCitations(tylerCitations);
 		} catch (RestClientException ex) {
-			System.out.println(ex.getMessage());
+			System.out.println("Tyler datasource did not return any data.");
 			return Lists.newArrayList();
 		}
 

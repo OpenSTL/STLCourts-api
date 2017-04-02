@@ -30,9 +30,6 @@ public class ViolationDAO extends BaseJdbcDao
 	        parameterMap.put("citationNumber", citationNumber);
 			String sql = "SELECT * FROM violations WHERE citation_number = :citationNumber";
 			violations = jdbcTemplate.query(sql, parameterMap,new ViolationSQLMapper());
-			if (violations == null){
-				int i = 0;
-			}
 		}catch (Exception e) {
             LogSystem.LogDBException(e);
             violations = new ArrayList<Violation>();
