@@ -13,10 +13,6 @@ import svc.models.Violation;
 public class ViolationManager {
 	@Inject
 	private ViolationDAO violationDAO;
-	
-	public Violation GetViolationById(int violationId) {
-		return violationDAO.getViolationDataById(violationId);
-	}
 
 	public List<Violation> getViolationsByCitationNumber(String citationNumber) {
 		return violationDAO.getViolationsByCitationNumber(citationNumber);

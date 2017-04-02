@@ -2,60 +2,41 @@ package svc.data.citations;
 
 import org.springframework.stereotype.Repository;
 
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.jdbc.core.RowMapper;
 
+import svc.data.jdbc.BaseJdbcDao;
 import svc.logging.LogSystem;
 import svc.models.*;
 
-import javax.sql.DataSource;
-
 @Repository
-public class ViolationDAO
-{
-	private static JdbcTemplate jdbcTemplate;
-	
-	@Autowired
-	public void setDataSource(DataSource citationDataSource) { ViolationDAO.jdbcTemplate = new JdbcTemplate(citationDataSource); }
-	
-	public Violation getViolationDataById(int violationId)
-	{
-		try 
-		{
-			String sql = "SELECT * FROM violations WHERE id = ?";
-			Violation violationData = jdbcTemplate.queryForObject(sql,
-																  new ViolationSQLMapper(),
-																  violationId);
-			
-			return violationData;
-		}
-		catch (Exception e)
-		{
-			LogSystem.LogDBException(e);
-			return null;
-		}
-	}
-	
+public class ViolationDAO extends BaseJdbcDao
+{	
 	public List<Violation> getViolationsByCitationNumber(String citationNumber)
 	{
-		String sql = "SELECT * FROM violations WHERE citation_number = ?";
-		List<Violation> violations = jdbcTemplate.query(sql,
-														new ViolationSQLMapper(),
-														citationNumber);
-		if (violations == null)
-		{
-			violations = new ArrayList<Violation>();
-		}
+		List<Violation> violations;
+		try{
+			Map<String, Object> parameterMap = new HashMap<String, Object>();
+	        parameterMap.put("citationNumber", citationNumber);
+			String sql = "SELECT * FROM violations WHERE citation_number = :citationNumber";
+			violations = jdbcTemplate.query(sql, parameterMap,new ViolationSQLMapper());
+			if (violations == null){
+				int i = 0;
+			}
+		}catch (Exception e) {
+            LogSystem.LogDBException(e);
+            violations = new ArrayList<Violation>();
+        }
 		return violations;
 	}
 	
