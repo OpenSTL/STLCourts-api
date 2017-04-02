@@ -1,4 +1,4 @@
-package svc.data.citations.datasources.tyler;
+package svc.data.citations.datasources.tyler.transformers;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -76,7 +76,6 @@ public class CitationTransformerTest {
 		assertEquals(tylerCitations.size(), genericCitations.size());
 	}
 
-	// public Citation fromTylerCitation(TylerCitation tylerCitation) {
 	@Test
 	public void citationTransformerReturnsNullForNullCitation() {
 

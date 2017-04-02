@@ -41,6 +41,7 @@ public class CitationDataSourceFactoryTest {
 		ReflectionTestUtils.setField(citationDataSourceFactory, "liveCitationSourcesEnabled", true);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void getsAllCitationSources() throws IOException {
 		final List<CITATION_DATASOURCE> sourceNames = Lists.newArrayList(CITATION_DATASOURCE.TYLER);
