@@ -11,10 +11,6 @@ stlcourts:
     tyler:
       rootUrl: ${TYLER_ROOT_URL}
       apiKey: ${TYLER_API_KEY}
-  twilio:
-    accountSid: ${TWILIO_SID}
-    authToken: ${TWILIO_AUTH_TOKEN}
-    phoneNumber: +13142548050
 
 logging:
   level:
@@ -44,6 +40,10 @@ stlcourts:
     municipalitySalt: salt1
     judgeSalt: salt2
     courtSalt: salt3
+  twilio:
+    accountSid: ${TWILIO_SID}
+    authToken: ${TWILIO_AUTH_TOKEN}
+    phoneNumber: +13143000064
 management:
   port: 8080
 ---
@@ -60,6 +60,10 @@ stlcourts:
     municipalitySalt: salt1
     judgeSalt: salt2
     courtSalt: salt3
+  twilio:
+    accountSid: ${TWILIO_SID}
+    authToken: ${TWILIO_AUTH_TOKEN}
+    phoneNumber: +13143000064
 ---
 spring:
   profiles: qa
@@ -82,6 +86,10 @@ stlcourts:
     municipalitySalt: ${MUNICIPALITY_SALT}
     judgeSalt: ${JUDGE_SALT}
     courtSalt: ${COURT_SALT}
+  twilio:
+    accountSid: ${TWILIO_SID}
+    authToken: ${TWILIO_AUTH_TOKEN}
+    phoneNumber: +13143000064
 ---
 spring:
   profiles: prod
@@ -104,3 +112,7 @@ stlcourts:
     municipalitySalt: ${MUNICIPALITY_SALT}
     judgeSalt: ${JUDGE_SALT}
     courtSalt: ${COURT_SALT}
+  twilio:
+    accountSid: ${TWILIO_SID}
+    authToken: ${TWILIO_AUTH_TOKEN}
+    phoneNumber: +13142548050
