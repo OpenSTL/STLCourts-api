@@ -6,7 +6,7 @@ CREATE TABLE tyler_court_mapping(
   tyler_court_identifier VARCHAR(25)
 )ENGINE=InnoDB;
 
-ALTER TABLE tyler_court_mapping ADD CONSTRAINT tyler_court_mapping_fk_1 FOREIGN KEY (court_id) REFERENCES courts (id);
+ALTER TABLE tyler_court_mapping ADD CONSTRAINT tyler_court_mapping_fk_1 FOREIGN KEY (court_id) REFERENCES court (court_id);
 
 INSERT INTO tyler_court_mapping (court_id,tyler_court_identifier) VALUES (35,'S');
 INSERT INTO tyler_court_mapping (court_id,tyler_court_identifier) VALUES (51,'N');
