@@ -20,7 +20,7 @@ public class CourtIdTransformer extends BaseJdbcDao {
 			try {
 				Map<String, Object> parameterMap = new HashMap<String, Object>();
 				parameterMap.put("tylerCourtIdentifier", tylerCourtIdentifier);
-				String sql = "SELECT court_id FROM tyler_court_mapping WHERE datasource_identifier = :tylerCourtIdentifier";
+				String sql = "SELECT court_id FROM tyler_court_mapping WHERE tyler_court_identifier = :tylerCourtIdentifier";
 				Long courtId = jdbcTemplate.queryForObject(sql, parameterMap, new CourtIdSQLMapper());
 				return new HashableEntity<Court>(Court.class, courtId);
 			} catch (Exception e) {

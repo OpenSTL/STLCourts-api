@@ -4,12 +4,15 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Component;
+
 import svc.data.citations.datasources.tyler.models.TylerCitation;
 import svc.data.citations.datasources.tyler.models.TylerViolation;
 import svc.data.citations.datasources.tyler.models.TylerViolationStatus;
 import svc.logging.LogSystem;
 import svc.models.Violation;
 
+@Component
 public class ViolationTransformer {
 
 	public List<Violation> fromTylerCitation(TylerCitation tylerCitation) {

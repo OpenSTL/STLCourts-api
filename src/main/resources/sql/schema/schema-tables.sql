@@ -123,5 +123,5 @@ CREATE TABLE citation_datasource_municipality (
 
 CREATE TABLE tyler_court_mapping(
   court_id				INTEGER			NOT NULL,
-  datasource_identifier VARCHAR(25)
+  tyler_court_identifier VARCHAR(25)
 );
