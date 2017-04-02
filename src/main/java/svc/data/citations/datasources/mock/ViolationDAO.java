@@ -1,62 +1,39 @@
-package svc.data.citations;
+package svc.data.citations.datasources.mock;
 
 import org.springframework.stereotype.Repository;
 
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.jdbc.core.RowMapper;
 
+import svc.data.jdbc.BaseJdbcDao;
 import svc.logging.LogSystem;
 import svc.models.*;
-import svc.util.DatabaseUtilities;
-
-import javax.sql.DataSource;
 
 @Repository
-public class ViolationDAO
-{
-	private static JdbcTemplate jdbcTemplate;
-	
-	@Autowired
-	public void setDataSource(DataSource citationDataSource) { ViolationDAO.jdbcTemplate = new JdbcTemplate(citationDataSource); }
-	
-	public Violation getViolationDataById(int violationId)
-	{
-		try 
-		{
-			String sql = "SELECT * FROM violations WHERE id = ?";
-			Violation violationData = jdbcTemplate.queryForObject(sql,
-																  new ViolationSQLMapper(),
-																  violationId);
-			
-			return violationData;
-		}
-		catch (Exception e)
-		{
-			LogSystem.LogDBException(e);
-			return null;
-		}
-	}
-	
+public class ViolationDAO extends BaseJdbcDao
+{	
 	public List<Violation> getViolationsByCitationNumber(String citationNumber)
 	{
-		String sql = "SELECT * FROM violations WHERE citation_number = ?";
-		List<Violation> violations = jdbcTemplate.query(sql,
-														new ViolationSQLMapper(),
-														citationNumber);
-		if (violations == null)
-		{
-			violations = new ArrayList<Violation>();
-		}
+		List<Violation> violations;
+		try{
+			Map<String, Object> parameterMap = new HashMap<String, Object>();
+	        parameterMap.put("citationNumber", citationNumber);
+			String sql = "SELECT * FROM violations WHERE citation_number = :citationNumber";
+			violations = jdbcTemplate.query(sql, parameterMap,new ViolationSQLMapper());
+		}catch (Exception e) {
+            LogSystem.LogDBException(e);
+            violations = new ArrayList<Violation>();
+        }
 		return violations;
 	}
 	
@@ -64,7 +41,7 @@ public class ViolationDAO
 		try{
 			for(int i = 0; i < violations.size(); i++){
 				Violation v = violations.get(i);
-				String sql = "INSERT INTO violations (citation_number,violation_number,violation_description,warrant_status,warrant_number,status,status_date,fine_amount,court_cost) VALUES ('"+v.citation_number+"','"+v.violation_number+"','"+v.violation_description+"',"+v.warrant_status+",'"+v.warrant_number+"','"+v.status.name()+"','"+DatabaseUtilities.convertLocalDateTimeToDatabaseDateString(v.status_date)+"',"+v.fine_amount.toString()+","+v.court_cost.toString()+")";
+				String sql = "INSERT INTO violations (citation_number,violation_number,violation_description,warrant_status,warrant_number,status,fine_amount,court_cost) VALUES ('"+v.citation_number+"','"+v.violation_number+"','"+v.violation_description+"',"+v.warrant_status+",'"+v.warrant_number+"','"+v.status.name()+"',"+v.fine_amount.toString()+","+v.court_cost.toString()+")";
 				jdbcTemplate.execute(sql, new PreparedStatementCallback<Boolean>(){
 					@Override
 					public Boolean doInPreparedStatement(java.sql.PreparedStatement ps)
@@ -115,7 +92,6 @@ public class ViolationDAO
 				violation.warrant_status = rs.getBoolean("warrant_status");
 				violation.warrant_number = rs.getString("warrant_number");
 				violation.status = VIOLATION_STATUS.convertDatabaseStatusToEnum(rs.getString("status"));
-				violation.status_date = DatabaseUtilities.getFromDatabase(rs,"status_date");
 				String fineAmountStr = rs.getString("fine_amount");
 				if (fineAmountStr != null)
 				{

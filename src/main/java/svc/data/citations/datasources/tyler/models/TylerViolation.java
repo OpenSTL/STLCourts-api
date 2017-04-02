@@ -1,4 +1,4 @@
-package svc.data.citations.datasources.tyler;
+package svc.data.citations.datasources.tyler.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -11,4 +11,5 @@ public class TylerViolation {
 	public double fineAmount;
 	public String status;
 	public String courtDate;
+	public String courtName;
 }

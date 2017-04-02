@@ -8,7 +8,6 @@ import svc.models.Citation;
 import svc.models.Court;
 import svc.models.VIOLATION_STATUS;
 import svc.models.Violation;
-import svc.util.DatabaseUtilities;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -25,10 +24,8 @@ public class CitationTextMessageTest {
 	public void correctlyInitializesAndReturnsCorrectCitationText(){
 		String ticketDateString = "08/05/2015";
 		String courtDateString = "09/10/2016 14:33";
-		String violationStatusDateString = "11/01/2002 12:22";
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 		DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
-		String violationStatusDateNoTime = DatabaseUtilities.convertDatabaseDateToUS(LocalDateTime.parse(violationStatusDateString, formatter2));
         
 		
 		Citation CITATION = new Citation();
@@ -48,12 +45,11 @@ public class CitationTextMessageTest {
 		VIOLATION.status = VIOLATION_STATUS.CONT_FOR_PAYMENT;
 		VIOLATION.violation_number = "8910";
 		VIOLATION.violation_description = "hello";
-		VIOLATION.status_date = LocalDateTime.parse(violationStatusDateString, formatter2);
 		VIOLATION.fine_amount = new BigDecimal("2.00");
 		VIOLATION.court_cost = new BigDecimal("3.00");
 		List<Violation> VIOLATIONS = Lists.newArrayList(VIOLATION);
 	
-		String expectedViolationMessage = "\nViolation #: 8910\nViolation: hello\nStatus (as of "+violationStatusDateNoTime+"): "+VIOLATION.status.toString();
+		String expectedViolationMessage = "\nViolation #: 8910\nViolation: hello\nStatus: "+VIOLATION.status.toString();
 		expectedViolationMessage += "\nFine Amount: $2.00\nCourt Costs: $3.00";
 		
 		String expectedCitationMessage = "Ticket Date: " + ticketDateString+"\nCourt Date: 09/10/2016\nCourt Time: 02:33 PM\nTicket #: 123";

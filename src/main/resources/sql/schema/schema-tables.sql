@@ -120,3 +120,8 @@ CREATE TABLE citation_datasource_municipality (
   citation_datasource_id    INTEGER,
   municipality_id           INTEGER
 );
+
+CREATE TABLE tyler_court_mapping(
+  court_id				INTEGER			NOT NULL,
+  tyler_court_identifier VARCHAR(25)
+);

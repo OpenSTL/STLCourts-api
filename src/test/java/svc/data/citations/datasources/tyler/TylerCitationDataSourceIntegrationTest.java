@@ -1,7 +1,10 @@
 package svc.data.citations.datasources.tyler;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.List;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -13,8 +16,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import svc.Application;
+import svc.models.Citation;
 
-//TODO
 @Ignore
 @SpringBootTest
 @ContextConfiguration(classes = Application.class, initializers = ConfigFileApplicationContextInitializer.class)
@@ -25,7 +28,32 @@ public class TylerCitationDataSourceIntegrationTest {
 	private TylerCitationDataSource tylerCitationDataSource;
 
 	@Test
-	public void test() {
-		tylerCitationDataSource.getByCitationNumberAndDOB("1", LocalDate.now());
+	public void testCitationNumber() {
+		List<Citation> citations = tylerCitationDataSource.getByCitationNumberAndDOB("",
+				LocalDate.parse(""));
+
+		assertNotEquals(citations.size(), 0);
+		assertEquals(citations.get(0).citation_number, "120499230");
+		assertEquals(citations.get(0).drivers_license_number, "337543025");
+	}
+
+	@Test
+	public void testDriversLicense() {
+		List<Citation> citations = tylerCitationDataSource.getByLicenseAndDOB("",
+				LocalDate.parse(""));
+
+		assertNotEquals(citations.size(), 0);
+		assertEquals(citations.get(0).citation_number, "120499230");
+		assertEquals(citations.get(0).drivers_license_number, "337543025");
+	}
+
+	@Test
+	public void testName() {
+		List<Citation> citations = tylerCitationDataSource.getByNameAndMunicipalitiesAndDOB("", null,
+				LocalDate.parse(""));
+
+		assertNotEquals(citations.size(), 0);
+		assertEquals(citations.get(0).citation_number, "120499230");
+		assertEquals(citations.get(0).drivers_license_number, "337543025");
 	}
 }

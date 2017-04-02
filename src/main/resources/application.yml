@@ -1,18 +1,28 @@
 server:
   port: 8080
   contextPath: /api
+
 management:
   context-path: /manage
   port: -1
+
 stlcourts:
   citationDataSources:
     tyler:
-      rootUrl: http://TODOURL/api/citations
-      apiKey: TODOKEY
+      rootUrl: ${TYLER_ROOT_URL}
+      apiKey: ${TYLER_API_KEY}
   twilio:
     accountSid: ${TWILIO_SID}
     authToken: ${TWILIO_AUTH_TOKEN}
     phoneNumber: +13142548050
+
+logging:
+  level:
+    root: 'WARN'
+    org.springframework.http.client: 'OFF'
+    org.springframework.web.client: 'OFF'
+    sun.net.www.protocol.http: 'OFF'
+
 ---
 spring:
   profiles.active: local
