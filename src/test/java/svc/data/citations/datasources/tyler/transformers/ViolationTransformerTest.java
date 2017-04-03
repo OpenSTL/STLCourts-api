@@ -39,6 +39,7 @@ public class ViolationTransformerTest {
 		tylerViolation.warrantStatus = true;
 		tylerViolation.warrantNumber = "W123";
 		tylerViolation.fineAmount = 23.00;
+		tylerViolation.canPayOnline = true;
 		tylerViolation.status = "WARRANT ISSUED";
 	}
 	
@@ -53,6 +54,7 @@ public class ViolationTransformerTest {
 		assertThat(violation.warrant_number,is("W123"));
 		assertThat(violation.fine_amount,is(BigDecimal.valueOf(23.00)));
 		assertThat(violation.court_cost,is(nullValue()));
+		assertThat(violation.can_pay_online, is(true));
 		assertThat(violation.status,is(VIOLATION_STATUS.FTA_WARRANT_ISSUED));
 	}
 	

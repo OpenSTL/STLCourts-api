@@ -33,6 +33,7 @@ public class ViolationTransformer {
 		genericViolation.warrant_status = tylerViolation.warrantStatus;
 		genericViolation.warrant_number = tylerViolation.warrantNumber;
 		genericViolation.fine_amount = BigDecimal.valueOf(tylerViolation.fineAmount);
+		genericViolation.can_pay_online = tylerViolation.canPayOnline;
 		genericViolation.court_cost = null;
 
 		TylerViolationStatus violationStatus = TylerViolationStatus.fromTylerViolationStatusString(tylerViolation.status);

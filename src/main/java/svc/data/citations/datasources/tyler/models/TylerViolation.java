@@ -12,4 +12,5 @@ public class TylerViolation {
 	public String status;
 	public String courtDate;
 	public String courtName;
+	public boolean canPayOnline;
 }

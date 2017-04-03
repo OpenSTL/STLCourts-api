@@ -35,7 +35,8 @@ CREATE TABLE court (
 
 CREATE TABLE municipality (
     municipality_id 			  INTEGER 					NOT NULL,
-    municipality_name		    VARCHAR(50)
+    municipality_name		    VARCHAR(50),
+    payment_url					VARCHAR(250)
 );
 
 CREATE TABLE municipality_court (
@@ -47,46 +48,6 @@ CREATE TABLE judges (
   id 						INTEGER 					NOT NULL,
   judge		 			VARCHAR(100),
 	court_id			INTEGER						NOT NULL
-);
-
-CREATE TABLE opportunities (
-  id 						        INTEGER 					NOT NULL,
-  sponsor_id 				    INTEGER 					NOT NULL,
-  name 					        VARCHAR(100) 			NOT NULL,
-  short_description 		VARCHAR(256) 			NOT NULL,
-  full_description 		  VARCHAR(2000),
-  court_id 				      INTEGER 					NOT NULL
-);
-
-CREATE TABLE opportunity_need_pairings (
-	id 						          INTEGER,
-  opportunity_need_id 	  INTEGER,
-  violation_id 			      INTEGER,
-  status 					        VARCHAR(100)
-);
-
-CREATE TABLE opportunity_needs (
-  id 						          INTEGER 					NOT NULL,
-  opportunity_id 			    INTEGER,
-  start_time 				      DATETIME,
-  end_time 				        DATETIME,
-  violation_fine_limit 	  NUMERIC,
-  desired_count 			    INTEGER,
-  description 			      VARCHAR(500)
-);
-
-CREATE TABLE sponsor_login (
-  id 					INTEGER 					NOT NULL,
-  userid 			VARCHAR(30),
-  pwd 				VARCHAR(30)
-);
-
-CREATE TABLE sponsors (
-  id 						        INTEGER 					NOT NULL,
-  name 					        VARCHAR(50),
-  short_description 		VARCHAR(256),
-  contact_email 			  VARCHAR(50),
-  contact_phonenumber 	VARCHAR(25)
 );
 
 CREATE TABLE violations (
@@ -124,4 +85,15 @@ CREATE TABLE citation_datasource_municipality (
 CREATE TABLE tyler_court_mapping(
   court_id				INTEGER			NOT NULL,
   tyler_court_identifier VARCHAR(25)
+);
+
+CREATE TABLE tyler_municipality_mapping(
+  municipality_id		INTEGER			NOT NULL,
+  tyler_court_identifier VARCHAR(25)
+);
+
+CREATE TABLE datasource_municipality_mapping(
+	citation_datasource_id	INTEGER,
+	municipality_id			INTEGER,
+	datasource_municipality_identifier VARCHAR(25)
 );

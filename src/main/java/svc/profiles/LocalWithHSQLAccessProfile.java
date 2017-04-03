@@ -25,15 +25,12 @@ public class LocalWithHSQLAccessProfile {
 				.addScript("hsql/municipalities.sql")
 				.addScript("hsql/municipality-court.sql")
 				.addScript("hsql/judges.sql")
-				.addScript("hsql/opportunities.sql")
-				.addScript("hsql/opportunity-needs.sql")
-				.addScript("hsql/sponsor-login.sql")
-				.addScript("hsql/sponsors.sql")
 				.addScript("hsql/violations.sql")
 				.addScript("hsql/citations.sql")
 				.addScript("hsql/citation-datasource-municipality.sql")
 				.addScript("hsql/citation-datasource.sql")
 				.addScript("hsql/courtMappers/tyler-court-mapper.sql")
+				.addScript("hsql/datasource-municipality-mapping.sql")
 				.build();
 	}
 	

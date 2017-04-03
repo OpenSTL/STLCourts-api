@@ -21,4 +21,5 @@ public class Citation {
 	
 	public List<Violation> violations;
 	public HashableEntity<Court> court_id;
+	public HashableEntity<Municipality> municipality_id;
 }
