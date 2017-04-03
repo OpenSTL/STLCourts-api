@@ -6,6 +6,7 @@ import java.util.List;
 
 import svc.models.Citation;
 import svc.models.Court;
+import svc.models.Municipality;
 import svc.models.VIOLATION_STATUS;
 import svc.models.Violation;
 import org.hashids.Hashids;
@@ -29,6 +30,7 @@ public class DemoUtilities {
 		citation0.drivers_license_number = "STLDL"+demoRandomizer.encode(11L);
 		citation0.court_dateTime = DatabaseUtilities.getCurrentDateTime().plusDays(1);
 		citation0.court_id = new HashableEntity<Court>(Court.class,2L);
+		citation0.municipality_id = new HashableEntity<Municipality>(Municipality.class,2L);
 		
 		Citation citation1 = new Citation();
 		citation1.citation_number = "STLC"+demoRandomizer.encode(2L);
@@ -42,6 +44,7 @@ public class DemoUtilities {
 		citation1.drivers_license_number = "STLDL"+demoRandomizer.encode(22L);
 		citation1.court_dateTime = DatabaseUtilities.getCurrentDateTime().plusDays(7);
 		citation1.court_id = new HashableEntity<Court>(Court.class,37L);
+		citation1.municipality_id = new HashableEntity<Municipality>(Municipality.class,40L);
 		
 		Citation citation2 = new Citation();
 		citation2.citation_number = "STLC"+demoRandomizer.encode(3L);
@@ -55,6 +58,7 @@ public class DemoUtilities {
 		citation2.drivers_license_number = "STLDL"+demoRandomizer.encode(33L);
 		citation2.court_dateTime = DatabaseUtilities.getCurrentDateTime().plusDays(5);
 		citation2.court_id = new HashableEntity<Court>(Court.class,79L);
+		citation2.municipality_id = new HashableEntity<Municipality>(Municipality.class,90L);
 		
 		Citation citation3 = new Citation();
 		citation3.citation_number = "STLC"+demoRandomizer.encode(4L);
@@ -68,6 +72,7 @@ public class DemoUtilities {
 		citation3.drivers_license_number = "STLDL"+demoRandomizer.encode(44L);
 		citation3.court_dateTime = DatabaseUtilities.getCurrentDateTime().plusDays(14);
 		citation3.court_id = new HashableEntity<Court>(Court.class,1L);
+		citation3.municipality_id = new HashableEntity<Municipality>(Municipality.class,1L);
 		
 		Citation citation4 = new Citation();
 		citation4.citation_number = "STLC"+demoRandomizer.encode(5L);
@@ -81,6 +86,7 @@ public class DemoUtilities {
 		citation4.drivers_license_number = "STLDL"+demoRandomizer.encode(55L);
 		citation4.court_dateTime = DatabaseUtilities.getCurrentDateTime().plusDays(12);
 		citation4.court_id = new HashableEntity<Court>(Court.class,6L);
+		citation4.municipality_id = new HashableEntity<Municipality>(Municipality.class,6L);
 		
 		Citation citation5 = new Citation();
 		citation5.citation_number = "STLC"+demoRandomizer.encode(6L);
@@ -94,6 +100,7 @@ public class DemoUtilities {
 		citation5.drivers_license_number = "STLDL"+demoRandomizer.encode(55L);
 		citation5.court_dateTime = DatabaseUtilities.getCurrentDateTime().plusDays(4);
 		citation5.court_id = new HashableEntity<Court>(Court.class,23L);
+		citation5.municipality_id = new HashableEntity<Municipality>(Municipality.class,23L);
 		
 		List <Citation> citations = Arrays.asList(citation0,citation1,citation2,citation3,citation4, citation5);
 		
@@ -110,6 +117,7 @@ public class DemoUtilities {
 		violation0.status = VIOLATION_STATUS.CONT_FOR_PAYMENT;
 		violation0.fine_amount = new BigDecimal("139.04");
 		violation0.court_cost = new BigDecimal("24.50");
+		violation0.can_pay_online = true;
 		
 		Violation violation1 = new Violation();
 		violation1.citation_number = "STLC"+demoRandomizer.encode(1L);
@@ -120,6 +128,7 @@ public class DemoUtilities {
 		violation1.status = VIOLATION_STATUS.CONT_FOR_PAYMENT;
 		violation1.fine_amount = new BigDecimal("80.45");
 		violation1.court_cost = new BigDecimal("24.50");
+		violation1.can_pay_online = true;
 		
 		Violation violation2 = new Violation();
 		violation2.citation_number = "STLC"+demoRandomizer.encode(2L);
@@ -130,6 +139,7 @@ public class DemoUtilities {
 		violation2.status = VIOLATION_STATUS.CONT_FOR_PAYMENT;
 		violation2.fine_amount = new BigDecimal("77.44");
 		violation2.court_cost = new BigDecimal("24.50");
+		violation2.can_pay_online = true;
 		
 		Violation violation3 = new Violation();
 		violation3.citation_number = "STLC"+demoRandomizer.encode(3L);
@@ -140,6 +150,7 @@ public class DemoUtilities {
 		violation3.status = VIOLATION_STATUS.CONT_FOR_PAYMENT;
 		violation3.fine_amount = new BigDecimal("84.32");
 		violation3.court_cost = new BigDecimal("24.50");
+		violation3.can_pay_online = true;
 		
 		Violation violation4 = new Violation();
 		violation4.citation_number = "STLC"+demoRandomizer.encode(3L);
@@ -150,6 +161,7 @@ public class DemoUtilities {
 		violation4.status = VIOLATION_STATUS.CONT_FOR_PAYMENT;
 		violation4.fine_amount = new BigDecimal("58.88");
 		violation4.court_cost = new BigDecimal("24.50");
+		violation4.can_pay_online = true;
 		
 		Violation violation5 = new Violation();
 		violation5.citation_number = "STLC"+demoRandomizer.encode(4L);
@@ -160,6 +172,7 @@ public class DemoUtilities {
 		violation5.status = VIOLATION_STATUS.CONT_FOR_PAYMENT;
 		violation5.fine_amount = new BigDecimal("153.89");
 		violation5.court_cost = new BigDecimal("24.50");
+		violation5.can_pay_online = true;
 		
 		Violation violation6 = new Violation();
 		violation6.citation_number = "STLC"+demoRandomizer.encode(5L);
@@ -170,6 +183,7 @@ public class DemoUtilities {
 		violation6.status = VIOLATION_STATUS.CONT_FOR_PAYMENT;
 		violation6.fine_amount = new BigDecimal("153.89");
 		violation6.court_cost = new BigDecimal("24.50");
+		violation6.can_pay_online = true;
 		
 		Violation violation7 = new Violation();
 		violation7.citation_number = "STLC"+demoRandomizer.encode(5L);
@@ -180,6 +194,7 @@ public class DemoUtilities {
 		violation7.status = VIOLATION_STATUS.CONT_FOR_PAYMENT;
 		violation7.fine_amount = new BigDecimal("153.89");
 		violation7.court_cost = new BigDecimal("24.50");
+		violation7.can_pay_online = true;
 		
 		Violation violation8 = new Violation();
 		violation8.citation_number = "STLC"+demoRandomizer.encode(6L);
@@ -190,6 +205,7 @@ public class DemoUtilities {
 		violation8.status = VIOLATION_STATUS.CONT_FOR_PAYMENT;
 		violation8.fine_amount = new BigDecimal("155.07");
 		violation8.court_cost = new BigDecimal("24.50");
+		violation8.can_pay_online = false;
 		
 		List <Violation> violations = Arrays.asList(violation0,violation1,violation2,violation3,violation4,violation5,violation6,violation7,violation8);
 		return violations;

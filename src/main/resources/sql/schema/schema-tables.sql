@@ -13,9 +13,8 @@ CREATE TABLE citations (
   defendant_state 		      VARCHAR(25)     	NULL,
   drivers_license_number 	  VARCHAR(25),
   court_date 				        DATETIME     					NULL,
-  court_location 			      VARCHAR(50)     	NULL,
-  court_address 			      VARCHAR(50)     	NULL,
-  court_id 				          INTEGER  					NULL
+  court_id 				          INTEGER  					NULL,
+  municipality_id 				          INTEGER  					NULL
 );
 
 CREATE TABLE court (
@@ -60,7 +59,8 @@ CREATE TABLE violations (
   status 					        VARCHAR(100),
   status_date 			      TIMESTAMP,
   fine_amount 			      NUMERIC(15,2),
-  court_cost 				      NUMERIC(15,2)
+  court_cost 				      NUMERIC(15,2),
+  can_pay_online			BOOLEAN	DEFAULT TRUE
 );
 
 CREATE TABLE sms_alerts
@@ -84,11 +84,6 @@ CREATE TABLE citation_datasource_municipality (
 
 CREATE TABLE tyler_court_mapping(
   court_id				INTEGER			NOT NULL,
-  tyler_court_identifier VARCHAR(25)
-);
-
-CREATE TABLE tyler_municipality_mapping(
-  municipality_id		INTEGER			NOT NULL,
   tyler_court_identifier VARCHAR(25)
 );
 
