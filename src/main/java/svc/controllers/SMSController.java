@@ -46,7 +46,7 @@ public class SMSController {
 	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET, value="/phoneNumber")
-	String GetPhoneNumber() throws IOException{
+	PhoneNumber GetPhoneNumber() throws IOException{
 		return smsManager.getPhoneNumber();
 	}
 		
