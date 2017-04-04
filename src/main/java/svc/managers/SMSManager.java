@@ -45,6 +45,9 @@ public class SMSManager {
 	@Value("${stlcourts.clientURL}")
 	String clientURL;
 	
+	@Value("${stlcourts.twilio.phoneNumber}")
+	String twilioPhoneNumber;
+	
 	private enum SMS_STAGE{
 		WELCOME(0),
 		READ_DOB(1),
@@ -61,6 +64,10 @@ public class SMSManager {
 		public int getNumVal() {
 			return numVal;
 		}
+	}
+	
+	public String getPhoneNumber(){
+		return twilioPhoneNumber;
 	}
 	
 	
