@@ -3,8 +3,10 @@ package svc.data.citations.datasources.tyler.transformers;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -24,6 +26,8 @@ import svc.data.citations.datasources.tyler.transformers.CitationTransformer;
 import svc.data.citations.datasources.tyler.transformers.CourtIdTransformer;
 import svc.data.citations.datasources.tyler.transformers.ViolationTransformer;
 import svc.models.Citation;
+import svc.models.Municipality;
+import svc.types.HashableEntity;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CitationTransformerTest {
@@ -37,6 +41,9 @@ public class CitationTransformerTest {
 	@InjectMocks
 	CitationTransformer citationTransformer;
 
+	@Mock
+	MunicipalityIdTransformer municipalityIdTransformer;
+	
 	@Test
 	public void citationTransformerReturnsNullForEmptyLists() {
 
@@ -67,7 +74,10 @@ public class CitationTransformerTest {
 
 	@Test
 	public void citationTransformerTransformsAllCitationsPassedIn() {
-
+		final HashableEntity<Municipality> municipalHashable = new HashableEntity<Municipality>(Municipality.class,3L);
+		when(municipalityIdTransformer.lookupMunicipalityId(anyString(),anyString()))
+		.thenReturn(municipalHashable);
+		
 		List<TylerCitation> tylerCitations = generateListOfTylerCitations();
 
 		List<Citation> genericCitations = citationTransformer.fromTylerCitations(tylerCitations);
@@ -99,7 +109,10 @@ public class CitationTransformerTest {
 	@Test
 	public void citationTransformerCopiesCitationFieldsCorrectly() {
 		TylerCitation tylerCitation = generateFullTylerCitation();
-
+		final HashableEntity<Municipality> municipalHashable = new HashableEntity<Municipality>(Municipality.class,3L);
+		when(municipalityIdTransformer.lookupMunicipalityId(anyString(),anyString()))
+		.thenReturn(municipalHashable);
+		
 		Citation genericCitation = citationTransformer.fromTylerCitation(tylerCitation);
 
 		assertNotNull(genericCitation);
@@ -110,6 +123,7 @@ public class CitationTransformerTest {
 		assertEquals(genericCitation.date_of_birth, LocalDate.parse("1900-06-17"));
 		assertEquals(genericCitation.citation_date, LocalDate.parse("1901-06-17"));
 		assertEquals(genericCitation.court_dateTime, LocalDateTime.parse("1902-06-17T19:00:00.000"));
+		assertEquals(genericCitation.municipality_id, municipalHashable);
 
 		verify(violationTransformer).fromTylerCitation(tylerCitation);
 		verify(courtIdTransformer).lookupCourtId("A");
