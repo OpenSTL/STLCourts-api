@@ -22,7 +22,7 @@ import com.twilio.twiml.MessagingResponse;
 import svc.dto.CitationSearchCriteria;
 import svc.models.Citation;
 import svc.models.Court;
-import svc.models.PhoneNumber;
+import svc.models.SMSInfo;
 import svc.models.TwimlMessageRequest;
 import svc.models.Violation;
 import svc.util.DatabaseUtilities;
@@ -67,10 +67,10 @@ public class SMSManager {
 		}
 	}
 	
-	public PhoneNumber getPhoneNumber(){
-		PhoneNumber phoneNumber = new PhoneNumber();
-		phoneNumber.number = twilioPhoneNumber;
-		return phoneNumber;
+	public SMSInfo getInfo(){
+		SMSInfo info = new SMSInfo();
+		info.phoneNumber = twilioPhoneNumber;
+		return info;
 	}
 	
 	
