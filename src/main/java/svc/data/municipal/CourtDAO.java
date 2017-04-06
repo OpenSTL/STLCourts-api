@@ -50,7 +50,8 @@ public class CourtDAO extends BaseJdbcDao {
 	public List<Court> getAllCourts() {
 		try  {
             CourtRowCallbackHandler courtRowCallbackHandler = new CourtRowCallbackHandler();
-			jdbcTemplate.query(getSql("court/get-all.sql"), courtRowCallbackHandler);
+            String sql = getSql("court/get-all.sql") + " ORDER BY c.court_name";
+            jdbcTemplate.query(sql, courtRowCallbackHandler);
 
 			return Lists.newArrayList(courtRowCallbackHandler.courtMap.values());
 		} catch (Exception e) {
@@ -64,7 +65,7 @@ public class CourtDAO extends BaseJdbcDao {
             Map<String, Object> parameterMap = new HashMap<>();
             parameterMap.put("municipalityId", municipalityId);
 
-            String sql = getSql("court/get-all.sql") + " WHERE mc.municipality_id = :municipalityId";
+            String sql = getSql("court/get-all.sql") + " WHERE mc.municipality_id = :municipalityId ORDER BY c.court_name";
             CourtRowCallbackHandler courtRowCallbackHandler = new CourtRowCallbackHandler();
             jdbcTemplate.query(sql, parameterMap, courtRowCallbackHandler);
 
