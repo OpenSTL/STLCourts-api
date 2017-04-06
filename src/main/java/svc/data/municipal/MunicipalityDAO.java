@@ -65,6 +65,18 @@ public class MunicipalityDAO extends BaseJdbcDao {
 		}
 	}
 	
+	public List<Municipality> getAllMunicipalitiesSupportedByDataSource(){
+		try  {
+            MunicipalityRowCallbackHandler rowCallbackHandler = new MunicipalityRowCallbackHandler();
+            jdbcTemplate.query(getSql("municipality/datasources/get-all-supported.sql"), rowCallbackHandler);
+
+            return Lists.newArrayList(rowCallbackHandler.municipalityMap.values());
+		} catch (Exception e) {
+			LogSystem.LogDBException(e);
+			return null;
+		}
+	}
+	
 	private final class MunicipalityRowCallbackHandler implements RowCallbackHandler {
 	    public Map<Long, Municipality> municipalityMap = new HashMap<>();
 

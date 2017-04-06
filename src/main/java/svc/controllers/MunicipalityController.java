@@ -60,7 +60,11 @@ public class MunicipalityController {
 	public void typeMismatchExceptionHandler(TypeMismatchException e, HttpServletResponse response){	
 	}
 	
-	
+	@ResponseBody
+	@RequestMapping(method = RequestMethod.GET, value="/municipalities/supported")
+	public List<Municipality> getAllMunicipalitiesSupportedByDataSource(){
+		return municipalityManager.getAllMunicipalitiesSupportedByDataSource();
+	}
 }
 
 

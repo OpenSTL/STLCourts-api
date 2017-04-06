@@ -25,4 +25,8 @@ public class MunicipalityManager {
 	public List<Municipality> GetAllMunicipalities() {
 		return municipalityDAO.getAllMunicipalities();
 	}
+	
+	public List<Municipality> getAllMunicipalitiesSupportedByDataSource(){
+		return municipalityDAO.getAllMunicipalitiesSupportedByDataSource();
+	}
 }
