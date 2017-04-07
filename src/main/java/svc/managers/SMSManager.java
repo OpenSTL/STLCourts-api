@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -29,6 +30,7 @@ import svc.util.DatabaseUtilities;
 import svc.data.textMessages.CitationTextMessage;
 import svc.data.textMessages.ListCitationsTextMessage;
 import svc.data.textMessages.SMSNotifier;
+import svc.data.textMessages.TwilioConfiguration;
 
 @Component
 public class SMSManager {
@@ -46,8 +48,8 @@ public class SMSManager {
 	@Value("${stlcourts.clientURL}")
 	String clientURL;
 	
-	@Value("${stlcourts.twilio.phoneNumber}")
-	String twilioPhoneNumber;
+	@Autowired
+	private TwilioConfiguration twilioConfiguration;
 	
 	private enum SMS_STAGE{
 		WELCOME(0),
@@ -69,7 +71,7 @@ public class SMSManager {
 	
 	public SMSInfo getInfo(){
 		SMSInfo info = new SMSInfo();
-		info.phoneNumber = twilioPhoneNumber;
+		info.phoneNumber = twilioConfiguration.phoneNumber;
 		return info;
 	}
 	
