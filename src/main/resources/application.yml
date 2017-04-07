@@ -43,7 +43,7 @@ stlcourts:
   twilio:
     accountSid: ${TWILIO_SID}
     authToken: ${TWILIO_AUTH_TOKEN}
-    phoneNumber: +13143000064
+    phoneNumber: ${TWILIO_PHONE_NUMBER}
 management:
   port: 8080
 ---
@@ -63,7 +63,7 @@ stlcourts:
   twilio:
     accountSid: ${TWILIO_SID}
     authToken: ${TWILIO_AUTH_TOKEN}
-    phoneNumber: +13143000064
+    phoneNumber: ${TWILIO_PHONE_NUMBER}
 ---
 spring:
   profiles: qa
@@ -89,7 +89,7 @@ stlcourts:
   twilio:
     accountSid: ${TWILIO_SID}
     authToken: ${TWILIO_AUTH_TOKEN}
-    phoneNumber: +13143000064
+    phoneNumber: ${TWILIO_PHONE_NUMBER}
 ---
 spring:
   profiles: prod
@@ -115,4 +115,4 @@ stlcourts:
   twilio:
     accountSid: ${TWILIO_SID}
     authToken: ${TWILIO_AUTH_TOKEN}
-    phoneNumber: +13142548050
+    phoneNumber: ${TWILIO_PHONE_NUMBER}
