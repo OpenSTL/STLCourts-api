@@ -85,4 +85,12 @@ public class MunicipalityControllerTest {
 		assertThat(returnedMunicipalities,equalTo(MUNICIPALITIES));
 	}
 	
+	@Test
+	public void returnsAllSupportedMunicipalities(){
+		final Municipality MUNICIPALITY = new Municipality();
+		final List<Municipality> MUNICIPALITIES = Arrays.asList(new Municipality[]{MUNICIPALITY});
+		when(managerMock.getAllMunicipalitiesSupportedByDataSource()).thenReturn(MUNICIPALITIES);
+		List<Municipality> municipalities = controller.getAllMunicipalitiesSupportedByDataSource();
+		assertThat(municipalities,equalTo(MUNICIPALITIES));
+	}
 }

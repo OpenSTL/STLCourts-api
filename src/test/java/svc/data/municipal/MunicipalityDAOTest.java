@@ -80,4 +80,15 @@ public class MunicipalityDAOTest {
 
 		verify(jdbcTemplate).query(Matchers.anyString(), Matchers.any(RowCallbackHandler.class));
 	}
+	
+	@Test
+	public void returnsSupportedMunicipalities() throws IOException {
+		Resource resource = mock(Resource.class);
+		when(resource.getInputStream()).thenReturn(null);
+		when(resourceLoader.getResource(CLASSPATH_URL_PREFIX + "sql/municipality/datasources/get-all-supported.sql")).thenReturn(resource);
+
+		municipalityDAO.getAllMunicipalitiesSupportedByDataSource();
+
+		verify(jdbcTemplate).query(Matchers.anyString(), Matchers.any(RowCallbackHandler.class));
+	}
 }

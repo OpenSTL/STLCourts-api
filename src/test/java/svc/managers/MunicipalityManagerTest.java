@@ -50,4 +50,12 @@ public class MunicipalityManagerTest {
 		when(municipalityDAOMock.getAllMunicipalities()).thenReturn(MUNICIPALITIES);
 		assertThat(manager.GetAllMunicipalities(),equalTo(MUNICIPALITIES));
 	}
+	
+	@Test
+	public void returnsSupportedMunicipalities(){
+		final Municipality MUNICIPALITY = new Municipality();
+		final List<Municipality> MUNICIPALITIES = Arrays.asList(new Municipality[]{MUNICIPALITY});
+		when(municipalityDAOMock.getAllMunicipalitiesSupportedByDataSource()).thenReturn(MUNICIPALITIES);
+		assertThat(manager.getAllMunicipalitiesSupportedByDataSource(),equalTo(MUNICIPALITIES));
+	}
 }
