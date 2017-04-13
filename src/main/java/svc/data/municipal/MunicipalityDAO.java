@@ -53,22 +53,18 @@ public class MunicipalityDAO extends BaseJdbcDao {
 		}
 	}
 	
-	public List<Municipality> getAllMunicipalities() {
+	public List<Municipality> getAllMunicipalities(Boolean getSupportedOnly){
 		try  {
             MunicipalityRowCallbackHandler rowCallbackHandler = new MunicipalityRowCallbackHandler();
-            jdbcTemplate.query(getSql("municipality/get-all.sql"), rowCallbackHandler);
-
-            return Lists.newArrayList(rowCallbackHandler.municipalityMap.values());
-		} catch (Exception e) {
-			LogSystem.LogDBException(e);
-			return null;
-		}
-	}
-	
-	public List<Municipality> getAllMunicipalitiesSupportedByDataSource(){
-		try  {
-            MunicipalityRowCallbackHandler rowCallbackHandler = new MunicipalityRowCallbackHandler();
-            jdbcTemplate.query(getSql("municipality/datasources/get-all-supported.sql"), rowCallbackHandler);
+            String sql = getSql("municipality/get-all.sql");
+            if (getSupportedOnly != null){
+            	if (getSupportedOnly){
+            		sql += " WHERE cdm.citation_datasource_id IS NOT NULL";
+            	}else{
+            		sql += " WHERE cdm.citation_datasource_id IS NULL";
+            	}
+            }
+            jdbcTemplate.query(sql, rowCallbackHandler);
 
             return Lists.newArrayList(rowCallbackHandler.municipalityMap.values());
 		} catch (Exception e) {
@@ -79,11 +75,11 @@ public class MunicipalityDAO extends BaseJdbcDao {
 	
 	private final class MunicipalityRowCallbackHandler implements RowCallbackHandler {
 	    public Map<Long, Municipality> municipalityMap = new HashMap<>();
-
+	    
 	    @SuppressWarnings("unchecked")
 		@Override
         public void processRow(ResultSet rs) {
-			try {
+	    	try {
                 Long municipalityId = rs.getLong(MUNICIPALITY_ID_COLUMN_NAMER);
                 HashableEntity<Court> courtId = new HashableEntity<Court>(Court.class,rs.getLong(CourtDAO.COURT_ID_COLUMN_NAME));
                 if(municipalityMap.containsKey(municipalityId)) {
@@ -93,12 +89,13 @@ public class MunicipalityDAO extends BaseJdbcDao {
                     municipality.id = new HashableEntity<Municipality>(Municipality.class,municipalityId);
                     municipality.name = rs.getString(MUNICIPALITY_NAME_COLUMN_NAMER);
                     municipality.courts = Lists.newArrayList(courtId);
+                    municipality.isSupported = (rs.getString("citation_datasource_id") != null)?true:false;
 
                     municipalityMap.put(municipalityId, municipality);
                 }
-			} catch (Exception e) {
+	    	} catch (Exception e) {
 				LogSystem.LogDBException(e);
-			}
+			}	
 		}
 	}
 }

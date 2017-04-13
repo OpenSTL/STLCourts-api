@@ -42,8 +42,8 @@ public class MunicipalityControllerTest {
 	public void returnsAllMunicipalities(){
 		final List<Municipality> MUNICIPALITIES = Arrays.asList(new Municipality[]{new Municipality()});
 
-		when(managerMock.GetAllMunicipalities()).thenReturn(MUNICIPALITIES);
-		List<Municipality> municipalities = controller.GetMunicipalities(response);
+		when(managerMock.GetAllMunicipalities(Mockito.anyBoolean())).thenReturn(MUNICIPALITIES);
+		List<Municipality> municipalities = controller.GetMunicipalities(response,null);
 		verify(response).setHeader("Cache-Control", "public, max-age=86400, must-revalidate");
 		assertThat(municipalities,equalTo(MUNICIPALITIES));
 	}
@@ -85,12 +85,4 @@ public class MunicipalityControllerTest {
 		assertThat(returnedMunicipalities,equalTo(MUNICIPALITIES));
 	}
 	
-	@Test
-	public void returnsAllSupportedMunicipalities(){
-		final Municipality MUNICIPALITY = new Municipality();
-		final List<Municipality> MUNICIPALITIES = Arrays.asList(new Municipality[]{MUNICIPALITY});
-		when(managerMock.getAllMunicipalitiesSupportedByDataSource()).thenReturn(MUNICIPALITIES);
-		List<Municipality> municipalities = controller.getAllMunicipalitiesSupportedByDataSource();
-		assertThat(municipalities,equalTo(MUNICIPALITIES));
-	}
 }

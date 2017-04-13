@@ -22,11 +22,7 @@ public class MunicipalityManager {
 		return municipalityDAO.getByMunicipalityId(municipalityId);
 	}
 
-	public List<Municipality> GetAllMunicipalities() {
-		return municipalityDAO.getAllMunicipalities();
-	}
-	
-	public List<Municipality> getAllMunicipalitiesSupportedByDataSource(){
-		return municipalityDAO.getAllMunicipalitiesSupportedByDataSource();
+	public List<Municipality> GetAllMunicipalities(Boolean getSupportedOnly) {
+		return municipalityDAO.getAllMunicipalities(getSupportedOnly);
 	}
 }

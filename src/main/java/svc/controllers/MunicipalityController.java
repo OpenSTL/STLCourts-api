@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,9 +33,11 @@ public class MunicipalityController {
 	
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET, value="/municipalities")
-	List<Municipality> GetMunicipalities(HttpServletResponse response) {
+	List<Municipality> GetMunicipalities(HttpServletResponse response,
+										 @RequestParam(value = "supported", required = false) Boolean supported) {
 		response.setHeader("Cache-Control", "public, max-age=86400, must-revalidate");
-		return municipalityManager.GetAllMunicipalities();
+		
+		return municipalityManager.GetAllMunicipalities(supported);
 	}
 	
 	@ResponseBody
@@ -60,11 +63,6 @@ public class MunicipalityController {
 	public void typeMismatchExceptionHandler(TypeMismatchException e, HttpServletResponse response){	
 	}
 	
-	@ResponseBody
-	@RequestMapping(method = RequestMethod.GET, value="/municipalities/supported")
-	public List<Municipality> getAllMunicipalitiesSupportedByDataSource(){
-		return municipalityManager.getAllMunicipalitiesSupportedByDataSource();
-	}
 }
 
 

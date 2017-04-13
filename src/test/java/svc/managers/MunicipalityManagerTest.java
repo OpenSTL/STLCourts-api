@@ -6,6 +6,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
+
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
@@ -47,15 +49,8 @@ public class MunicipalityManagerTest {
 	@Test
 	public void returnsAllMunicipalities(){
 		final List<Municipality> MUNICIPALITIES = Arrays.asList(new Municipality[]{new Municipality()});
-		when(municipalityDAOMock.getAllMunicipalities()).thenReturn(MUNICIPALITIES);
-		assertThat(manager.GetAllMunicipalities(),equalTo(MUNICIPALITIES));
+		when(municipalityDAOMock.getAllMunicipalities(null)).thenReturn(MUNICIPALITIES);
+		assertThat(manager.GetAllMunicipalities(null),equalTo(MUNICIPALITIES));
 	}
 	
-	@Test
-	public void returnsSupportedMunicipalities(){
-		final Municipality MUNICIPALITY = new Municipality();
-		final List<Municipality> MUNICIPALITIES = Arrays.asList(new Municipality[]{MUNICIPALITY});
-		when(municipalityDAOMock.getAllMunicipalitiesSupportedByDataSource()).thenReturn(MUNICIPALITIES);
-		assertThat(manager.getAllMunicipalitiesSupportedByDataSource(),equalTo(MUNICIPALITIES));
-	}
 }

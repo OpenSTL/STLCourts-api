@@ -53,7 +53,7 @@ public class MunicipalityDAOIntegrationTest {
 	
 	@Test
 	public void GetAllMunicipalitiesSuccessful() {
-		List<Municipality> municipalities = dao.getAllMunicipalities();
+		List<Municipality> municipalities = dao.getAllMunicipalities(null);
 
 		assertThat(municipalities, is(notNullValue()));
 		assertThat(municipalities.isEmpty(),is(false));
