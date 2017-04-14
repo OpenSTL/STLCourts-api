@@ -21,6 +21,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
+import svc.data.citations.datasources.CITATION_DATASOURCE;
 import svc.models.Municipality;
 import svc.types.HashableEntity;
 
@@ -45,7 +46,7 @@ public class MunicipalityIdTransformerTest {
 		
 		when(mockJdbcTemplate.queryForObject(anyString(),anyMap(),Matchers.<RowMapper<Long>>any())).thenReturn(5L);
 		
-		HashableEntity<Municipality> returnedMunicipalityId = mockMunicipalityIdTransformer.lookupMunicipalityId("someDatasource","someIdentifier");
+		HashableEntity<Municipality> returnedMunicipalityId = mockMunicipalityIdTransformer.lookupMunicipalityId(CITATION_DATASOURCE.TYLER,"someIdentifier");
 		assertThat(returnedMunicipalityId.getValue(),is(5L));
 	}
 

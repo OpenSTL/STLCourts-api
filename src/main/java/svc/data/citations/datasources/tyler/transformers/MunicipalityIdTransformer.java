@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
+import svc.data.citations.datasources.CITATION_DATASOURCE;
 import svc.data.jdbc.BaseJdbcDao;
 import svc.logging.LogSystem;
 import svc.models.Municipality;
@@ -15,11 +16,11 @@ import svc.types.HashableEntity;
 @Component
 public class MunicipalityIdTransformer extends BaseJdbcDao {
 
-	public HashableEntity<Municipality> lookupMunicipalityId(String datasource, String datasourceMunicipalityIdentifier) {
+	public HashableEntity<Municipality> lookupMunicipalityId(CITATION_DATASOURCE datasource, String datasourceMunicipalityIdentifier) {
 		if (datasource != null && datasourceMunicipalityIdentifier != null) {
 			try {
 				Map<String, Object> parameterMap = new HashMap<String, Object>();
-				parameterMap.put("datasource", datasource);
+				parameterMap.put("datasource", datasource.toString());
 				parameterMap.put("datasourceMunicipalityIdentifier", datasourceMunicipalityIdentifier);
 				Long municipalityId = jdbcTemplate.queryForObject(getSql("municipality/get-municipalityId-from-datasource.sql"), parameterMap, new MunicipalityIdSQLMapper());
 				return new HashableEntity<Municipality>(Municipality.class, municipalityId);

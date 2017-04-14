@@ -13,6 +13,7 @@ CREATE TABLE datasource_municipality_mapping(
 )ENGINE=InnoDB;
 
 ALTER TABLE datasource_municipality_mapping ADD CONSTRAINT datasource_municipality_mapping_fk_1 FOREIGN KEY (municipality_id) REFERENCES municipality (municipality_id);
+ALTER TABLE datasource_municipality_mapping ADD CONSTRAINT datasource_municipality_mapping_fk_2 FOREIGN KEY (citation_datasource_id) REFERENCES citation_datasource (id);
 
 INSERT INTO datasource_municipality_mapping (citation_datasource_id,municipality_id,datasource_municipality_identifier) VALUES (1,90,'County');
 

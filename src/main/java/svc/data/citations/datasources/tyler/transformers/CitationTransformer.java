@@ -91,7 +91,7 @@ public class CitationTransformer {
 
 			String tylerCourtIdentifier = getTylerCourtIdentifier(tylerCitation);
 			genericCitation.court_id = courtIdTransformer.lookupCourtId(tylerCourtIdentifier);
-			genericCitation.municipality_id = municipalityIdTransformer.lookupMunicipalityId(CITATION_DATASOURCE.TYLER.toString(),"County");
+			genericCitation.municipality_id = municipalityIdTransformer.lookupMunicipalityId(CITATION_DATASOURCE.TYLER,"County");
 		}
 
 		// These could probably be added to the Tyler API

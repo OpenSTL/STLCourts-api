@@ -3,6 +3,7 @@ package svc.data.citations.datasources.tyler.transformers;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -75,7 +76,7 @@ public class CitationTransformerTest {
 	@Test
 	public void citationTransformerTransformsAllCitationsPassedIn() {
 		final HashableEntity<Municipality> municipalHashable = new HashableEntity<Municipality>(Municipality.class,3L);
-		when(municipalityIdTransformer.lookupMunicipalityId(anyString(),anyString()))
+		when(municipalityIdTransformer.lookupMunicipalityId(anyObject(),anyString()))
 		.thenReturn(municipalHashable);
 		
 		List<TylerCitation> tylerCitations = generateListOfTylerCitations();
@@ -110,7 +111,7 @@ public class CitationTransformerTest {
 	public void citationTransformerCopiesCitationFieldsCorrectly() {
 		TylerCitation tylerCitation = generateFullTylerCitation();
 		final HashableEntity<Municipality> municipalHashable = new HashableEntity<Municipality>(Municipality.class,3L);
-		when(municipalityIdTransformer.lookupMunicipalityId(anyString(),anyString()))
+		when(municipalityIdTransformer.lookupMunicipalityId(anyObject(),anyString()))
 		.thenReturn(municipalHashable);
 		
 		Citation genericCitation = citationTransformer.fromTylerCitation(tylerCitation);
