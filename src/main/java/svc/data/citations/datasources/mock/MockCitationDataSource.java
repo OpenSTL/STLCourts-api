@@ -8,6 +8,7 @@ import svc.logging.LogSystem;
 import svc.managers.ViolationManager;
 import svc.models.Citation;
 import svc.models.Court;
+import svc.models.Municipality;
 import svc.types.HashableEntity;
 import svc.util.DatabaseUtilities;
 
@@ -142,6 +143,7 @@ public class MockCitationDataSource extends BaseJdbcDao implements CitationDataS
                     citation.court_dateTime = LocalDateTime.of(courtDate, courtTime);
                 }
                 citation.court_id = new HashableEntity<Court>(Court.class,rs.getLong("court_id"));
+                citation.municipality_id = new HashableEntity<Municipality>(Municipality.class,rs.getLong("municipality_id"));
             } catch (Exception e) {
                 LogSystem.LogDBException(e);
                 return null;

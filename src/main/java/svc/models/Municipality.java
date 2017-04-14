@@ -9,5 +9,6 @@ public class Municipality {
 	public HashableEntity<Municipality> id;
 	public String name;
 	public List<HashableEntity<Court>> courts;
+	public String paymentUrl;
 	public Boolean isSupported;
 }

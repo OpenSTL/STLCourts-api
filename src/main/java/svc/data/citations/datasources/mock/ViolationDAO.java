@@ -92,6 +92,7 @@ public class ViolationDAO extends BaseJdbcDao
 				violation.warrant_status = rs.getBoolean("warrant_status");
 				violation.warrant_number = rs.getString("warrant_number");
 				violation.status = VIOLATION_STATUS.convertDatabaseStatusToEnum(rs.getString("status"));
+				violation.can_pay_online = rs.getBoolean("can_pay_online");
 				String fineAmountStr = rs.getString("fine_amount");
 				if (fineAmountStr != null)
 				{

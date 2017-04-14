@@ -20,6 +20,7 @@ public class MunicipalityDAO extends BaseJdbcDao {
 
 	public static final String MUNICIPALITY_ID_COLUMN_NAMER = "municipality_id";
     public static final String MUNICIPALITY_NAME_COLUMN_NAMER = "municipality_name";
+    public static final String MUNICIPALITY_PAYMENT_URL_COLUMN_NAMER = "payment_url";
 
 	public List<Municipality> getByCourtId(Long courtId){
 		try{
@@ -90,6 +91,7 @@ public class MunicipalityDAO extends BaseJdbcDao {
                     municipality.id = new HashableEntity<Municipality>(Municipality.class,municipalityId);
                     municipality.name = rs.getString(MUNICIPALITY_NAME_COLUMN_NAMER);
                     municipality.courts = Lists.newArrayList(courtId);
+                    municipality.paymentUrl = rs.getString(MUNICIPALITY_PAYMENT_URL_COLUMN_NAMER);
                     municipality.isSupported = rs.getString("citation_datasource_id") != null;
 
                     municipalityMap.put(municipalityId, municipality);

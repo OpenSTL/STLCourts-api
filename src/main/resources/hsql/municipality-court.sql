@@ -87,6 +87,7 @@ INSERT INTO municipality_court(municipality_id, court_id) VALUES (86, 35);
 INSERT INTO municipality_court(municipality_id, court_id) VALUES (87, 76);
 INSERT INTO municipality_court(municipality_id, court_id) VALUES (88, 77);
 INSERT INTO municipality_court(municipality_id, court_id) VALUES (89, 78);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (91, 48);
 
 -- County (1 municipality to many courts)
 INSERT INTO municipality_court(municipality_id, court_id) VALUES (90, 79);

@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import svc.data.citations.datasources.CITATION_DATASOURCE;
 import svc.data.citations.datasources.tyler.models.TylerCitation;
 import svc.logging.LogSystem;
 import svc.models.Citation;
@@ -22,6 +23,9 @@ public class CitationTransformer {
 
 	@Autowired
 	CourtIdTransformer courtIdTransformer;
+	
+	@Autowired
+	MunicipalityIdTransformer municipalityIdTransformer;
 
 	private DateTimeFormatter localDateFormatter = DateTimeFormatter.ofPattern("MM/dd/uuuu");
 
@@ -87,6 +91,7 @@ public class CitationTransformer {
 
 			String tylerCourtIdentifier = getTylerCourtIdentifier(tylerCitation);
 			genericCitation.court_id = courtIdTransformer.lookupCourtId(tylerCourtIdentifier);
+			genericCitation.municipality_id = municipalityIdTransformer.lookupMunicipalityId(CITATION_DATASOURCE.TYLER,"County");
 		}
 
 		// These could probably be added to the Tyler API

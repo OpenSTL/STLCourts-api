@@ -13,4 +13,5 @@ public class Violation
 	public VIOLATION_STATUS status;
 	public BigDecimal fine_amount;
 	public BigDecimal court_cost;
+	public Boolean can_pay_online;
 }
