@@ -25,7 +25,7 @@ public class MunicipalityDAO extends BaseJdbcDao {
 		try{
 			Map<String, Object> parameterMap = new HashMap<>();
 			parameterMap.put("courtId", courtId);
-			String sql = getSql("municipality/get-all.sql") + " WHERE mc.court_id = :courtId";
+			String sql = getSql("municipality/get-all.sql") + " WHERE mc.court_id = :courtId ORDER BY m.municipality_name";
 
             MunicipalityRowCallbackHandler rowCallbackHandler = new MunicipalityRowCallbackHandler();
 			jdbcTemplate.query(sql, parameterMap, rowCallbackHandler);
@@ -64,6 +64,7 @@ public class MunicipalityDAO extends BaseJdbcDao {
             		sql += " WHERE cdm.citation_datasource_id IS NULL";
             	}
             }
+            sql += " ORDER BY m.municipality_name";
             jdbcTemplate.query(sql, rowCallbackHandler);
 
             return Lists.newArrayList(rowCallbackHandler.municipalityMap.values());

@@ -11,6 +11,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.mock.web.MockHttpSession;
+
+import svc.data.textMessages.TwilioConfiguration;
 import svc.dto.CitationSearchCriteria;
 import svc.models.*;
 import svc.types.HashableEntity;
@@ -43,6 +45,8 @@ public class SMSManagerTest {
 	CitationManager citationManagerMock;
 	@Mock
 	HttpServletRequest requestMock;
+	@Mock
+	TwilioConfiguration twilioConfiguration;
 	
 	MockHttpSession session;
 	
@@ -75,10 +79,18 @@ public class SMSManagerTest {
 		session.setAttribute("stage", new Integer(textStage.getNumVal()));
 	}
 	
-	 @Before
-	    public void setup() {
-		 	session = new MockHttpSession();
-	    }
+	@Before
+	public void setup() {
+		session = new MockHttpSession();
+	}
+	
+	@Test
+	public void getsSMSInfo(){
+		twilioConfiguration.phoneNumber = "somePhoneNumber";
+		SMSInfo smsInfo = manager.getInfo();
+		assertEquals(smsInfo.phoneNumber,"somePhoneNumber");
+		
+	}
 	
 	@Test
 	public void welcomeMessageGetsGenerated() throws TwiMLException{
