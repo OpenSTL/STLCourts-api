@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.notNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -65,6 +66,16 @@ public class SMSControllerTest {
 		verify(session).setMaxInactiveInterval(30*60);
 		verify(response).setContentType("application/xml");
 		verify(smsManagerMock).getTwimlResponse(twimlMessageRequest,request,session);
+	}
+	
+	@Test
+	public void returnsSMSInfoObject(){
+		SMSInfo smsInfo = new SMSInfo();
+		smsInfo.phoneNumber = "someNumber";
+		when(smsManagerMock.getInfo()).thenReturn(smsInfo);
+		
+		SMSInfo returnedSMSInfo = controller.GetPhoneNumber();
+		assertEquals(smsInfo.phoneNumber,returnedSMSInfo.phoneNumber);
 	}
 	
 }

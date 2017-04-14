@@ -43,5 +43,12 @@ public class SMSController {
 	    	e.printStackTrace();
 	    }
 	}
+	
+	
+	@ResponseBody
+	@RequestMapping(method = RequestMethod.GET, value="/info")
+	SMSInfo GetPhoneNumber(){
+		return smsManager.getInfo();
+	}
 		
 }
