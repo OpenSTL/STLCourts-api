@@ -53,12 +53,12 @@ public class MunicipalityDAO extends BaseJdbcDao {
 		}
 	}
 	
-	public List<Municipality> getAllMunicipalities(Boolean getSupportedOnly){
+	public List<Municipality> getAllMunicipalities(Boolean supported){
 		try  {
             MunicipalityRowCallbackHandler rowCallbackHandler = new MunicipalityRowCallbackHandler();
             String sql = getSql("municipality/get-all.sql");
-            if (getSupportedOnly != null){
-            	if (getSupportedOnly){
+            if (supported != null){
+            	if (supported){
             		sql += " WHERE cdm.citation_datasource_id IS NOT NULL";
             	}else{
             		sql += " WHERE cdm.citation_datasource_id IS NULL";
@@ -89,7 +89,7 @@ public class MunicipalityDAO extends BaseJdbcDao {
                     municipality.id = new HashableEntity<Municipality>(Municipality.class,municipalityId);
                     municipality.name = rs.getString(MUNICIPALITY_NAME_COLUMN_NAMER);
                     municipality.courts = Lists.newArrayList(courtId);
-                    municipality.isSupported = (rs.getString("citation_datasource_id") != null)?true:false;
+                    municipality.isSupported = rs.getString("citation_datasource_id") != null;
 
                     municipalityMap.put(municipalityId, municipality);
                 }
