@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +23,7 @@ import com.twilio.twiml.MessagingResponse;
 import svc.dto.CitationSearchCriteria;
 import svc.models.Citation;
 import svc.models.Court;
+import svc.models.SMSInfo;
 import svc.models.TwimlMessageRequest;
 import svc.models.Violation;
 import svc.util.DatabaseUtilities;
@@ -29,6 +31,7 @@ import svc.data.textMessages.CitationTextMessage;
 import svc.data.textMessages.ListCitationsTextMessage;
 import svc.data.textMessages.SMSNotifier;
 import svc.data.textMessages.SMSSpamProtection;
+import svc.data.textMessages.TwilioConfiguration;
 
 @Component
 public class SMSManager {
@@ -46,6 +49,9 @@ public class SMSManager {
 	@Value("${stlcourts.clientURL}")
 	String clientURL;
 	
+	@Autowired
+	private TwilioConfiguration twilioConfiguration;
+	
 	private enum SMS_STAGE{
 		WELCOME(0),
 		READ_DOB(1),
@@ -62,6 +68,12 @@ public class SMSManager {
 		public int getNumVal() {
 			return numVal;
 		}
+	}
+	
+	public SMSInfo getInfo(){
+		SMSInfo info = new SMSInfo();
+		info.phoneNumber = twilioConfiguration.phoneNumber;
+		return info;
 	}
 	
 	
@@ -239,7 +251,9 @@ public class SMSManager {
 					}
 					
 					message = "You will receive 3 text message reminders about your court date.  The first one will be sent two weeks prior to your court date.  The second will be send one week prior and the final one will be sent the day before your court date.";
-					message += replyWithAdditionalViewingOptionsNoText();
+					message += "\n\n  For help, respond HELP, to stop, respond STOP";
+					message += "\n\n Responding with STOP will prevent you from receiving any reminders now and in the future as well as using any part of this SMS service.  If you'd like to cancel your reminder, you can cancel using the same text message menu you used to sign up.";
+					message += "\n\n"+replyWithAdditionalViewingOptionsNoText();
 					setNextStageInSession(session,SMS_STAGE.READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN);
 				}else{
 					message = "Sorry, something went wrong in processing your request for text message reminders.";

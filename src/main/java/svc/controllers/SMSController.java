@@ -45,5 +45,12 @@ public class SMSController {
 		    }
 		}
 	}
+	
+	
+	@ResponseBody
+	@RequestMapping(method = RequestMethod.GET, value="/info")
+	SMSInfo GetPhoneNumber(){
+		return smsManager.getInfo();
+	}
 		
 }
