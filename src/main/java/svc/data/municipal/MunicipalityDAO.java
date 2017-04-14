@@ -53,10 +53,18 @@ public class MunicipalityDAO extends BaseJdbcDao {
 		}
 	}
 	
-	public List<Municipality> getAllMunicipalities() {
+	public List<Municipality> getAllMunicipalities(Boolean supported){
 		try  {
             MunicipalityRowCallbackHandler rowCallbackHandler = new MunicipalityRowCallbackHandler();
-            String sql = getSql("municipality/get-all.sql") + " ORDER BY m.municipality_name";
+            String sql = getSql("municipality/get-all.sql");
+            if (supported != null){
+            	if (supported){
+            		sql += " WHERE cdm.citation_datasource_id IS NOT NULL";
+            	}else{
+            		sql += " WHERE cdm.citation_datasource_id IS NULL";
+            	}
+            }
+            sql += " ORDER BY m.municipality_name";
             jdbcTemplate.query(sql, rowCallbackHandler);
 
             return Lists.newArrayList(rowCallbackHandler.municipalityMap.values());
@@ -68,11 +76,11 @@ public class MunicipalityDAO extends BaseJdbcDao {
 	
 	private final class MunicipalityRowCallbackHandler implements RowCallbackHandler {
 	    public Map<Long, Municipality> municipalityMap = new HashMap<>();
-
+	    
 	    @SuppressWarnings("unchecked")
 		@Override
         public void processRow(ResultSet rs) {
-			try {
+	    	try {
                 Long municipalityId = rs.getLong(MUNICIPALITY_ID_COLUMN_NAMER);
                 HashableEntity<Court> courtId = new HashableEntity<Court>(Court.class,rs.getLong(CourtDAO.COURT_ID_COLUMN_NAME));
                 if(municipalityMap.containsKey(municipalityId)) {
@@ -82,12 +90,13 @@ public class MunicipalityDAO extends BaseJdbcDao {
                     municipality.id = new HashableEntity<Municipality>(Municipality.class,municipalityId);
                     municipality.name = rs.getString(MUNICIPALITY_NAME_COLUMN_NAMER);
                     municipality.courts = Lists.newArrayList(courtId);
+                    municipality.isSupported = rs.getString("citation_datasource_id") != null;
 
                     municipalityMap.put(municipalityId, municipality);
                 }
-			} catch (Exception e) {
+	    	} catch (Exception e) {
 				LogSystem.LogDBException(e);
-			}
+			}	
 		}
 	}
 }

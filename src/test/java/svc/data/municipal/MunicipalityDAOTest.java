@@ -76,8 +76,32 @@ public class MunicipalityDAOTest {
 		when(resource.getInputStream()).thenReturn(null);
 		when(resourceLoader.getResource(CLASSPATH_URL_PREFIX + "sql/municipality/get-all.sql")).thenReturn(resource);
 
-		municipalityDAO.getAllMunicipalities();
+		municipalityDAO.getAllMunicipalities(null);
 
 		verify(jdbcTemplate).query(Matchers.anyString(), Matchers.any(RowCallbackHandler.class));
+	}
+	
+	@Test
+	public void returnsSupportedMunicipalities() throws IOException {
+		Resource resource = mock(Resource.class);
+		when(resource.getInputStream()).thenReturn(null);
+		when(resourceLoader.getResource(CLASSPATH_URL_PREFIX + "sql/municipality/get-all.sql")).thenReturn(resource);
+
+		municipalityDAO.getAllMunicipalities(true);
+
+		verify(jdbcTemplate).query(sqlCaptor.capture(), Matchers.<RowCallbackHandler> any());
+		assertTrue(sqlCaptor.getValue().contains(" WHERE cdm.citation_datasource_id IS NOT NULL"));
+	}
+	
+	@Test
+	public void returnsNonSupportedMunicipalities() throws IOException {
+		Resource resource = mock(Resource.class);
+		when(resource.getInputStream()).thenReturn(null);
+		when(resourceLoader.getResource(CLASSPATH_URL_PREFIX + "sql/municipality/get-all.sql")).thenReturn(resource);
+
+		municipalityDAO.getAllMunicipalities(false);
+
+		verify(jdbcTemplate).query(sqlCaptor.capture(), Matchers.<RowCallbackHandler> any());
+		assertTrue(sqlCaptor.getValue().contains(" WHERE cdm.citation_datasource_id IS NULL"));
 	}
 }
