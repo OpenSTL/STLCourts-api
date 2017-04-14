@@ -235,7 +235,9 @@ public class SMSManager {
 					}
 					
 					message = "You will receive 3 text message reminders about your court date.  The first one will be sent two weeks prior to your court date.  The second will be send one week prior and the final one will be sent the day before your court date.";
-					message += replyWithAdditionalViewingOptionsNoText();
+					message += "\n\n  For help, respond HELP, to stop, respond STOP";
+					message += "\n\n Responding with STOP will prevent you from receiving any reminders now and in the future as well as using any part of this SMS service.  If you'd like to cancel your reminder, you can cancel using the same text message menu you used to sign up.";
+					message += "\n\n"+replyWithAdditionalViewingOptionsNoText();
 					setNextStageInSession(session,SMS_STAGE.READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN);
 				}else{
 					message = "Sorry, something went wrong in processing your request for text message reminders.";
