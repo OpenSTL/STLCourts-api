@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.twilio.Twilio;
@@ -19,14 +19,9 @@ public class SMSNotifier {
 	@Inject
 	SMSAlertManager smsAlertManager;
 	
-	@Value("${stlcourts.twilio.accountSid}")
-	String accountSid;
+	@Autowired
+	private TwilioConfiguration twilioConfiguration;
 	
-	@Value("${stlcourts.twilio.authToken}")
-	String authToken;
-	
-	@Value("${stlcourts.twilio.phoneNumber}")
-	String twilioPhone;
 	
 	public void sendAlerts() {
 		List<SMSAlertNotification> notificationsToSend = smsAlertManager.getAlertMessagesToSend();
@@ -41,8 +36,8 @@ public class SMSNotifier {
 	private void createAndSendMessages(List<SMSAlertNotification> notificationsToSend){
 		for(int notificationCount = 0; notificationCount < notificationsToSend.size(); notificationCount++){
 			SMSAlertNotification notification = notificationsToSend.get(notificationCount);
-			Twilio.init(accountSid,authToken);
-			Message.creator(new PhoneNumber(notification.defendantPhone), new PhoneNumber(twilioPhone),notification.message).create();
+			Twilio.init(twilioConfiguration.accountSid,twilioConfiguration.authToken);
+			Message.creator(new PhoneNumber(notification.defendantPhone), new PhoneNumber(twilioConfiguration.phoneNumber),notification.message).create();
 		}
 	}
 }

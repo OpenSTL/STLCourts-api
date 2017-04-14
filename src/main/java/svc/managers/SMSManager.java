@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -22,12 +23,14 @@ import com.twilio.twiml.MessagingResponse;
 import svc.dto.CitationSearchCriteria;
 import svc.models.Citation;
 import svc.models.Court;
+import svc.models.SMSInfo;
 import svc.models.TwimlMessageRequest;
 import svc.models.Violation;
 import svc.util.DatabaseUtilities;
 import svc.data.textMessages.CitationTextMessage;
 import svc.data.textMessages.ListCitationsTextMessage;
 import svc.data.textMessages.SMSNotifier;
+import svc.data.textMessages.TwilioConfiguration;
 
 @Component
 public class SMSManager {
@@ -45,6 +48,9 @@ public class SMSManager {
 	@Value("${stlcourts.clientURL}")
 	String clientURL;
 	
+	@Autowired
+	private TwilioConfiguration twilioConfiguration;
+	
 	private enum SMS_STAGE{
 		WELCOME(0),
 		READ_DOB(1),
@@ -61,6 +67,12 @@ public class SMSManager {
 		public int getNumVal() {
 			return numVal;
 		}
+	}
+	
+	public SMSInfo getInfo(){
+		SMSInfo info = new SMSInfo();
+		info.phoneNumber = twilioConfiguration.phoneNumber;
+		return info;
 	}
 	
 	
