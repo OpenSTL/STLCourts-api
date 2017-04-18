@@ -9,7 +9,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.mock.web.MockHttpSession;
 
 @RunWith(MockitoJUnitRunner.class)
-public class SMSSpamProtectionTest {
+public class SMSSpamProtectorTest {
 	MockHttpSession session;
 	
 	@Before
@@ -19,30 +19,30 @@ public class SMSSpamProtectionTest {
 	
 	@Test
 	public void returnsFalseForLockedOut(){
-		Boolean lockedOut = SMSSpamProtection.isLockedOut(session);
+		Boolean lockedOut = SMSSpamProtector.isLockedOut(session);
 		assertEquals(lockedOut,false);
 	}
 	
 	@Test
 	public void addsErrorsAndLocksOut(){
-		SMSSpamProtection.addError(session);
-		SMSSpamProtection.addError(session);
-		SMSSpamProtection.addError(session);
-		SMSSpamProtection.addError(session);
-		SMSSpamProtection.addError(session);
-		Boolean lockedOut = SMSSpamProtection.isLockedOut(session);
+		SMSSpamProtector.addError(session);
+		SMSSpamProtector.addError(session);
+		SMSSpamProtector.addError(session);
+		SMSSpamProtector.addError(session);
+		SMSSpamProtector.addError(session);
+		Boolean lockedOut = SMSSpamProtector.isLockedOut(session);
 		assertEquals(lockedOut,true);
 	}
 	
 	@Test
 	public void clearsErrorsCorrectly(){
-		SMSSpamProtection.addError(session);
-		SMSSpamProtection.addError(session);
-		SMSSpamProtection.addError(session);
-		SMSSpamProtection.addError(session);
-		SMSSpamProtection.clearErrors(session);
-		SMSSpamProtection.addError(session);
-		Boolean lockedOut = SMSSpamProtection.isLockedOut(session);
+		SMSSpamProtector.addError(session);
+		SMSSpamProtector.addError(session);
+		SMSSpamProtector.addError(session);
+		SMSSpamProtector.addError(session);
+		SMSSpamProtector.clearErrors(session);
+		SMSSpamProtector.addError(session);
+		Boolean lockedOut = SMSSpamProtector.isLockedOut(session);
 		assertEquals(lockedOut,false);
 	}
 	

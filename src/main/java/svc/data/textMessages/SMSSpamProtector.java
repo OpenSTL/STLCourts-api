@@ -5,7 +5,7 @@ import java.util.TimerTask;
 
 import javax.servlet.http.HttpSession;
 
-public class SMSSpamProtection {
+public class SMSSpamProtector {
 	static final int MAX_ERROR_COUNT = 5;
 	
 	public static Boolean isLockedOut(HttpSession session){
@@ -30,7 +30,7 @@ public class SMSSpamProtection {
 		
 		session.setAttribute("errorCount",errorCount);
 		
-		if (SMSSpamProtection.isLockedOut(session)){
+		if (SMSSpamProtector.isLockedOut(session)){
 			msg = "You have exceeded the maximum amount of invalid input errors.  This phone number is locked out for the next 20 minutes.";
 	
 			Timer timer = new Timer();
