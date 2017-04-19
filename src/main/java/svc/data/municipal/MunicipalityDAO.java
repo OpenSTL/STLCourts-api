@@ -32,7 +32,7 @@ public class MunicipalityDAO extends BaseJdbcDao {
             MunicipalityRowCallbackHandler rowCallbackHandler = new MunicipalityRowCallbackHandler();
 			jdbcTemplate.query(sql, parameterMap, rowCallbackHandler);
 
-			return rowCallbackHandler.municiplaities;
+			return rowCallbackHandler.municipalities;
 		}catch (Exception e){
             LogSystem.LogDBException(e);
 			return null;
@@ -48,7 +48,7 @@ public class MunicipalityDAO extends BaseJdbcDao {
             MunicipalityRowCallbackHandler rowCallbackHandler = new MunicipalityRowCallbackHandler();
             jdbcTemplate.query(sql, parameterMap, rowCallbackHandler);
 
-            return rowCallbackHandler.municiplaities.get(0);
+            return rowCallbackHandler.municipalities.get(0);
 		}catch (Exception e){
             LogSystem.LogDBException(e);
 			return null;
@@ -69,7 +69,7 @@ public class MunicipalityDAO extends BaseJdbcDao {
             sql += " ORDER BY m.municipality_name";
             jdbcTemplate.query(sql, rowCallbackHandler);
 
-            return rowCallbackHandler.municiplaities;
+            return rowCallbackHandler.municipalities;
 		} catch (Exception e) {
 			LogSystem.LogDBException(e);
 			return null;
@@ -79,7 +79,7 @@ public class MunicipalityDAO extends BaseJdbcDao {
 	private final class MunicipalityRowCallbackHandler implements RowCallbackHandler {
 	    private Map<Long, Municipality> municipalityMap = new HashMap<>();
 	    //use array list so results remain in their sorted order
-	    public List<Municipality> municiplaities = new ArrayList<Municipality>();
+	    public List<Municipality> municipalities = new ArrayList<Municipality>();
 	    
 	    @SuppressWarnings("unchecked")
 		@Override
@@ -98,7 +98,7 @@ public class MunicipalityDAO extends BaseJdbcDao {
                     municipality.isSupported = rs.getString("citation_datasource_id") != null;
 
                     municipalityMap.put(municipalityId, municipality);
-                    municiplaities.add(municipality);
+                    municipalities.add(municipality);
                 }
 	    	} catch (Exception e) {
 				LogSystem.LogDBException(e);
