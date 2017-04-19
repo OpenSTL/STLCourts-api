@@ -35,13 +35,15 @@ public class SMSController {
 		
 		MessagingResponse twimlResponse = smsManager.getTwimlResponse(twimlMessageRequest, request, session);
 
-	    response.setContentType("application/xml");
-
-	    try {
-	    	response.getWriter().print(twimlResponse.toXml());
-	    } catch (TwiMLException e) {
-	    	e.printStackTrace();
-	    }
+		if (twimlResponse != null){
+		    response.setContentType("application/xml");
+	
+		    try {
+		    	response.getWriter().print(twimlResponse.toXml());
+		    } catch (TwiMLException e) {
+		    	e.printStackTrace();
+		    }
+		}
 	}
 	
 	

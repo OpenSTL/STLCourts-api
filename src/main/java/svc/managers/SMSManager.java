@@ -30,6 +30,7 @@ import svc.util.DatabaseUtilities;
 import svc.data.textMessages.CitationTextMessage;
 import svc.data.textMessages.ListCitationsTextMessage;
 import svc.data.textMessages.SMSNotifier;
+import svc.data.textMessages.SMSSpamProtector;
 import svc.data.textMessages.TwilioConfiguration;
 
 @Component
@@ -144,6 +145,7 @@ public class SMSManager {
 			message = "Thank you.  Now please enter your driver\'s license number.";
 			nextTextStage = SMS_STAGE.READ_LICENSE;
 		}else{
+			message += "\n\n" + SMSSpamProtector.addError(session);
 			nextTextStage = SMS_STAGE.READ_DOB;
 		}
 		setNextStageInSession(session,nextTextStage);
@@ -176,8 +178,10 @@ public class SMSManager {
 			message = ListCitations(date_of_birth, licenseNumber);
 			if (message == ""){
 				message = "No tickets were found. If you have additional questions, go to www.yourSTLcourts.com.";
+				message += "\n\n" + SMSSpamProtector.addError(session);
 				nextTextStage = SMS_STAGE.WELCOME;
 			}else{
+				SMSSpamProtector.clearErrors(session);
 				nextTextStage = SMS_STAGE.VIEW_CITATION;
 			}
 			
@@ -324,30 +328,33 @@ public class SMSManager {
 	}
 	
 	public MessagingResponse getTwimlResponse(TwimlMessageRequest twimlMessageRequest, HttpServletRequest request, HttpSession session){
-		SMS_STAGE currentTextStage = getStageFromSession(session);
-		String message = "";
-		String content = twimlMessageRequest.getBody().trim();
-		session.setAttribute("phoneNumber", twimlMessageRequest.getFrom());
+		MessagingResponse twimlResponse = null;
+		if (!SMSSpamProtector.isLockedOut(session)){
+			SMS_STAGE currentTextStage = getStageFromSession(session);
+			String message = "";
+			String content = twimlMessageRequest.getBody().trim();
+			session.setAttribute("phoneNumber", twimlMessageRequest.getFrom());
+			
+			switch(currentTextStage){
+			case WELCOME:
+				message = generateWelcomeStageMessage(session);
+				break;
+			case READ_DOB:
+				message = generateReadDobMessage(session, content);
+				break;
+			case READ_LICENSE:
+				message = generateReadLicenseMessage(session, content);
+				break;
+			case VIEW_CITATION:
+				message = generateViewCitationMessage(session, content);
+				break;
+			case READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN:
+				message = generateViewCitationsAgainMessage(session, request, content);
+				break;
+			}
 		
-		switch(currentTextStage){
-		case WELCOME:
-			message = generateWelcomeStageMessage(session);
-			break;
-		case READ_DOB:
-			message = generateReadDobMessage(session, content);
-			break;
-		case READ_LICENSE:
-			message = generateReadLicenseMessage(session, content);
-			break;
-		case VIEW_CITATION:
-			message = generateViewCitationMessage(session, content);
-			break;
-		case READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN:
-			message = generateViewCitationsAgainMessage(session, request, content);
-			break;
+			twimlResponse = createTwimlResponse(message);
 		}
-	    
-	    MessagingResponse twimlResponse = createTwimlResponse(message);
 	    
 	    return twimlResponse;
 	}
