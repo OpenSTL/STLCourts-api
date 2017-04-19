@@ -87,7 +87,7 @@ public class MockCitationDataSourceTest {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         LocalDate date = LocalDate.parse(dateString,formatter);
 
-        List<Citation> citations = mockCitationDataSource.getByLicenseAndDOB("someLiscensNumber", date);
+        List<Citation> citations = mockCitationDataSource.getByLicenseAndDOB("someLiscensNumber", "MO", date);
 
         assertThat(citations.get(0).id, is(3));
     }
