@@ -1,6 +1,7 @@
 package svc.data.municipal;
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +32,7 @@ public class MunicipalityDAO extends BaseJdbcDao {
             MunicipalityRowCallbackHandler rowCallbackHandler = new MunicipalityRowCallbackHandler();
 			jdbcTemplate.query(sql, parameterMap, rowCallbackHandler);
 
-			return Lists.newArrayList(rowCallbackHandler.municipalityMap.values());
+			return rowCallbackHandler.municipalities;
 		}catch (Exception e){
             LogSystem.LogDBException(e);
 			return null;
@@ -47,7 +48,7 @@ public class MunicipalityDAO extends BaseJdbcDao {
             MunicipalityRowCallbackHandler rowCallbackHandler = new MunicipalityRowCallbackHandler();
             jdbcTemplate.query(sql, parameterMap, rowCallbackHandler);
 
-			return rowCallbackHandler.municipalityMap.values().iterator().next(); //Should only be 1
+            return rowCallbackHandler.municipalities.get(0);
 		}catch (Exception e){
             LogSystem.LogDBException(e);
 			return null;
@@ -68,7 +69,7 @@ public class MunicipalityDAO extends BaseJdbcDao {
             sql += " ORDER BY m.municipality_name";
             jdbcTemplate.query(sql, rowCallbackHandler);
 
-            return Lists.newArrayList(rowCallbackHandler.municipalityMap.values());
+            return rowCallbackHandler.municipalities;
 		} catch (Exception e) {
 			LogSystem.LogDBException(e);
 			return null;
@@ -76,7 +77,9 @@ public class MunicipalityDAO extends BaseJdbcDao {
 	}
 	
 	private final class MunicipalityRowCallbackHandler implements RowCallbackHandler {
-	    public Map<Long, Municipality> municipalityMap = new HashMap<>();
+	    private Map<Long, Municipality> municipalityMap = new HashMap<>();
+	    //use array list so results remain in their sorted order
+	    public List<Municipality> municipalities = new ArrayList<Municipality>();
 	    
 	    @SuppressWarnings("unchecked")
 		@Override
@@ -95,6 +98,7 @@ public class MunicipalityDAO extends BaseJdbcDao {
                     municipality.isSupported = rs.getString("citation_datasource_id") != null;
 
                     municipalityMap.put(municipalityId, municipality);
+                    municipalities.add(municipality);
                 }
 	    	} catch (Exception e) {
 				LogSystem.LogDBException(e);

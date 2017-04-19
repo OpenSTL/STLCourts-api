@@ -12,6 +12,7 @@ import svc.types.HashableEntity;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +41,7 @@ public class CourtDAO extends BaseJdbcDao {
             CourtRowCallbackHandler courtRowCallbackHandler = new CourtRowCallbackHandler();
             jdbcTemplate.query(sql, parameterMap, courtRowCallbackHandler);
 
-            return courtRowCallbackHandler.courtMap.values().iterator().next(); //Should only be 1
+            return courtRowCallbackHandler.courts.get(0); //Should only be 1
 		}catch (Exception e){
             LogSystem.LogDBException(e);
 			return null;
@@ -53,7 +54,7 @@ public class CourtDAO extends BaseJdbcDao {
             String sql = getSql("court/get-all.sql") + " ORDER BY c.court_name";
             jdbcTemplate.query(sql, courtRowCallbackHandler);
 
-			return Lists.newArrayList(courtRowCallbackHandler.courtMap.values());
+			return courtRowCallbackHandler.courts;
 		} catch (Exception e) {
 			LogSystem.LogDBException(e);
 			return null;
@@ -69,7 +70,7 @@ public class CourtDAO extends BaseJdbcDao {
             CourtRowCallbackHandler courtRowCallbackHandler = new CourtRowCallbackHandler();
             jdbcTemplate.query(sql, parameterMap, courtRowCallbackHandler);
 
-            return Lists.newArrayList(courtRowCallbackHandler.courtMap.values());
+            return courtRowCallbackHandler.courts;
         } catch (Exception e) {
             LogSystem.LogDBException(e);
             return null;
@@ -77,7 +78,9 @@ public class CourtDAO extends BaseJdbcDao {
     }
 
     private final class CourtRowCallbackHandler implements RowCallbackHandler {
-        public Map<Long, Court> courtMap = new HashMap<>();
+        private Map<Long, Court> courtMap = new HashMap<>();
+        //use array list so results remain in their sorted order
+	    public List<Court> courts = new ArrayList<Court>();
 
         @Override
         public void processRow(ResultSet rs) throws SQLException {
@@ -90,6 +93,7 @@ public class CourtDAO extends BaseJdbcDao {
                     Court court = buildCourt(rs);
                     court.judges.add(judge);
                     courtMap.put(courtId, court);
+                    courts.add(court);
                 }
             } catch (Exception e) {
                 LogSystem.LogDBException(e);
