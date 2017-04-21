@@ -47,10 +47,10 @@ public class TylerCitationDataSource implements CitationDataSource {
 	}
 
 	@Override
-	public List<Citation> getByLicenseAndDOB(String driversLicenseNumber, LocalDate dob) {
+	public List<Citation> getByLicenseAndDOB(String driversLicenseNumber, String driversLicenseState, LocalDate dob) {
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(tylerConfiguration.rootUrl)
 				.queryParam("licenseNumber", driversLicenseNumber).queryParam("dob", dob.format(dobFormatter))
-				.queryParam("licenseState", "MO");
+				.queryParam("licenseState", driversLicenseState);
 
 		return performRestTemplateCall(builder.build().encode().toUri());
 	}

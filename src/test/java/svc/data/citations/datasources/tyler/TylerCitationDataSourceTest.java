@@ -78,6 +78,7 @@ public class TylerCitationDataSourceTest {
 	@Test
 	public void returnsCitationsGivenLicenseAndDOB(){
 		final String DRIVERSLICENSENUMBER = "ABCDE";
+		final String DRIVERSLICENSESTATE = "AZ";
 		final LocalDate DOB = LocalDate.parse("2000-06-01");
 		mockTylerConfiguration.rootUrl = "http://myURL.com";
 		mockTylerConfiguration.apiKey = "1234";
@@ -92,7 +93,7 @@ public class TylerCitationDataSourceTest {
         
         when(mockCitationTransformer.fromTylerCitations(tylerCitations)).thenReturn(CITATIONS);
         
-		List<Citation> citations = mockTylerCitationDataSource.getByLicenseAndDOB(DRIVERSLICENSENUMBER, DOB);
+		List<Citation> citations = mockTylerCitationDataSource.getByLicenseAndDOB(DRIVERSLICENSENUMBER,DRIVERSLICENSESTATE, DOB);
 		
 		assertThat(citations.get(0).id, is(3));
 	}

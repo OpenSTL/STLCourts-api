@@ -39,7 +39,7 @@ public class TylerCitationDataSourceIntegrationTest {
 
 	@Test
 	public void testDriversLicense() {
-		List<Citation> citations = tylerCitationDataSource.getByLicenseAndDOB("",
+		List<Citation> citations = tylerCitationDataSource.getByLicenseAndDOB("","",
 				LocalDate.parse(""));
 
 		assertNotEquals(citations.size(), 0);
