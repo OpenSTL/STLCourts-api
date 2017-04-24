@@ -59,6 +59,7 @@ public class CitationTransformer {
 		}
 
 		Citation genericCitation = new Citation();
+		genericCitation.citation_datasource = CITATION_DATASOURCE.TYLER;
 		genericCitation.citation_number = tylerCitation.citationNumber;
 		genericCitation.first_name = tylerCitation.firstName;
 		genericCitation.last_name = tylerCitation.lastName;

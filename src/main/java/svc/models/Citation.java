@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import svc.annotations.Exclude;
+import svc.data.citations.datasources.CITATION_DATASOURCE;
 import svc.types.HashableEntity;
 
 public class Citation {
@@ -22,4 +24,7 @@ public class Citation {
 	public List<Violation> violations;
 	public HashableEntity<Court> court_id;
 	public HashableEntity<Municipality> municipality_id;
+	
+	@Exclude
+	public CITATION_DATASOURCE citation_datasource;
 }
