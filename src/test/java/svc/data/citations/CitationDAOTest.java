@@ -11,6 +11,8 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import svc.data.citations.datasources.CITATION_DATASOURCE;
 import svc.data.citations.datasources.mock.MockCitationDataSource;
 import svc.models.Citation;
 
@@ -34,6 +36,7 @@ public class CitationDAOTest {
 	@Test
     public void returnsCitationGivenCitationNumberAndDOB() throws ParseException{
     	final Citation CITATION = new Citation();
+    	CITATION.citation_datasource = CITATION_DATASOURCE.MOCK;
         CITATION.id = 3;
 		final String CITATIONNUMBER = "F3453";
 		String dateString = "08/05/1965";
@@ -55,6 +58,7 @@ public class CitationDAOTest {
 	@Test
     public void returnsCitationsGivenLicenseAndDOB() throws ParseException{
     	final Citation CITATION = new Citation();
+    	CITATION.citation_datasource = CITATION_DATASOURCE.MOCK;
         CITATION.id = 3;
         String licenseNunmber = "someLiscensNumber";
         String licenseState = "MO";
@@ -77,6 +81,7 @@ public class CitationDAOTest {
 	@Test
 	public void returnsCitationsWhenGivenDOBLastNameAndMultipleMunicipalities() throws ParseException, IOException {
         final Citation CITATION = new Citation();
+        CITATION.citation_datasource = CITATION_DATASOURCE.MOCK;
         CITATION.id = 3;
         String dateString = "08/05/1965";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
