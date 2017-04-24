@@ -3,6 +3,7 @@ package svc.data.citations.datasources.mock;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import svc.data.citations.CitationDataSource;
+import svc.data.citations.datasources.CITATION_DATASOURCE;
 import svc.data.jdbc.BaseJdbcDao;
 import svc.logging.LogSystem;
 import svc.managers.ViolationManager;
@@ -126,6 +127,7 @@ public class MockCitationDataSource extends BaseJdbcDao implements CitationDataS
         public Citation mapRow(ResultSet rs, int i) {
             Citation citation = new Citation();
             try {
+            	citation.citation_datasource = CITATION_DATASOURCE.MOCK;
                 citation.id = rs.getInt("id");
                 citation.citation_number = rs.getString("citation_number");
                 citation.citation_date = DatabaseUtilities.getDatabaseLocalDate(rs.getDate("citation_date"));
