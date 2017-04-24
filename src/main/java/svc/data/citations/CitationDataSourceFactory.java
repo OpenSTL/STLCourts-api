@@ -84,7 +84,7 @@ public class CitationDataSourceFactory extends BaseJdbcDao {
                 for(Long id : municipalityIds) { joiner.add(id.toString()); }
                 parameterMap.put("municipalities", joiner.toString());
 
-                sql += " WHERE cd.id IN(:municipalities)";
+                sql += " WHERE cdm.municipality_id IN(:municipalities)";
             }
             sourceNames = jdbcTemplate.query(sql, parameterMap, new CitationDataSourceMapper());
         } catch (Exception e) {
