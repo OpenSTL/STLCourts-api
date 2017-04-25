@@ -19,4 +19,5 @@ public class Court {
 	public BigDecimal latitude;
 	public BigDecimal longitude;
 	public List<Judge> judges;
+	public int citation_expires_after_days;
 }

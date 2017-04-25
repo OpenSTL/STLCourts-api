@@ -23,7 +23,6 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
-import svc.annotations.AnnotationExclusionStrategy;
 import svc.security.HashUtil;
 import svc.types.HashableEntity;
 
@@ -41,7 +40,6 @@ public class GsonConfiguration extends WebMvcConfigurerAdapter {
 
 	 private GsonHttpMessageConverter createGsonHttpMessageConverter() {
 		Gson gsonWithConverter = new GsonBuilder()
-									.setExclusionStrategies(new AnnotationExclusionStrategy())
 									.registerTypeHierarchyAdapter(HashableEntity.class, new HashIdJsonAdapter())
 									.registerTypeAdapter(LocalDate.class, new LocalDateJsonAdapter())
 									.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeJsonAdapter())

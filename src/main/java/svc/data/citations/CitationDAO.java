@@ -3,7 +3,6 @@ package svc.data.citations;
 import com.google.common.collect.Lists;
 import org.springframework.stereotype.Component;
 import rx.Observable;
-import svc.data.citations.filters.CitationDateFilter;
 import svc.data.jdbc.BaseJdbcDao;
 import svc.models.Citation;
 
@@ -26,8 +25,7 @@ public class CitationDAO extends BaseJdbcDao {
             citationSearches.add(Observable.from(source.getByCitationNumberAndDOB(citationNumber, dob)).onExceptionResumeNext(Observable.just(null)));
 		}
 
-		List<Citation> citations = Observable.merge(citationSearches).onExceptionResumeNext(Observable.just(null)).toList().toBlocking().first();
-		return CitationDateFilter.FilterDates(citations);
+		return Observable.merge(citationSearches).onExceptionResumeNext(Observable.just(null)).toList().toBlocking().first();
 	}
 
 	public List<Citation> getByLicenseAndDOB(String driversLicenseNumber, String driversLiscenseState, LocalDate dob) {
@@ -38,8 +36,7 @@ public class CitationDAO extends BaseJdbcDao {
             citationSearches.add(Observable.from(source.getByLicenseAndDOB(driversLicenseNumber, driversLiscenseState, dob)));
         }
 
-        List<Citation> citations = Observable.merge(citationSearches).onExceptionResumeNext(Observable.just(null)).toList().toBlocking().first();
-		return CitationDateFilter.FilterDates(citations);
+		return Observable.merge(citationSearches).onExceptionResumeNext(Observable.just(null)).toList().toBlocking().first();
 	}
 	
 	public List<Citation> getByNameAndMunicipalitiesAndDOB(String lastName, List<Long> municipalities, LocalDate dob) {
@@ -50,8 +47,7 @@ public class CitationDAO extends BaseJdbcDao {
             citationSearches.add(Observable.from(source.getByNameAndMunicipalitiesAndDOB(lastName, municipalities, dob)));
         }
 
-        List<Citation> citations = Observable.merge(citationSearches).onExceptionResumeNext(Observable.just(null)).toList().toBlocking().first();
-		return CitationDateFilter.FilterDates(citations);
+		return Observable.merge(citationSearches).onExceptionResumeNext(Observable.just(null)).toList().toBlocking().first();
 	}
 	
 }
