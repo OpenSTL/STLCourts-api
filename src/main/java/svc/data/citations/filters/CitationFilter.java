@@ -13,11 +13,11 @@ import svc.models.Citation;
 import svc.models.Court;
 
 @Component
-public class FilterCitations {
+public class CitationFilter {
 	@Inject
 	CourtManager courtManager;
 
-	public List<Citation> FilterDates(List<Citation> citations){
+	public List<Citation> RemoveCitationsWithExpiredDates(List<Citation> citations){
 		ListIterator<Citation> iter = citations.listIterator();
 		while(iter.hasNext()){
 			Citation citation = iter.next();

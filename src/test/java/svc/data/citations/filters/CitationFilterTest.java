@@ -22,9 +22,9 @@ import svc.models.Court;
 import svc.types.HashableEntity;
 
 @RunWith(MockitoJUnitRunner.class)
-public class FilterCitationsTest {
+public class CitationFilterTest {
 	@InjectMocks
-	FilterCitations filterCitations;
+	CitationFilter citationFilter;
 	
 	@Mock
 	CourtManager courtManagerMock;
@@ -45,13 +45,13 @@ public class FilterCitationsTest {
         List<Citation> CITATIONS = Lists.newArrayList(CITATION);
         
         when(courtManagerMock.getCourtById(CITATION.court_id.getValue())).thenReturn(COURT);
-        assertThat(filterCitations.FilterDates(CITATIONS).size(), is(1));
+        assertThat(citationFilter.RemoveCitationsWithExpiredDates(CITATIONS).size(), is(1));
         
         COURT.citation_expires_after_days = 4;
         CITATION.court_dateTime = LocalDateTime.now().plusDays(1);
         
         CITATIONS = Lists.newArrayList(CITATION);
-        assertThat(filterCitations.FilterDates(CITATIONS).size(), is(1));
+        assertThat(citationFilter.RemoveCitationsWithExpiredDates(CITATIONS).size(), is(1));
         
 	}
 	
@@ -72,7 +72,7 @@ public class FilterCitationsTest {
         List<Citation> CITATIONS = Lists.newArrayList(CITATION);
         when(courtManagerMock.getCourtById(CITATION.court_id.getValue())).thenReturn(COURT);
         
-        assertThat(filterCitations.FilterDates(CITATIONS).size(), is(0));
+        assertThat(citationFilter.RemoveCitationsWithExpiredDates(CITATIONS).size(), is(0));
 	}
 
 }

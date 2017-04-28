@@ -32,7 +32,7 @@ import org.springframework.http.ResponseEntity;
 
 import svc.data.citations.datasources.tyler.models.TylerCitation;
 import svc.data.citations.datasources.tyler.transformers.CitationTransformer;
-import svc.data.citations.filters.FilterCitations;
+import svc.data.citations.filters.CitationFilter;
 import svc.models.Citation;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -49,7 +49,7 @@ public class TylerCitationDataSourceTest {
 	@Mock
 	CitationTransformer mockCitationTransformer;
 	@Mock
-	FilterCitations mockFilterCitations;
+	CitationFilter mockCitationFilter;
 	
 	@Spy
 	ResponseEntity<List<TylerCitation>> tylerCitationsResponseSpy = new ResponseEntity<List<TylerCitation>>(HttpStatus.ACCEPTED);
@@ -71,7 +71,7 @@ public class TylerCitationDataSourceTest {
         .thenReturn(tylerCitationsResponseSpy);
         
         when(mockCitationTransformer.fromTylerCitations(tylerCitations)).thenReturn(CITATIONS);
-        when(mockFilterCitations.FilterDates(CITATIONS)).thenReturn(CITATIONS);
+        when(mockCitationFilter.RemoveCitationsWithExpiredDates(CITATIONS)).thenReturn(CITATIONS);
         
 		List<Citation> citations = mockTylerCitationDataSource.getByCitationNumberAndDOB(CITATIONNUMBER, DOB);
 		
@@ -96,7 +96,7 @@ public class TylerCitationDataSourceTest {
         .thenReturn(tylerCitationsResponseSpy);
         
         when(mockCitationTransformer.fromTylerCitations(tylerCitations)).thenReturn(CITATIONS);
-        when(mockFilterCitations.FilterDates(CITATIONS)).thenReturn(CITATIONS);
+        when(mockCitationFilter.RemoveCitationsWithExpiredDates(CITATIONS)).thenReturn(CITATIONS);
         
 		List<Citation> citations = mockTylerCitationDataSource.getByLicenseAndDOB(DRIVERSLICENSENUMBER,DRIVERSLICENSESTATE, DOB);
 		
@@ -121,7 +121,7 @@ public class TylerCitationDataSourceTest {
         .thenReturn(tylerCitationsResponseSpy);
         
         when(mockCitationTransformer.fromTylerCitations(tylerCitations)).thenReturn(CITATIONS);
-        when(mockFilterCitations.FilterDates(CITATIONS)).thenReturn(CITATIONS);
+        when(mockCitationFilter.RemoveCitationsWithExpiredDates(CITATIONS)).thenReturn(CITATIONS);
         
 		List<Citation> citations = mockTylerCitationDataSource.getByNameAndMunicipalitiesAndDOB(NAME,MUNICIPALITIES,DOB);
 		
