@@ -6,26 +6,24 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Component;
 
-import svc.data.ViolationDAO;
+import svc.data.citations.datasources.mock.ViolationDAO;
 import svc.models.Violation;
 
 @Component
-public class ViolationManager
-{
+public class ViolationManager {
 	@Inject
-	private ViolationDAO _violationDAO;
-	
-	public ViolationManager()
-	{
-	}
-	
-	public Violation GetViolationById(int violationId)
-	{
-		return _violationDAO.getViolationDataById(violationId);
-	}
+	private ViolationDAO violationDAO;
 
-	public List<Violation> getViolationsByCitationNumber(String citationNumber) 
-	{
-		return _violationDAO.getViolationsByCitationNumber(citationNumber);
+	public List<Violation> getViolationsByCitationNumber(String citationNumber) {
+		return violationDAO.getViolationsByCitationNumber(citationNumber);
 	}
+	
+	public boolean insertViolations(List<Violation> violations){
+		return violationDAO.insertViolations(violations);
+	}
+	
+	public boolean removeViolations(List<Violation> violations){
+		return violationDAO.removeViolations(violations);
+	}
+	
 }

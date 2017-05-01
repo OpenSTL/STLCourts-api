@@ -1,44 +1,64 @@
 package svc.controllers;
 
-import javax.inject.Inject;
+import java.util.List;
 
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import svc.dto.CourtsDTO;
-import svc.logging.LogSystem;
 import svc.managers.*;
 import svc.models.*;
-
+import svc.security.HashUtil;
 
 @RestController
 @EnableAutoConfiguration
-@RequestMapping("api/courts")
-public class CourtController
-{	
+public class CourtController {	
 	@Inject
-	CourtManager _courtManager;
+	CourtManager courtManager;
+	
+	@Inject
+	HashUtil hashUtil;
 	
 	@ResponseBody
-	@RequestMapping(method = RequestMethod.GET)
-	CourtsDTO GetCourts()
-	{
-		return new CourtsDTO(_courtManager.GetAllCourts());
+	@RequestMapping(method = RequestMethod.GET, value="/courts")
+	List<Court> GetCourts(HttpServletResponse response) {
+		response.setHeader("Cache-Control", "public, max-age=86400, must-revalidate");
+		return courtManager.getAllCourts();
 	}
 	
 	@ResponseBody
-	@RequestMapping(method = RequestMethod.GET, value="/{id}")
-	Court GetCourt(@PathVariable("id") Integer id)
-	{
-		if (id == null)
-		{
-			LogSystem.LogEvent("Null id passed to controller");
+	@RequestMapping(method = RequestMethod.GET, value="/courts/{id}")
+	Court GetCourt(@PathVariable("id") String idString) throws NotFoundException {
+		long id = hashUtil.decode(Court.class,idString);
+		Court court = courtManager.getCourtById(id);
+		if (court == null) {
+			throw new NotFoundException("Court Not Found");
 		}
-		
-		return _courtManager.GetCourtById(id);
+		return court;
+	}
+
+	@ResponseBody
+	@RequestMapping(method = RequestMethod.GET, value="municipalities/{municipalityId}/courts")
+	List<Court> GetCourtsByMunicipalityId(@PathVariable("municipalityId") String municipalityIdString) {
+		long municipalityId = hashUtil.decode(Municipality.class,municipalityIdString);
+		return courtManager.getCourtsByMunicipalityId(municipalityId);
+	}
+	
+	@ExceptionHandler(TypeMismatchException.class)
+	@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason="Invalid ID")
+	public void typeMismatchExceptionHandler(TypeMismatchException e, HttpServletResponse response) {
+
 	}
 }
+
+

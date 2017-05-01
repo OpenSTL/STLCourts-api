@@ -1,0 +1,1 @@
+DELETE FROM citations WHERE citation_number = :citationNumber

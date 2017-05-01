@@ -4,29 +4,30 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
-import svc.data.CourtDAO;
+import svc.data.municipal.CourtDAO;
 import svc.models.Court;
 
 @Component
-public class CourtManager
-{
+public class CourtManager {
 	@Inject
-	private CourtDAO _courtDAO;
-	
-	public CourtManager()
-	{
-	}
-	
-	public Court GetCourtById(int courtId)
-	{
-		return _courtDAO.getByCourtId(courtId);
+	private CourtDAO courtDAO;
+		
+	@Cacheable(value="courtsById")
+	public Court getCourtById(Long courtId){
+		return courtDAO.getCourtById(courtId);
 	}
 
-	public List<Court> GetAllCourts()
-	{
-		return _courtDAO.getAllCourts();
+	@Cacheable(value="courtsByMunicipalityId")
+	public List<Court> getCourtsByMunicipalityId(Long municipalityId) {
+		return courtDAO.getCourtsByMunicipalityId(municipalityId);
 	}
 
+	@Cacheable(value="allCourts")
+	public List<Court> getAllCourts() {
+		return courtDAO.getAllCourts();
+	}
+	
 }
