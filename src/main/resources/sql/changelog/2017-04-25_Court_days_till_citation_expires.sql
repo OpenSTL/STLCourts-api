@@ -4,7 +4,7 @@ ADD COLUMN citation_expires_after_days SMALLINT;
 
 UPDATE court
 SET citation_expires_after_days=-1
-WHERE court_id IS NOT NULL;
+WHERE court_id > 0;
 
 UPDATE court
 set citation_expires_after_days=8
