@@ -7,8 +7,6 @@ import javax.inject.Inject;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 import org.springframework.context.annotation.Configuration;
@@ -97,9 +95,7 @@ public class GsonConfiguration extends WebMvcConfigurerAdapter {
 		@Override
 		public void write(JsonWriter out, LocalDateTime value) throws IOException {
 			if (value !=null){
-				ZonedDateTime zdt = value.atZone(ZoneId.of("America/Chicago"));
-				String outPattern = zdt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss O"));
-				out.value(outPattern);
+				out.value(value.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
 			}else{
 				out.value("");
 			}
