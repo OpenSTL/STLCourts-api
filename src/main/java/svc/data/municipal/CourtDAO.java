@@ -31,6 +31,7 @@ public class CourtDAO extends BaseJdbcDao {
     public static final String COURT_ZIP_COLUMN_NAME = "zip_code";
     public static final String COURT_LATITUDE_COLUMN_NAME = "latitude";
     public static final String COURT_LONGITUDE_COLUMN_NAME = "longitude";
+    public static final String COURT_CITATION_EXPIRES_DAYS = "citation_expires_after_days";
 	
 	public Court getCourtById(Long courtId){
 		try{
@@ -118,6 +119,7 @@ public class CourtDAO extends BaseJdbcDao {
             court.zip = rs.getString(COURT_ZIP_COLUMN_NAME);
             court.latitude = new BigDecimal(rs.getString(COURT_LATITUDE_COLUMN_NAME));
             court.longitude = new BigDecimal(rs.getString(COURT_LONGITUDE_COLUMN_NAME));
+            court.citation_expires_after_days = rs.getInt(COURT_CITATION_EXPIRES_DAYS);
             court.judges = Lists.newArrayList();
 
             return court;
