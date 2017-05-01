@@ -30,7 +30,8 @@ CREATE TABLE court (
   state 					      VARCHAR(25),
   zip_code 				      VARCHAR(12),
   latitude 				      DOUBLE PRECISION,
-  longitude 				    DOUBLE PRECISION
+  longitude 				    DOUBLE PRECISION,
+  citation_expires_after_days	SMALLINT
 );
 
 CREATE TABLE municipality (

@@ -36,7 +36,7 @@ public class CitationDAO extends BaseJdbcDao {
             citationSearches.add(Observable.from(source.getByLicenseAndDOB(driversLicenseNumber, driversLiscenseState, dob)));
         }
 
-        return Observable.merge(citationSearches).onExceptionResumeNext(Observable.just(null)).toList().toBlocking().first();
+		return Observable.merge(citationSearches).onExceptionResumeNext(Observable.just(null)).toList().toBlocking().first();
 	}
 	
 	public List<Citation> getByNameAndMunicipalitiesAndDOB(String lastName, List<Long> municipalities, LocalDate dob) {
@@ -47,7 +47,7 @@ public class CitationDAO extends BaseJdbcDao {
             citationSearches.add(Observable.from(source.getByNameAndMunicipalitiesAndDOB(lastName, municipalities, dob)));
         }
 
-        return Observable.merge(citationSearches).onExceptionResumeNext(Observable.just(null)).toList().toBlocking().first();
+		return Observable.merge(citationSearches).onExceptionResumeNext(Observable.just(null)).toList().toBlocking().first();
 	}
 	
 }

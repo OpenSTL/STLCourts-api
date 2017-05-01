@@ -21,6 +21,7 @@ import com.google.common.collect.Lists;
 import svc.data.citations.CitationDataSource;
 import svc.data.citations.datasources.tyler.models.TylerCitation;
 import svc.data.citations.datasources.tyler.transformers.CitationTransformer;
+import svc.data.citations.filters.CitationFilter;
 import svc.models.Citation;
 
 @Repository
@@ -31,6 +32,9 @@ public class TylerCitationDataSource implements CitationDataSource {
 
 	@Autowired
 	private CitationTransformer citationTransformer;
+	
+	@Autowired
+	private CitationFilter citationFilter;
 
 	@Autowired
 	private RestTemplate restTemplate;
@@ -75,9 +79,9 @@ public class TylerCitationDataSource implements CitationDataSource {
 		try {
 			tylerCitationsResponse = restTemplate.exchange(uri, HttpMethod.GET, query, type);
 			tylerCitations = tylerCitationsResponse.getBody();
-			return citationTransformer.fromTylerCitations(tylerCitations);
+			return citationFilter.RemoveCitationsWithExpiredDates(citationTransformer.fromTylerCitations(tylerCitations));
 		} catch (RestClientException ex) {
-			System.out.println("Tyler datasource did not return any data.");
+			System.out.println("Tyler datasource is down.");
 			return Lists.newArrayList();
 		}
 
