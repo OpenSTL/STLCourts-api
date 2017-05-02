@@ -36,7 +36,7 @@ INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (35,'Glendale','http://www.ipaycourt.com/frmCitationSearch.aspx?ori=Glendale');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (36,'Grantwood Village','https://www.ncourt.com/x-press/x-onlinepayments.aspx?Juris=45A64130-87AE-4AE4-8367-89F7E49702CE');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (37,'Greendale','https://www.ncourt.com/x-press/x-onlinepayments.aspx?Juris=5C7A0DC1-8103-4C08-9A53-176065D3F8FC');
-INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (38,'Green Park','');
+INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (38,'Green Park','https://www.municipalonlinepayments.com/stlouiscountymo/court/search');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (39,'Hanley Hills','http://www.ipaycourt.com/frmCitationSearch.aspx?ori=HanleyHills');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (40,'Hazelwood','http://www.ipaycourt.com/frmCitationSearch.aspx?ori=Hazelwood');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (41,'Hillsdale','');
@@ -49,12 +49,12 @@ INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (48,'Mackenzie','');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (49,'Manchester','https://www.municipalonlinepayments.com/manchestermo/court/search');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (50,'Maplewood','http://www.ipaycourt.com/frmCitationSearch.aspx?ori=Maplewood');
-INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (51,'Marlborough','');
+INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (51,'Marlborough','https://www.municipalonlinepayments.com/stlouiscountymo/court/search');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (52,'Maryland Heights','https://www.ncourt.com/x-press/x-onlinepayments.aspx?juris=a34ab651-8bc8-48b6-98da-a6fa5dd8af6e&affiliateID=5a40673b-2993-44c8-a3f3-5bd0f8764b70');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (53,'Moline Acres','https://www.ncourt.com/x-press/x-onlinepayments.aspx?juris=F140A0D8-C06B-49B5-A641-910E267C1606');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (54,'Normandy','https://www.ncourt.com/x-press/x-onlinepayments.aspx?juris=2F9DB4F4-AF19-420F-A633-AE350A90E7D3');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (55,'Northwoods','https://www.ncourt.com/x-press/x-onlinepayments.aspx?juris=64EE2EA5-D3B1-41A1-8A1D-3D7A415F63CE","/x-landing/ConsolidatedCourtInner.aspx?ID=Northwoods');
-INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (56,'Norwood Court','');
+INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (56,'Norwood Court','https://www.municipalonlinepayments.com/stlouiscountymo/court/search');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (57,'Oakland','');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (58,'Olivette','http://www.ipaycourt.com/frmCitationSearch.aspx?ori=Olivette');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (59,'Overland','https://www.ncourt.com/x-press/x-onlinepayments.aspx?juris=85AC71E7-4783-433A-BFF3-4E7BCA88770C');
@@ -72,7 +72,7 @@ INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (71,'Sunset Hills','http://www.ipaycourt.com/frmCitationSearch.aspx');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (72,'Sycamore Hills','');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (73,'Town and Country','https://trafficpayment.com/InvoiceInfo.aspx?csdId=451');
-INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (74,'Twin Oaks','');
+INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (74,'Twin Oaks','https://www.municipalonlinepayments.com/stlouiscountymo/court/search');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (75,'University City','http://www.ipaycourt.com/frmCitationSearch.aspx');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (76,'Uplands Park','https://www.ncourt.com/x-press/x-onlinepayments.aspx?Juris=CDDE9BE4-7D5C-4474-B1CD-5511D3E4C21B');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (77,'Valley Park','http://www.ipaycourt.com/frmCitationSearch.aspx?ori=ValleyPark');
@@ -84,7 +84,7 @@ INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (83,'Webster Groves','https://trafficpayment.com/InvoiceInfo.aspx?csdId=320');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (84,'Wellston','https://www.ncourt.com/x-press/x-onlinepayments.aspx?juris=0e38dc67-b15c-4261-9a10-b014177dd301');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (85,'Westwood','');
-INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (86,'Wilbur Park','');
+INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (86,'Wilbur Park','https://www.municipalonlinepayments.com/stlouiscountymo/court/search');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (87,'Wildwood','');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (88,'Winchester','http://www.ipaycourt.com/frmCitationSearch.aspx?ori=Winchester');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (89,'Woodson Terrace','http://www.ipaycourt.com/frmCitationSearch.aspx?ori=WoodsonTerrace');
