@@ -12,4 +12,5 @@ UPDATE municipality_court
 SET court_id=35
 WHERE municipality_id = 51;
 
+DELETE FROM citations WHERE court_id=47;
 DELETE FROM court WHERE court_id=47;
