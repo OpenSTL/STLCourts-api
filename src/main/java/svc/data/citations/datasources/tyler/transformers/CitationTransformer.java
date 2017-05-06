@@ -97,13 +97,11 @@ public class CitationTransformer {
 		// These could probably be added to the Tyler API
 		// citation time?
 		// Boolean mandatory_court_apperarnce
-		// Boolean can_pay_online
 
 		// public String defendant_address; - not in Tyler API
 		// public String defendant_city; - not in Tyler API
 		// public String defendant_state; - not in Tyler API
 
-		// There is no property for muni_id, but there probably should be
 
 		return genericCitation;
 	}

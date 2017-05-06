@@ -19,6 +19,7 @@ import com.google.common.collect.Lists;
 import svc.managers.CourtManager;
 import svc.models.Citation;
 import svc.models.Court;
+import svc.models.Violation;
 import svc.types.HashableEntity;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -37,6 +38,10 @@ public class CitationFilterTest {
 		Citation CITATION = new Citation();
         CITATION.id = 3;
         CITATION.court_id = new HashableEntity<Court>(Court.class,4L);
+        
+        List<Violation> VIOLATIONS = Lists.newArrayList();
+        CITATION.violations = VIOLATIONS;
+        
         String courtDateString = "09/10/2016 14:33";
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
         
@@ -64,6 +69,9 @@ public class CitationFilterTest {
         CITATION.id = 3;
         CITATION.court_id = new HashableEntity<Court>(Court.class,4L);
         
+        List<Violation> VIOLATIONS = Lists.newArrayList();
+        CITATION.violations = VIOLATIONS;
+        
         String courtDateString = "09/10/2016 14:33";
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
         
@@ -74,5 +82,33 @@ public class CitationFilterTest {
         
         assertThat(citationFilter.RemoveCitationsWithExpiredDates(CITATIONS).size(), is(0));
 	}
+	
+	@Test
+	public void correctlyKeepsOldWarrantCitations(){
+		Court COURT = new Court();
+		COURT.citation_expires_after_days = 3;
+		
+		Citation CITATION = new Citation();
+        CITATION.id = 3;
+        CITATION.court_id = new HashableEntity<Court>(Court.class,4L);
+        
+        Violation VIOLATION = new Violation();
+        VIOLATION.warrant_status = true;
+        
+        List<Violation> VIOLATIONS = Lists.newArrayList(VIOLATION);
+        CITATION.violations = VIOLATIONS;
+        
+        String courtDateString = "09/10/2016 14:33";
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
+        
+        CITATION.court_dateTime = LocalDateTime.parse(courtDateString, formatter);
+        
+        List<Citation> CITATIONS = Lists.newArrayList(CITATION);
+        
+        when(courtManagerMock.getCourtById(CITATION.court_id.getValue())).thenReturn(COURT);
+        assertThat(citationFilter.RemoveCitationsWithExpiredDates(CITATIONS).size(), is(1));   
+	}
+	
+	
 
 }
