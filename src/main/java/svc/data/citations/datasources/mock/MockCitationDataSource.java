@@ -95,6 +95,7 @@ public class MockCitationDataSource extends BaseJdbcDao implements CitationDataS
  	            parameterMap.put("city", c.defendant_city);
  	            parameterMap.put("state", c.defendant_state);
  	            parameterMap.put("driversLicenseNumber", c.drivers_license_number);
+ 	            parameterMap.put("driversLicenseState", c.drivers_license_state);
  	            parameterMap.put("courtDate", DatabaseUtilities.convertLocalDateTimeToDatabaseDateString(c.court_dateTime));
  	            parameterMap.put("courtId", c.court_id.getValue());
  	            jdbcTemplate.update(getSql("citation/insert-citation.sql"), parameterMap); 
@@ -136,6 +137,7 @@ public class MockCitationDataSource extends BaseJdbcDao implements CitationDataS
                 citation.defendant_city = rs.getString("defendant_city");
                 citation.defendant_state = rs.getString("defendant_state");
                 citation.drivers_license_number = rs.getString("drivers_license_number");
+                citation.drivers_license_state = rs.getString("drivers_license_state");
                 LocalDate courtDate = DatabaseUtilities.getDatabaseLocalDate(rs.getDate("court_date"));
                 LocalTime courtTime = DatabaseUtilities.getDatabaseLocalTime(rs.getTime("court_date"));
                 if (courtDate==null || courtTime==null){

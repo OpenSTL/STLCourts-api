@@ -63,6 +63,7 @@ public class CitationTransformer {
 		genericCitation.first_name = tylerCitation.firstName;
 		genericCitation.last_name = tylerCitation.lastName;
 		genericCitation.drivers_license_number = tylerCitation.driversLicenseNumber;
+		genericCitation.drivers_license_state = tylerCitation.driversLicenseState;
 
 		if (tylerCitation.dob == null) {
 			LogSystem.LogEvent("Received tyler citation with no DOB.");
