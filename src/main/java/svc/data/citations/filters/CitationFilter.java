@@ -19,7 +19,7 @@ public class CitationFilter {
 	@Inject
 	CourtManager courtManager;
 
-	public List<Citation> RemoveCitationsWithExpiredDates(List<Citation> citations){
+	public List<Citation> Filter(List<Citation> citations){
 		return citations.stream()
 				 .filter(c -> courtDateFilter(c))
 				 .collect(Collectors.toList());

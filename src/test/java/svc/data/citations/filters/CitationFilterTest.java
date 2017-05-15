@@ -50,13 +50,13 @@ public class CitationFilterTest {
 		List<Citation> CITATIONS = Lists.newArrayList(CITATION);
 		
 		when(courtManagerMock.getCourtById(CITATION.court_id.getValue())).thenReturn(COURT);
-		assertThat(citationFilter.RemoveCitationsWithExpiredDates(CITATIONS).size(), is(1));
+		assertThat(citationFilter.Filter(CITATIONS).size(), is(1));
 		
 		COURT.citation_expires_after_days = 4;
 		CITATION.court_dateTime = LocalDateTime.now().plusDays(1);
 		
 		CITATIONS = Lists.newArrayList(CITATION);
-		assertThat(citationFilter.RemoveCitationsWithExpiredDates(CITATIONS).size(), is(1));
+		assertThat(citationFilter.Filter(CITATIONS).size(), is(1));
 	}
 	
 	@Test
@@ -79,7 +79,7 @@ public class CitationFilterTest {
 		List<Citation> CITATIONS = Lists.newArrayList(CITATION);
 		when(courtManagerMock.getCourtById(CITATION.court_id.getValue())).thenReturn(COURT);
 		
-		assertThat(citationFilter.RemoveCitationsWithExpiredDates(CITATIONS).size(), is(0));
+		assertThat(citationFilter.Filter(CITATIONS).size(), is(0));
 	}
 	
 	@Test
@@ -105,6 +105,6 @@ public class CitationFilterTest {
 		List<Citation> CITATIONS = Lists.newArrayList(CITATION);
 		
 		when(courtManagerMock.getCourtById(CITATION.court_id.getValue())).thenReturn(COURT);
-		assertThat(citationFilter.RemoveCitationsWithExpiredDates(CITATIONS).size(), is(1));   
+		assertThat(citationFilter.Filter(CITATIONS).size(), is(1));   
 	}
 }
