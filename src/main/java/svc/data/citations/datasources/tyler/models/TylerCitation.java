@@ -19,6 +19,9 @@ public class TylerCitation {
 
 	@JsonProperty
 	public String driversLicenseNumber;
+	
+	@JsonProperty
+	public String driversLicenseState;
 
 	@JsonProperty
 	public String dob;
