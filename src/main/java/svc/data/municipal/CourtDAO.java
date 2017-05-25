@@ -21,6 +21,7 @@ import java.util.Map;
 public class CourtDAO extends BaseJdbcDao {
 	public static final String COURT_ID_COLUMN_NAME = "court_id";
 	public static final String COURT_NAME_COLUMN_NAME = "court_name";
+	public static final String COURT_TYPE_COLUMN_NAME = "court_type";
     public static final String COURT_PHONE_COLUMN_NAME = "phone";
     public static final String COURT_PHONE_EXTENSION_COLUMN_NAME = "extension";
     public static final String COURT_WEBSITE_COLUMN_NAME = "website";
@@ -105,6 +106,7 @@ public class CourtDAO extends BaseJdbcDao {
             Court court = new Court();
             court.id = new HashableEntity<Court>(Court.class,rs.getLong(COURT_ID_COLUMN_NAME));
             court.name = rs.getString(COURT_NAME_COLUMN_NAME);
+            court.type = rs.getString(COURT_TYPE_COLUMN_NAME);
             court.phone = rs.getString(COURT_PHONE_COLUMN_NAME).replaceAll("[.\\- ]", ".");
             if (!court.phone.equals("")){
                 String[] phoneParts = court.phone.split("\\.");

@@ -8,6 +8,7 @@ import svc.types.HashableEntity;
 public class Court {
 	public HashableEntity<Court> id;
 	public String name;
+	public String type;
 	public String phone;
 	public String website;
 	public String extension;
