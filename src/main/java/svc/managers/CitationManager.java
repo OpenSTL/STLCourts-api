@@ -22,7 +22,7 @@ public class CitationManager {
 		}
 		
 		// DOB & License No
-		if (criteria.dateOfBirth != null && criteria.driversLicenseNumber != null) {
+		if (criteria.dateOfBirth != null && criteria.driversLicenseNumber != null && criteria.driversLicenseState != null) {
 			return citationDAO.getByLicenseAndDOB(criteria.driversLicenseNumber, criteria.driversLicenseState, criteria.dateOfBirth);
 		}
 		

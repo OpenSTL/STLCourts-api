@@ -56,8 +56,9 @@ public class SMSManager {
 		WELCOME(0),
 		READ_DOB(1),
 		READ_LICENSE(2),
-		VIEW_CITATION(3),
-		READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN(4);
+		READ_STATE(3),
+		VIEW_CITATION(4),
+		READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN(5);
 		
 		private int numVal;
 		
@@ -152,10 +153,11 @@ public class SMSManager {
 		return message;
 	}
 	
-	private String ListCitations(LocalDate dob, String license){
+	private String ListCitations(LocalDate dob, String license, String licenseState){
 		CitationSearchCriteria criteria = new CitationSearchCriteria();
 		criteria.dateOfBirth = dob;
 		criteria.driversLicenseNumber = license;
+		criteria.driversLicenseState = licenseState;
 		List<Citation> citations = citationManager.findCitations(criteria);
 		
 		ListCitationsTextMessage listCitationsTM = new ListCitationsTextMessage(citations);
@@ -166,18 +168,37 @@ public class SMSManager {
 	}
 	
 	private String generateReadLicenseMessage(HttpSession session, String licenseNumber){
+		SMS_STAGE nextTextStage;
+		licenseNumber = (licenseNumber != null)?licenseNumber:(String)session.getAttribute("license_number");
+		session.setAttribute("license_number", licenseNumber);
+		String message = "Thank you.  Now please enter your driver\'s license state, using the two letter abbreviation.  Examples.  Use \"MO\" for Missouri and \"IL\" for Illinois.";
+		nextTextStage = SMS_STAGE.READ_STATE;
+		setNextStageInSession(session,nextTextStage);
+		return message;
+	}
+	
+	private String generateReadStateMessage(HttpSession session){
+		String message = generateReadStateMessage(session, null);
+		return message;
+	}
+	
+	private String generateReadStateMessage(HttpSession session, String licenseState){
 		String message = "";
 		SMS_STAGE nextTextStage;
 		
-		licenseNumber = (licenseNumber != null)?licenseNumber:(String)session.getAttribute("license_number");
+		licenseState = (licenseState != null)?licenseState:(String)session.getAttribute("license_state");
+		licenseState = licenseState.toUpperCase();
+		String licenseNumber = (String)session.getAttribute("license_number");
 		String dob = (String)session.getAttribute("dob");
 		
 		try{
 			LocalDate date_of_birth = DatabaseUtilities.convertUSStringDateToLD(dob);
-			session.setAttribute("license_number", licenseNumber);
-			message = ListCitations(date_of_birth, licenseNumber);
+			session.setAttribute("license_state", licenseState);
+			message = ListCitations(date_of_birth, licenseNumber,licenseState);
 			if (message == ""){
-				message = "No tickets were found. If you have additional questions, go to www.yourSTLcourts.com.";
+				message = "No tickets were found. If you have entered your information correctly, please visit the following link for possible reasons: \n\n";
+				message += clientURL+"/tickets/error/notFound";
+				message += "\n\n To use this system again, reply with \"TICKET\".";
 				message += "\n\n" + SMSSpamProtector.addError(session);
 				nextTextStage = SMS_STAGE.WELCOME;
 			}else{
@@ -192,11 +213,6 @@ public class SMSManager {
 		}
 		
 		setNextStageInSession(session,nextTextStage);
-		return message;
-	}
-	
-	private String generateReadLicenseMessage(HttpSession session){
-		String message = generateReadLicenseMessage(session, null);
 		return message;
 	}
 	
@@ -225,11 +241,11 @@ public class SMSManager {
 		
 		switch(menuChoice){
 			case "1":
-				message = generateReadLicenseMessage(session);
+				message = generateReadStateMessage(session);
 				break;
 			case "2":
 				message = "Visit ";
-				message += clientURL+"/citations";
+				message += clientURL+"/ticketsFromSMS";
 				message += "/"+citationNumber;
 				message += replyWithAdditionalViewingOptions();
 				setNextStageInSession(session,SMS_STAGE.READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN);
@@ -288,10 +304,12 @@ public class SMSManager {
 		
 		String dob = (String)session.getAttribute("dob");
 		String license = (String)session.getAttribute("license_number");
+		String licenseState = (String)session.getAttribute("license_state");
 		criteria = new CitationSearchCriteria();
 		try{
 			criteria.dateOfBirth = DatabaseUtilities.convertUSStringDateToLD(dob);
 			criteria.driversLicenseNumber = license;
+			criteria.driversLicenseState = licenseState;
 			citations = citationManager.findCitations(criteria);
 			int citationNumberToView = Integer.parseInt(citationNumber) - 1;
 			if (citationNumberToView >= 0 && citationNumberToView < citations.size()){
@@ -344,6 +362,9 @@ public class SMSManager {
 				break;
 			case READ_LICENSE:
 				message = generateReadLicenseMessage(session, content);
+				break;
+			case READ_STATE:
+				message = generateReadStateMessage(session, content);
 				break;
 			case VIEW_CITATION:
 				message = generateViewCitationMessage(session, content);
