@@ -245,7 +245,7 @@ public class SMSManager {
 				break;
 			case "2":
 				message = "Visit ";
-				message += clientURL+"/ticketsFromSMS";
+				message += clientURL+"/tickets/id";
 				message += "/"+citationNumber;
 				message += replyWithAdditionalViewingOptions();
 				setNextStageInSession(session,SMS_STAGE.READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN);
