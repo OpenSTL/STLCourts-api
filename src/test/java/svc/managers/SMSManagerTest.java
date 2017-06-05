@@ -54,8 +54,9 @@ public class SMSManagerTest {
 		WELCOME(0),
 		READ_DOB(1),
 		READ_LICENSE(2),
-		VIEW_CITATION(3),
-		READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN(4);
+		READ_STATE(3),
+		VIEW_CITATION(4),
+		READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN(5);
 		
 		private int numVal;
 		
@@ -115,7 +116,18 @@ public class SMSManagerTest {
 	@Test
 	public void licenseReadMessageGetsGenerated() throws TwiMLException, ParseException{
 		setStageInSession(session,SMS_STAGE.READ_LICENSE);
+		TwimlMessageRequest twimlMessageRequest = new TwimlMessageRequest();
+		twimlMessageRequest.setBody("F917801962");
+		String message = "Thank you.  Now please enter your driver\'s license state, using the two letter abbreviation.  Examples.  Use \"MO\" for Missouri and \"IL\" for Illinois.";
+		MessagingResponse twimlResponse = manager.getTwimlResponse(twimlMessageRequest,requestMock, session);
+		assertEquals(createTwimlResponse(message).toXml(),twimlResponse.toXml());
+	}
+	
+	@Test
+	public void licenseStateReadMessageGetsGenerated() throws TwiMLException, ParseException{
+		setStageInSession(session,SMS_STAGE.READ_STATE);
 		session.setAttribute("dob", "06/01/1963");
+		session.setAttribute("license_number", "F917801962");
 		Citation citation = new Citation();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 		citation.citation_date = LocalDate.parse("02/03/1990", formatter);
@@ -125,7 +137,7 @@ public class SMSManagerTest {
 		when(citationManagerMock.findCitations((CitationSearchCriteria)notNull())).thenReturn(citations);
 		
 		TwimlMessageRequest twimlMessageRequest = new TwimlMessageRequest();
-		twimlMessageRequest.setBody("F917801962");
+		twimlMessageRequest.setBody("MO");
 		String message = "1 ticket was found\n1) ticket from: 02/03/1990\nReply with the ticket number you want to view.";
 		MessagingResponse twimlResponse = manager.getTwimlResponse(twimlMessageRequest,requestMock, session);
 		assertEquals(createTwimlResponse(message).toXml(),twimlResponse.toXml());
@@ -173,7 +185,6 @@ public class SMSManagerTest {
 		message += "\nViolation #: "+violation.violation_number+"\nViolation: "+violation.violation_description;
 		message += "\nStatus: "+violation.status.toString();
 		message += "\nFine Amount: $"+violation.fine_amount;
-		message += "\nCourt Costs: $"+violation.court_cost;
 		message += "\nReply with '1' to view another ticket";
 		message += "\nReply with '2' for payment options";
 		message += "\nReply with '3' to receive text message reminders about this court date";
@@ -187,6 +198,7 @@ public class SMSManagerTest {
 		setStageInSession(session,SMS_STAGE.READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN);
 		session.setAttribute("dob", "06/01/1963");
 		session.setAttribute("license_number", "F917801962");
+		session.setAttribute("license_state", "MO");
 		Citation citation = new Citation();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 		citation.citation_date = LocalDate.parse("02/03/1990", formatter);
@@ -209,7 +221,7 @@ public class SMSManagerTest {
 		
 		TwimlMessageRequest twimlMessageRequest = new TwimlMessageRequest();
 		twimlMessageRequest.setBody("2");
-		String message = "Visit null/citations/ABC";
+		String message = "Visit null/tickets/ABC/info";
 		message += "\nReply with '1' to view another ticket";
 		message += "\nReply with '2' for payment options";
 		message += "\nReply with '3' to receive text message reminders about this court date";
