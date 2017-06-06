@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions name="MuniCourt" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://tempuri.org/" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing">
+	<wsdl:types>
+		<xs:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+			<xs:import namespace="http://schemas.datacontract.org/2004/07/REJIS.Services.Court.MuniCourt"/>
+			<xs:element name="GetAgcyIdOriList">
+				<xs:complexType>
+					<xs:sequence/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetAgcyIdOriListResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="GetAgcyIdOriListResult" nillable="true" type="q1:ArrayOfAgencyOri" xmlns:q1="http://schemas.datacontract.org/2004/07/REJIS.Services.Court.MuniCourt"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetByLastFirstDob">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="p_LastName" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="p_FirstName" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="p_MiddleName" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="p_YearOfBirth" type="xs:int"/>
+						<xs:element minOccurs="0" name="p_agcyId" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="p_PageNum" type="xs:int"/>
+						<xs:element minOccurs="0" name="p_RowsPerPage" type="xs:int"/>
+						<xs:element minOccurs="0" name="p_TotalRows" type="xs:int"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetByLastFirstDobResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="GetByLastFirstDobResult" nillable="true" type="q2:ArrayOfCaseIndex" xmlns:q2="http://schemas.datacontract.org/2004/07/REJIS.Services.Court.MuniCourt"/>
+						<xs:element minOccurs="0" name="p_TotalRows" type="xs:int"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetByTicketNumber">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="p_ticketNum" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="p_agcyId" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="p_PageNum" type="xs:int"/>
+						<xs:element minOccurs="0" name="p_RowsPerPage" type="xs:int"/>
+						<xs:element minOccurs="0" name="p_TotalRows" type="xs:int"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetByTicketNumberResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="GetByTicketNumberResult" nillable="true" type="q3:ArrayOfCaseIndex" xmlns:q3="http://schemas.datacontract.org/2004/07/REJIS.Services.Court.MuniCourt"/>
+						<xs:element minOccurs="0" name="p_TotalRows" type="xs:int"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetByDocketDateName">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="p_DktDttm" type="xs:dateTime"/>
+						<xs:element minOccurs="0" name="p_LastName" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="p_FirstName" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="p_MiddleName" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="p_AgcyId" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="p_PageNum" type="xs:int"/>
+						<xs:element minOccurs="0" name="p_RowsPerPage" type="xs:int"/>
+						<xs:element minOccurs="0" name="p_TotalRows" type="xs:int"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetByDocketDateNameResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="GetByDocketDateNameResult" nillable="true" type="q4:ArrayOfCaseIndex" xmlns:q4="http://schemas.datacontract.org/2004/07/REJIS.Services.Court.MuniCourt"/>
+						<xs:element minOccurs="0" name="p_TotalRows" type="xs:int"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetByLicState">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="p_VehLicNum" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="p_VehLicState" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="p_LastName" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="p_AgcyId" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="p_PageNum" type="xs:int"/>
+						<xs:element minOccurs="0" name="p_RowsPerPage" type="xs:int"/>
+						<xs:element minOccurs="0" name="p_TotalRows" type="xs:int"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetByLicStateResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="GetByLicStateResult" nillable="true" type="q5:ArrayOfCaseIndex" xmlns:q5="http://schemas.datacontract.org/2004/07/REJIS.Services.Court.MuniCourt"/>
+						<xs:element minOccurs="0" name="p_TotalRows" type="xs:int"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetByViolFilingDate">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="p_ViolDate" type="xs:dateTime"/>
+						<xs:element minOccurs="0" name="p_FilingDate" type="xs:dateTime"/>
+						<xs:element minOccurs="0" name="p_AgcyId" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="p_PageNum" type="xs:int"/>
+						<xs:element minOccurs="0" name="p_RowsPerPage" type="xs:int"/>
+						<xs:element minOccurs="0" name="p_TotalRows" type="xs:int"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetByViolFilingDateResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="GetByViolFilingDateResult" nillable="true" type="q6:ArrayOfCaseIndex" xmlns:q6="http://schemas.datacontract.org/2004/07/REJIS.Services.Court.MuniCourt"/>
+						<xs:element minOccurs="0" name="p_TotalRows" type="xs:int"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetFullCaseView">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="p_AgcyId" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="p_RecId" type="xs:int"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GetFullCaseViewResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="GetFullCaseViewResult" nillable="true" type="q7:FullCaseView" xmlns:q7="http://schemas.datacontract.org/2004/07/REJIS.Services.Court.MuniCourt"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="testFunc">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="p_agencyORI" nillable="true" type="xs:string"/>
+						<xs:element minOccurs="0" name="p_parm2" nillable="true" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="testFuncResponse">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element minOccurs="0" name="testFuncResult" nillable="true" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:schema>
+		<xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/">
+			<xs:element name="anyType" nillable="true" type="xs:anyType"/>
+			<xs:element name="anyURI" nillable="true" type="xs:anyURI"/>
+			<xs:element name="base64Binary" nillable="true" type="xs:base64Binary"/>
+			<xs:element name="boolean" nillable="true" type="xs:boolean"/>
+			<xs:element name="byte" nillable="true" type="xs:byte"/>
+			<xs:element name="dateTime" nillable="true" type="xs:dateTime"/>
+			<xs:element name="decimal" nillable="true" type="xs:decimal"/>
+			<xs:element name="double" nillable="true" type="xs:double"/>
+			<xs:element name="float" nillable="true" type="xs:float"/>
+			<xs:element name="int" nillable="true" type="xs:int"/>
+			<xs:element name="long" nillable="true" type="xs:long"/>
+			<xs:element name="QName" nillable="true" type="xs:QName"/>
+			<xs:element name="short" nillable="true" type="xs:short"/>
+			<xs:element name="string" nillable="true" type="xs:string"/>
+			<xs:element name="unsignedByte" nillable="true" type="xs:unsignedByte"/>
+			<xs:element name="unsignedInt" nillable="true" type="xs:unsignedInt"/>
+			<xs:element name="unsignedLong" nillable="true" type="xs:unsignedLong"/>
+			<xs:element name="unsignedShort" nillable="true" type="xs:unsignedShort"/>
+			<xs:element name="char" nillable="true" type="tns:char"/>
+			<xs:simpleType name="char">
+				<xs:restriction base="xs:int"/>
+			</xs:simpleType>
+			<xs:element name="duration" nillable="true" type="tns:duration"/>
+			<xs:simpleType name="duration">
+				<xs:restriction base="xs:duration">
+					<xs:pattern value="\-?P(\d*D)?(T(\d*H)?(\d*M)?(\d*(\.\d*)?S)?)?"/>
+					<xs:minInclusive value="-P10675199DT2H48M5.4775808S"/>
+					<xs:maxInclusive value="P10675199DT2H48M5.4775807S"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:element name="guid" nillable="true" type="tns:guid"/>
+			<xs:simpleType name="guid">
+				<xs:restriction base="xs:string">
+					<xs:pattern value="[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}"/>
+				</xs:restriction>
+			</xs:simpleType>
+			<xs:attribute name="FactoryType" type="xs:QName"/>
+			<xs:attribute name="Id" type="xs:ID"/>
+			<xs:attribute name="Ref" type="xs:IDREF"/>
+		</xs:schema>
+		<xs:schema elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/REJIS.Services.Court.MuniCourt" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/REJIS.Services.Court.MuniCourt">
+			<xs:complexType name="ArrayOfAgencyOri">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="AgencyOri" nillable="true" type="tns:AgencyOri"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ArrayOfAgencyOri" nillable="true" type="tns:ArrayOfAgencyOri"/>
+			<xs:complexType name="AgencyOri">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="agcy_id" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="crt_ori" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="crt_state" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="crt_title" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="dbapp" nillable="true" type="xs:string"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="AgencyOri" nillable="true" type="tns:AgencyOri"/>
+			<xs:complexType name="ArrayOfCaseIndex">
+				<xs:sequence>
+					<xs:element minOccurs="0" maxOccurs="unbounded" name="CaseIndex" nillable="true" type="tns:CaseIndex"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="ArrayOfCaseIndex" nillable="true" type="tns:ArrayOfCaseIndex"/>
+			<xs:complexType name="CaseIndex">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="AgcyId" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="AgcyOri" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="BalDue" nillable="true" type="xs:decimal"/>
+					<xs:element minOccurs="0" name="CaseNum" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="CaseStatus" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="CaseStatusDesc" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="ChrgCode" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="ChrgDesc" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="CourtName" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="DeftName" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Dob" type="xs:dateTime"/>
+					<xs:element minOccurs="0" name="IsAgcyPlus" type="xs:boolean"/>
+					<xs:element minOccurs="0" name="LastName" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="NextDktCrtRoom" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="NextDktDate" type="xs:dateTime"/>
+					<xs:element minOccurs="0" name="PbmStatus" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="PymtUrl" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="RecId" type="xs:int"/>
+					<xs:element minOccurs="0" name="TktNum" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="ViolDttm" type="xs:dateTime"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="CaseIndex" nillable="true" type="tns:CaseIndex"/>
+			<xs:complexType name="FullCaseView">
+				<xs:sequence>
+					<xs:element minOccurs="0" name="AgcyId" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="AgcyOri" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="AssdAmt" nillable="true" type="xs:decimal"/>
+					<xs:element minOccurs="0" name="BalDue" nillable="true" type="xs:decimal"/>
+					<xs:element minOccurs="0" name="BondSetAmt" nillable="true" type="xs:decimal"/>
+					<xs:element minOccurs="0" name="CaseNum" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="CaseStatus" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="CaseStatusDesc" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="ChrgCode" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="ChrgDesc" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="CourtName" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="CourtWebSite" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="DefAttyAddr" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="DefAttyName" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="DefAttyPhone" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="DeftAddr" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="DeftName" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="DispDate" type="xs:dateTime"/>
+					<xs:element minOccurs="0" name="DispDesc" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Dob" type="xs:dateTime"/>
+					<xs:element minOccurs="0" name="FilingDate" type="xs:dateTime"/>
+					<xs:element minOccurs="0" name="IssuingAgcy" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="JudgeName" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="LastName" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="NextDktCrtRm" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="NextDktDate" type="xs:dateTime"/>
+					<xs:element minOccurs="0" name="Ocn" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="OrigDktCrtRm" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="OrigDktDate" type="xs:dateTime"/>
+					<xs:element minOccurs="0" name="Plea" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="ProbDays" nillable="true" type="xs:int"/>
+					<xs:element minOccurs="0" name="ProbMonths" nillable="true" type="xs:int"/>
+					<xs:element minOccurs="0" name="ProbYears" nillable="true" type="xs:int"/>
+					<xs:element minOccurs="0" name="PymtUrl" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="SentExecCode" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="SentExecDesc" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="StateChrg" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="Statute" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="TktNum" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="ViolAddr" nillable="true" type="xs:string"/>
+					<xs:element minOccurs="0" name="ViolDttm" type="xs:dateTime"/>
+					<xs:element minOccurs="0" name="isAgcyPlus" type="xs:boolean"/>
+				</xs:sequence>
+			</xs:complexType>
+			<xs:element name="FullCaseView" nillable="true" type="tns:FullCaseView"/>
+		</xs:schema>
+	</wsdl:types>
+	<wsdl:message name="IMuniCourt_GetAgcyIdOriList_InputMessage">
+		<wsdl:part name="parameters" element="tns:GetAgcyIdOriList"/>
+	</wsdl:message>
+	<wsdl:message name="IMuniCourt_GetAgcyIdOriList_OutputMessage">
+		<wsdl:part name="parameters" element="tns:GetAgcyIdOriListResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IMuniCourt_GetByLastFirstDob_InputMessage">
+		<wsdl:part name="parameters" element="tns:GetByLastFirstDob"/>
+	</wsdl:message>
+	<wsdl:message name="IMuniCourt_GetByLastFirstDob_OutputMessage">
+		<wsdl:part name="parameters" element="tns:GetByLastFirstDobResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IMuniCourt_GetByTicketNumber_InputMessage">
+		<wsdl:part name="parameters" element="tns:GetByTicketNumber"/>
+	</wsdl:message>
+	<wsdl:message name="IMuniCourt_GetByTicketNumber_OutputMessage">
+		<wsdl:part name="parameters" element="tns:GetByTicketNumberResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IMuniCourt_GetByDocketDateName_InputMessage">
+		<wsdl:part name="parameters" element="tns:GetByDocketDateName"/>
+	</wsdl:message>
+	<wsdl:message name="IMuniCourt_GetByDocketDateName_OutputMessage">
+		<wsdl:part name="parameters" element="tns:GetByDocketDateNameResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IMuniCourt_GetByLicState_InputMessage">
+		<wsdl:part name="parameters" element="tns:GetByLicState"/>
+	</wsdl:message>
+	<wsdl:message name="IMuniCourt_GetByLicState_OutputMessage">
+		<wsdl:part name="parameters" element="tns:GetByLicStateResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IMuniCourt_GetByViolFilingDate_InputMessage">
+		<wsdl:part name="parameters" element="tns:GetByViolFilingDate"/>
+	</wsdl:message>
+	<wsdl:message name="IMuniCourt_GetByViolFilingDate_OutputMessage">
+		<wsdl:part name="parameters" element="tns:GetByViolFilingDateResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IMuniCourt_GetFullCaseView_InputMessage">
+		<wsdl:part name="parameters" element="tns:GetFullCaseView"/>
+	</wsdl:message>
+	<wsdl:message name="IMuniCourt_GetFullCaseView_OutputMessage">
+		<wsdl:part name="parameters" element="tns:GetFullCaseViewResponse"/>
+	</wsdl:message>
+	<wsdl:message name="IMuniCourt_testFunc_InputMessage">
+		<wsdl:part name="parameters" element="tns:testFunc"/>
+	</wsdl:message>
+	<wsdl:message name="IMuniCourt_testFunc_OutputMessage">
+		<wsdl:part name="parameters" element="tns:testFuncResponse"/>
+	</wsdl:message>
+	<wsdl:portType name="IMuniCourt">
+		<wsdl:operation name="GetAgcyIdOriList">
+			<wsdl:input wsaw:Action="http://tempuri.org/IMuniCourt/GetAgcyIdOriList" message="tns:IMuniCourt_GetAgcyIdOriList_InputMessage"/>
+			<wsdl:output wsaw:Action="http://tempuri.org/IMuniCourt/GetAgcyIdOriListResponse" message="tns:IMuniCourt_GetAgcyIdOriList_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="GetByLastFirstDob">
+			<wsdl:input wsaw:Action="http://tempuri.org/IMuniCourt/GetByLastFirstDob" message="tns:IMuniCourt_GetByLastFirstDob_InputMessage"/>
+			<wsdl:output wsaw:Action="http://tempuri.org/IMuniCourt/GetByLastFirstDobResponse" message="tns:IMuniCourt_GetByLastFirstDob_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="GetByTicketNumber">
+			<wsdl:input wsaw:Action="http://tempuri.org/IMuniCourt/GetByTicketNumber" message="tns:IMuniCourt_GetByTicketNumber_InputMessage"/>
+			<wsdl:output wsaw:Action="http://tempuri.org/IMuniCourt/GetByTicketNumberResponse" message="tns:IMuniCourt_GetByTicketNumber_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="GetByDocketDateName">
+			<wsdl:input wsaw:Action="http://tempuri.org/IMuniCourt/GetByDocketDateName" message="tns:IMuniCourt_GetByDocketDateName_InputMessage"/>
+			<wsdl:output wsaw:Action="http://tempuri.org/IMuniCourt/GetByDocketDateNameResponse" message="tns:IMuniCourt_GetByDocketDateName_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="GetByLicState">
+			<wsdl:input wsaw:Action="http://tempuri.org/IMuniCourt/GetByLicState" message="tns:IMuniCourt_GetByLicState_InputMessage"/>
+			<wsdl:output wsaw:Action="http://tempuri.org/IMuniCourt/GetByLicStateResponse" message="tns:IMuniCourt_GetByLicState_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="GetByViolFilingDate">
+			<wsdl:input wsaw:Action="http://tempuri.org/IMuniCourt/GetByViolFilingDate" message="tns:IMuniCourt_GetByViolFilingDate_InputMessage"/>
+			<wsdl:output wsaw:Action="http://tempuri.org/IMuniCourt/GetByViolFilingDateResponse" message="tns:IMuniCourt_GetByViolFilingDate_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="GetFullCaseView">
+			<wsdl:input wsaw:Action="http://tempuri.org/IMuniCourt/GetFullCaseView" message="tns:IMuniCourt_GetFullCaseView_InputMessage"/>
+			<wsdl:output wsaw:Action="http://tempuri.org/IMuniCourt/GetFullCaseViewResponse" message="tns:IMuniCourt_GetFullCaseView_OutputMessage"/>
+		</wsdl:operation>
+		<wsdl:operation name="testFunc">
+			<wsdl:input wsaw:Action="http://tempuri.org/IMuniCourt/testFunc" message="tns:IMuniCourt_testFunc_InputMessage"/>
+			<wsdl:output wsaw:Action="http://tempuri.org/IMuniCourt/testFuncResponse" message="tns:IMuniCourt_testFunc_OutputMessage"/>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="MuniCourtEndPoint" type="tns:IMuniCourt">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="GetAgcyIdOriList">
+			<soap:operation soapAction="http://tempuri.org/IMuniCourt/GetAgcyIdOriList" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetByLastFirstDob">
+			<soap:operation soapAction="http://tempuri.org/IMuniCourt/GetByLastFirstDob" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetByTicketNumber">
+			<soap:operation soapAction="http://tempuri.org/IMuniCourt/GetByTicketNumber" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetByDocketDateName">
+			<soap:operation soapAction="http://tempuri.org/IMuniCourt/GetByDocketDateName" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetByLicState">
+			<soap:operation soapAction="http://tempuri.org/IMuniCourt/GetByLicState" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetByViolFilingDate">
+			<soap:operation soapAction="http://tempuri.org/IMuniCourt/GetByViolFilingDate" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetFullCaseView">
+			<soap:operation soapAction="http://tempuri.org/IMuniCourt/GetFullCaseView" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="testFunc">
+			<soap:operation soapAction="http://tempuri.org/IMuniCourt/testFunc" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal"/>
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal"/>
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="MuniCourt">
+		<wsdl:port name="MuniCourtEndPoint" binding="tns:MuniCourtEndPoint">
+			<soap:address location="http://rejspaapp1/municourtservices/MuniCourt.svc"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
