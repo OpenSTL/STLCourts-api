@@ -13,7 +13,9 @@ public class RejisMuniCourtConfiguration {
 		Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
 		// this package must match the package in the <generatePackage> specified in
 		// pom.xml
-		marshaller.setContextPath("svc.data.citations.datasources.regis.org.tempuri");
+		marshaller.setContextPath("svc.data.citations.datasources.rejis.org.tempuri"
+								  + ":svc.data.citations.datasources.rejis.org.datacontract.schemas._2004._07.rejis_services_court"
+								  + ":svc.data.citations.datasources.rejis.com.microsoft.schemas._2003._10.serialization");
 		return marshaller;
 	}
 	
