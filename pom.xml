@@ -146,6 +146,27 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+			    <groupId>org.jvnet.jaxb2.maven2</groupId>
+			    <artifactId>maven-jaxb2-plugin</artifactId>
+			    <version>0.13.2</version>
+			    <executions>
+			        <execution>
+			            <goals>
+			                <goal>generate</goal>
+			            </goals>
+			        </execution>
+			    </executions>
+			    <configuration>
+			    	<schemaDirectory>src/main/resources/wsdl/regis</schemaDirectory>
+			    	<schemaIncludes>
+			    		<include>*.xml</include>
+			    	</schemaIncludes>
+			        <schemaLanguage>WSDL</schemaLanguage>
+			        <!-- <generateDirectory>src/main/java/svc/data/citations/datasources/regis</generateDirectory> -->
+			        <writeCode>false</writeCode>
+			    </configuration>
+			</plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>
