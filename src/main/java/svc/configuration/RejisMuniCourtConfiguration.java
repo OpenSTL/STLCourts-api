@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
-import svc.data.citations.datasources.regis.RegisCitationDataSource;
+import svc.data.citations.datasources.rejis.RejisCitationDataSource;
 
 @Configuration
 public class RejisMuniCourtConfiguration {
@@ -18,8 +18,8 @@ public class RejisMuniCourtConfiguration {
 	}
 	
 	@Bean
-	public RegisCitationDataSource quoteClient(Jaxb2Marshaller marshaller) {
-		RegisCitationDataSource client = new RegisCitationDataSource();
+	public RejisCitationDataSource rejisCitationDataSource(Jaxb2Marshaller marshaller) {
+		RejisCitationDataSource client = new RejisCitationDataSource();
 		client.setDefaultUri("http://rejspaapp1/municourtservices/MuniCourt.svc");
 		client.setMarshaller(marshaller);
 		client.setUnmarshaller(marshaller);

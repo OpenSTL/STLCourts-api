@@ -162,12 +162,12 @@
 			        </execution>
 			    </executions>
 			    <configuration>
-			    	<schemaDirectory>src/main/resources/wsdl/regis</schemaDirectory>
+			    	<schemaDirectory>src/main/resources/wsdl/rejis</schemaDirectory>
 			    	<schemaIncludes>
 			    		<include>*.xml</include>
 			    	</schemaIncludes>
 			        <schemaLanguage>WSDL</schemaLanguage>
-			        <!-- <generateDirectory>src/main/java/svc/data/citations/datasources/regis</generateDirectory> -->
+			        <generateDirectory>src/main/java/svc/data/citations/datasources/rejis</generateDirectory>
 			        <writeCode>false</writeCode>
 			    </configuration>
 			</plugin>
