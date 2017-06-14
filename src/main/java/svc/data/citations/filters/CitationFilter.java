@@ -24,10 +24,10 @@ public class CitationFilter {
 				 .filter(c -> courtDateFilter(c))
 				 .collect(Collectors.toList());
 	}
-	
+
 	private boolean courtDateFilter(Citation citation){
 		boolean keepCitation = false;
-		
+
 		ListIterator<Violation> violIter = citation.violations.listIterator();
 		while(violIter.hasNext()){
 			Violation violation = violIter.next();
@@ -36,7 +36,7 @@ public class CitationFilter {
 				break;
 			}
 		}
-		
+
 		if (!keepCitation){
 			Court court = courtManager.getCourtById(citation.court_id.getValue());
 			if (court.citation_expires_after_days >= 0){
@@ -50,7 +50,7 @@ public class CitationFilter {
 				keepCitation = true;
 			}
 		}
-		
+
 		return keepCitation;
 	}
 }

@@ -47,7 +47,7 @@ public class CitationTextMessageTest {
 		VIOLATION.violation_description = "hello";
 		VIOLATION.fine_amount = new BigDecimal("2.00");
 		List<Violation> VIOLATIONS = Lists.newArrayList(VIOLATION);
-	
+
 		String expectedViolationMessage = "\nViolation #: 8910\nViolation: hello\nStatus: "+VIOLATION.status.toString();
 		expectedViolationMessage += "\nFine Amount: $2.00";
 		
