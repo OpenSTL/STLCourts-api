@@ -48,7 +48,7 @@ INSERT INTO municipality_court(municipality_id, court_id) VALUES (47, 43);
 INSERT INTO municipality_court(municipality_id, court_id) VALUES (48, 44);
 INSERT INTO municipality_court(municipality_id, court_id) VALUES (49, 45);
 INSERT INTO municipality_court(municipality_id, court_id) VALUES (50, 46);
-INSERT INTO municipality_court(municipality_id, court_id) VALUES (51, 47);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (51, 35);
 INSERT INTO municipality_court(municipality_id, court_id) VALUES (52, 48);
 INSERT INTO municipality_court(municipality_id, court_id) VALUES (53, 49);
 INSERT INTO municipality_court(municipality_id, court_id) VALUES (54, 4);

@@ -48,6 +48,7 @@ public class DemoManager {
 			demoCitation.citationNumber = citation.citation_number;
 			demoCitation.dob = citation.date_of_birth;
 			demoCitation.driversLicenseNumber = citation.drivers_license_number;
+			demoCitation.driversLicenseState = citation.drivers_license_state;
 			Period daysTillCourt = DatabaseUtilities.getCurrentDate().until(citation.court_dateTime.toLocalDate());
 			demoCitation.daysTillCourt = daysTillCourt.getDays();
 			demoCitation.numberOfViolations = numberOfViolations;

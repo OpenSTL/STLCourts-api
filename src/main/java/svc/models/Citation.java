@@ -17,8 +17,9 @@ public class Citation {
 	public String defendant_city;
 	public String defendant_state;
 	public String drivers_license_number;
+	public String drivers_license_state;
 	public LocalDateTime court_dateTime;
-	
+
 	public List<Violation> violations;
 	public HashableEntity<Court> court_id;
 	public HashableEntity<Municipality> municipality_id;

@@ -48,7 +48,6 @@ public class CitationTextMessage {
 			message += "\nStatus: "+violation.status.toString();
 			if (violation.status != VIOLATION_STATUS.DISMISS_WITHOUT_COSTS){
 				message += "\nFine Amount: $"+violation.fine_amount;
-				message += "\nCourt Costs: $"+violation.court_cost;
 			}
 		}
 		

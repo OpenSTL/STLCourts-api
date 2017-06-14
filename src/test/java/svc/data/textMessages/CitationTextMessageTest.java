@@ -46,11 +46,10 @@ public class CitationTextMessageTest {
 		VIOLATION.violation_number = "8910";
 		VIOLATION.violation_description = "hello";
 		VIOLATION.fine_amount = new BigDecimal("2.00");
-		VIOLATION.court_cost = new BigDecimal("3.00");
 		List<Violation> VIOLATIONS = Lists.newArrayList(VIOLATION);
-	
+
 		String expectedViolationMessage = "\nViolation #: 8910\nViolation: hello\nStatus: "+VIOLATION.status.toString();
-		expectedViolationMessage += "\nFine Amount: $2.00\nCourt Costs: $3.00";
+		expectedViolationMessage += "\nFine Amount: $2.00";
 		
 		String expectedCitationMessage = "Ticket Date: " + ticketDateString+"\nCourt Date: 09/10/2016\nCourt Time: 02:33 PM\nTicket #: 123";
 		expectedCitationMessage += "\nCourt Address: "+COURT.address+" "+COURT.city+", "+COURT.state+" "+COURT.zip;
