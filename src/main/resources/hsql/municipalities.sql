@@ -89,4 +89,4 @@ INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (89,'Woodson Terrace','http://www.ipaycourt.com/frmCitationSearch.aspx?ori=WoodsonTerrace');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (90,'St. Louis County Municipal','https://www.municipalonlinepayments.com/stlouiscountymo/court/search');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (91,'Champ','');
-INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (92,'St. Louis City Municipal','');
+INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (92,'St. Louis City','https://www.ipaycourt.com/frmCaseSearchCont.aspx?ori=StlCityCourt');
