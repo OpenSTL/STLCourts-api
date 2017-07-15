@@ -1,4 +1,4 @@
-package svc.data.citations.datasources.tyler.transformers;
+package svc.data.citations.datasources.transformers;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -15,6 +15,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
+import svc.data.citations.datasources.CITATION_DATASOURCE;
 import svc.models.Court;
 import svc.types.HashableEntity;
 
@@ -31,7 +32,7 @@ public class CourtIdTransformerTest {
 	public void returnsCourtIdFromTylerCourtIdentifier(){
 		when(mockJdbcTemplate.queryForObject(anyString(),anyMap(),Matchers.<RowMapper<Long>>any())).thenReturn(5L);
 		
-		HashableEntity<Court> returnedCourtId = mockCourtIdTransformer.lookupCourtId("someIdentifier");
+		HashableEntity<Court> returnedCourtId = mockCourtIdTransformer.lookupCourtId(CITATION_DATASOURCE.TYLER,"someIdentifier");
 		assertThat(returnedCourtId.getValue(),is(5L));
 	}
 

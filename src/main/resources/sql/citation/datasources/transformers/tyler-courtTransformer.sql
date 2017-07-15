@@ -1,0 +1,1 @@
+SELECT court_id FROM tyler_court_mapping WHERE tyler_court_identifier = :courtIdentifier

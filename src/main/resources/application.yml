@@ -13,7 +13,8 @@ stlcourts:
       apiKey: ${TYLER_API_KEY}
     rejis:
       rootUrl: ${REJIS_ROOT_URL}
-      apiKey: ${REJIS_API_KEY}
+      username: ${REJIS_USERNAME}
+      password: ${REJIS_PASSWORD}
 
 logging:
   level:

@@ -20,7 +20,7 @@ import com.google.common.collect.Lists;
 
 import svc.data.citations.CitationDataSource;
 import svc.data.citations.datasources.tyler.models.TylerCitation;
-import svc.data.citations.datasources.tyler.transformers.CitationTransformer;
+import svc.data.citations.datasources.tyler.transformers.TylerCitationTransformer;
 import svc.data.citations.filters.CitationFilter;
 import svc.models.Citation;
 
@@ -31,7 +31,7 @@ public class TylerCitationDataSource implements CitationDataSource {
 	private TylerConfiguration tylerConfiguration;
 
 	@Autowired
-	private CitationTransformer citationTransformer;
+	private TylerCitationTransformer citationTransformer;
 	
 	@Autowired
 	private CitationFilter citationFilter;

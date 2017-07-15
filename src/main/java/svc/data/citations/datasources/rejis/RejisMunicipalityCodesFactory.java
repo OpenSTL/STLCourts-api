@@ -1,14 +1,13 @@
 package svc.data.citations.datasources.rejis;
 
 import com.google.common.collect.Lists;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
+
 import svc.data.citations.datasources.CITATION_DATASOURCE;
 import svc.data.jdbc.BaseJdbcDao;
 import svc.logging.LogSystem;
 
-import javax.inject.Inject;
 import java.sql.ResultSet;
 import java.util.*;
 
@@ -29,10 +28,11 @@ public class RejisMunicipalityCodesFactory extends BaseJdbcDao {
 
     private List<String> getMunicipalityCodes(List<Long> municipalityIds) {
         List<String> municipalityCodes = new ArrayList<>();
+
         try  {
             Map<String, Object> parameterMap = new HashMap<>();
-
-            String sql = getSql("citation/datasources/get-all.sql");
+            parameterMap.put("datasource", CITATION_DATASOURCE.REJIS.toString());
+            String sql = getSql("municipality/get-datasourceMunicipalityIdentifier-from-municipalityId.sql");
 
             if(municipalityIds.size() > 0) {
                 //NOTE: The following 2 lines could be 1 if we use Groovy
@@ -40,26 +40,27 @@ public class RejisMunicipalityCodesFactory extends BaseJdbcDao {
                 for(Long id : municipalityIds) { joiner.add(id.toString()); }
                 parameterMap.put("municipalities", joiner.toString());
 
-                sql += " WHERE cdm.municipality_id IN(:municipalities)";
+                sql += " AND dmm.municipality_id IN("+joiner.toString()+")";
             }
-            sourceNames = jdbcTemplate.query(sql, parameterMap, new CitationDataSourceMapper());
+           
+            municipalityCodes = jdbcTemplate.query(sql, parameterMap, new MunicipalityCodesMapper());
         } catch (Exception e) {
             LogSystem.LogDBException(e);
         }
 
-        return sourceNames;
+        return municipalityCodes;
     }
 
-    private class CitationDataSourceMapper implements RowMapper<CITATION_DATASOURCE> {
-        public CITATION_DATASOURCE mapRow(ResultSet rs, int i) {
-            CITATION_DATASOURCE datasource = null;
+    private class MunicipalityCodesMapper implements RowMapper<String> {
+        public String mapRow(ResultSet rs, int i){
+            String municipalityCode = null;
             try {
-                datasource = CITATION_DATASOURCE.valueOf(rs.getString("name"));
+            	municipalityCode = rs.getString("datasource_municipality_identifier");
             } catch (Exception e) {
                 LogSystem.LogDBException(e);
             }
 
-            return datasource;
+            return municipalityCode;
         }
     }
 }
