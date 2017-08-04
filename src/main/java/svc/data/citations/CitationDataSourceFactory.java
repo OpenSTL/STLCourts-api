@@ -68,6 +68,7 @@ public class CitationDataSourceFactory extends BaseJdbcDao {
                     break;
                 case REJIS:
                 	dataSources.add(rejisCitationDataSource);
+                	break;
                 default:
                     LogSystem.LogCitationDataSourceException("Source '" + source.toString() + "' is not supported");
             }

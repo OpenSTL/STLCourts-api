@@ -52,8 +52,14 @@ public class RejisCitationTransformer {
 
 		genericCitation.violations = violationTransformer.fromRejisFullCitation(rejisFullCitation, rejisPartialCitation);
 		
+		LocalDateTime NextDktDate = LocalDateTime.parse(rejisFullCitation.NextDktDate);
+		LocalDateTime OrigDktDate = LocalDateTime.parse(rejisFullCitation.OrigDktDate);
 		
-		genericCitation.court_dateTime = LocalDateTime.parse(rejisFullCitation.NextDktDate);
+		if (NextDktDate.isBefore(OrigDktDate)){
+			genericCitation.court_dateTime = OrigDktDate;
+		}else{
+			genericCitation.court_dateTime = NextDktDate;
+		}
 
 		genericCitation.court_id = courtIdTransformer.lookupCourtId(CITATION_DATASOURCE.REJIS, rejisFullCitation.AgcyId);
 		genericCitation.municipality_id = municipalityIdTransformer.lookupMunicipalityId(CITATION_DATASOURCE.REJIS,rejisFullCitation.AgcyId);

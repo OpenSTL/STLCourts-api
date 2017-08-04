@@ -26,8 +26,6 @@ import svc.data.citations.datasources.transformers.CourtIdTransformer;
 import svc.data.citations.datasources.transformers.MunicipalityIdTransformer;
 import svc.data.citations.datasources.tyler.models.TylerCitation;
 import svc.data.citations.datasources.tyler.models.TylerViolation;
-import svc.data.citations.datasources.tyler.transformers.CitationTransformer;
-import svc.data.citations.datasources.tyler.transformers.ViolationTransformer;
 import svc.models.Citation;
 import svc.models.Municipality;
 import svc.types.HashableEntity;
@@ -36,13 +34,13 @@ import svc.types.HashableEntity;
 public class TylerCitationTransformerTest {
 
 	@Mock
-	ViolationTransformer violationTransformer;
+	TylerViolationTransformer violationTransformer;
 
 	@Mock
 	CourtIdTransformer courtIdTransformer;
 
 	@InjectMocks
-	CitationTransformer citationTransformer;
+	TylerCitationTransformer citationTransformer;
 
 	@Mock
 	MunicipalityIdTransformer municipalityIdTransformer;

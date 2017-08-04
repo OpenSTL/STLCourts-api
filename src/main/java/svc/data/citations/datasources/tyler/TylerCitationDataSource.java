@@ -47,16 +47,16 @@ public class TylerCitationDataSource implements CitationDataSource {
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(tylerConfiguration.rootUrl)
 				.queryParam("citationNumber", citationNumber).queryParam("dob", dob.format(dobFormatter));
 
-		return performRestTemplateCall(builder.build().encode().toUri());
+		return performRestTemplateCall(builder.build().encode().toUri(), dob, null);
 	}
 
 	@Override
-	public List<Citation> getByLicenseAndDOB(String driversLicenseNumber, String driversLicenseState, LocalDate dob) {
+	public List<Citation> getByLicenseAndDOB(String driversLicenseNumber, String driversLicenseState, LocalDate dob, String lastName) {
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(tylerConfiguration.rootUrl)
 				.queryParam("licenseNumber", driversLicenseNumber).queryParam("dob", dob.format(dobFormatter))
-				.queryParam("licenseState", driversLicenseState);
+				.queryParam("licenseState", driversLicenseState).queryParam("lastName", lastName);
 
-		return performRestTemplateCall(builder.build().encode().toUri());
+		return performRestTemplateCall(builder.build().encode().toUri(), dob, lastName);
 	}
 
 	@Override
@@ -64,10 +64,10 @@ public class TylerCitationDataSource implements CitationDataSource {
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(tylerConfiguration.rootUrl)
 				.queryParam("lastName", lastName).queryParam("dob", dob.format(dobFormatter));
 
-		return performRestTemplateCall(builder.build().encode().toUri());
+		return performRestTemplateCall(builder.build().encode().toUri(), dob, lastName);
 	}
 
-	private List<Citation> performRestTemplateCall(URI uri) {
+	private List<Citation> performRestTemplateCall(URI uri, LocalDate dob, String lastName) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("apikey", tylerConfiguration.apiKey);
 		HttpEntity<?> query = new HttpEntity<>(headers);
@@ -79,7 +79,7 @@ public class TylerCitationDataSource implements CitationDataSource {
 		try {
 			tylerCitationsResponse = restTemplate.exchange(uri, HttpMethod.GET, query, type);
 			tylerCitations = tylerCitationsResponse.getBody();
-			return citationFilter.Filter(citationTransformer.fromTylerCitations(tylerCitations));
+			return citationFilter.Filter(citationTransformer.fromTylerCitations(tylerCitations),dob, lastName);
 		} catch (RestClientException ex) {
 			System.out.println("Tyler datasource is down.");
 			return Lists.newArrayList();

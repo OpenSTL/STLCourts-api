@@ -31,7 +31,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import svc.data.citations.datasources.tyler.models.TylerCitation;
-import svc.data.citations.datasources.tyler.transformers.CitationTransformer;
+import svc.data.citations.datasources.tyler.transformers.TylerCitationTransformer;
 import svc.data.citations.filters.CitationFilter;
 import svc.models.Citation;
 
@@ -47,7 +47,7 @@ public class TylerCitationDataSourceTest {
 	@Mock
     RestTemplate restTemplate;
 	@Mock
-	CitationTransformer mockCitationTransformer;
+	TylerCitationTransformer mockCitationTransformer;
 	@Mock
 	CitationFilter mockCitationFilter;
 	
