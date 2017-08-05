@@ -30,16 +30,12 @@ public class CourtIdTransformer extends BaseJdbcDao {
 					sql = this.getSql("citation/datasources/transformers/tyler-courtTransformer.sql");
 					break;
 				default:
-					LogSystem.LogEvent("Unknown Citation Datasource for CourtIdTransformer");
-					break;
+					throw new Exception("Unknown Citation Datasource for CourtIdTransformer");
 				}
 				
-				if (sql != ""){
-					Long courtId = jdbcTemplate.queryForObject(sql, parameterMap, new CourtIdSQLMapper());
-					return new HashableEntity<Court>(Court.class, courtId);
-				}else{
-					return null;
-				}
+				Long courtId = jdbcTemplate.queryForObject(sql, parameterMap, new CourtIdSQLMapper());
+				return new HashableEntity<Court>(Court.class, courtId);
+				
 			} catch (Exception e) {
 				LogSystem.LogDBException(e);
 				return null;

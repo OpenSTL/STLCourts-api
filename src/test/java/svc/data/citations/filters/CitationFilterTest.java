@@ -4,6 +4,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -32,13 +33,17 @@ public class CitationFilterTest {
 	
 	@Test
 	public void correctlyKeepsCitations(){
+		final LocalDate DOB = LocalDate.parse("2000-06-01");
+		final String LASTNAME = "someName";
 		Court COURT = new Court();
 		COURT.citation_expires_after_days = -1;
 		
 		Citation CITATION = new Citation();
 		CITATION.id = 3;
 		CITATION.court_id = new HashableEntity<Court>(Court.class,4L);
-
+		CITATION.date_of_birth = DOB;
+		CITATION.last_name = LASTNAME;
+		
 		List<Violation> VIOLATIONS = Lists.newArrayList();
 		CITATION.violations = VIOLATIONS;
 
@@ -50,23 +55,28 @@ public class CitationFilterTest {
 		List<Citation> CITATIONS = Lists.newArrayList(CITATION);
 
 		when(courtManagerMock.getCourtById(CITATION.court_id.getValue())).thenReturn(COURT);
-		assertThat(citationFilter.Filter(CITATIONS).size(), is(1));
+		assertThat(citationFilter.Filter(CITATIONS, DOB, LASTNAME).size(), is(1));
 
 		COURT.citation_expires_after_days = 4;
 		CITATION.court_dateTime = LocalDateTime.now().plusDays(1);
 
 		CITATIONS = Lists.newArrayList(CITATION);
-		assertThat(citationFilter.Filter(CITATIONS).size(), is(1));
+		assertThat(citationFilter.Filter(CITATIONS, DOB, LASTNAME).size(), is(1));
 	}
 	
 	@Test
 	public void correctlyFiltersCitations(){
+		final LocalDate DOB = LocalDate.parse("2000-06-01");
+		final String LASTNAME = "someName";
+		
 		Court COURT = new Court();
 		COURT.citation_expires_after_days = 1;
 		
 		Citation CITATION = new Citation();
 		CITATION.id = 3;
 		CITATION.court_id = new HashableEntity<Court>(Court.class,4L);
+		CITATION.date_of_birth = DOB;
+		CITATION.last_name = LASTNAME;
 
 		List<Violation> VIOLATIONS = Lists.newArrayList();
 		CITATION.violations = VIOLATIONS;
@@ -79,17 +89,22 @@ public class CitationFilterTest {
 		List<Citation> CITATIONS = Lists.newArrayList(CITATION);
 		when(courtManagerMock.getCourtById(CITATION.court_id.getValue())).thenReturn(COURT);
 
-		assertThat(citationFilter.Filter(CITATIONS).size(), is(0));
+		assertThat(citationFilter.Filter(CITATIONS, DOB, LASTNAME).size(), is(0));
 	}
 
 	@Test
 	public void correctlyKeepsOldWarrantCitations(){
+		final LocalDate DOB = LocalDate.parse("2000-06-01");
+		final String LASTNAME = "someName";
+		
 		Court COURT = new Court();
 		COURT.citation_expires_after_days = 3;
 
 		Citation CITATION = new Citation();
 		CITATION.id = 3;
 		CITATION.court_id = new HashableEntity<Court>(Court.class,4L);
+		CITATION.date_of_birth = DOB;
+		CITATION.last_name = LASTNAME;
 
 		Violation VIOLATION = new Violation();
 		VIOLATION.warrant_status = true;
@@ -105,6 +120,6 @@ public class CitationFilterTest {
 		List<Citation> CITATIONS = Lists.newArrayList(CITATION);
 
 		when(courtManagerMock.getCourtById(CITATION.court_id.getValue())).thenReturn(COURT);
-		assertThat(citationFilter.Filter(CITATIONS).size(), is(1));
+		assertThat(citationFilter.Filter(CITATIONS, DOB, LASTNAME).size(), is(1));
 	}
 }

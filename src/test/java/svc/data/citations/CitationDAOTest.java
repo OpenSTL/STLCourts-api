@@ -62,15 +62,16 @@ public class CitationDAOTest {
         String dateString = "08/05/1965";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         LocalDate date = LocalDate.parse(dateString,formatter);
+        String lastName = "someName";
 
         final List<Citation> CITATIONS = Lists.newArrayList(CITATION);
 
-        when(mockCitationDataSource.getByLicenseAndDOB(licenseNunmber, licenseState, date)).thenReturn(CITATIONS);
+        when(mockCitationDataSource.getByLicenseAndDOB(licenseNunmber, licenseState, date, lastName)).thenReturn(CITATIONS);
         final List<CitationDataSource> SOURCES = Lists.newArrayList(mockCitationDataSource);
 
         when(citationDataSourceFactory.getAllCitationDataSources()).thenReturn(SOURCES);
 
-        List<Citation> citations = citationDAO.getByLicenseAndDOB(licenseNunmber,licenseState, date);
+        List<Citation> citations = citationDAO.getByLicenseAndDOB(licenseNunmber,licenseState, date, lastName);
 
         assertThat(citations.get(0).id, is(3));
     }
