@@ -194,7 +194,7 @@ public class RejisCitationDataSource implements CitationDataSource {
 	
 	private List<Citation> getCitation(RejisPartialCitation partialCitation){
 		RejisFullCitation rejisFullCitation = getFullCaseView(partialCitation);
-		if (rejisFullCitation != null){
+		if (rejisFullCitation == null){
 			return Lists.newArrayList();
 		}
 		Citation citation = citationTransformer.fromRejisFullCitation(rejisFullCitation, partialCitation);

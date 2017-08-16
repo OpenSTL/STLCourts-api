@@ -194,10 +194,9 @@ public class RejisCitationDataSourceTest {
 		when(restTemplate.exchange(any(URI.class), eq(HttpMethod.GET), any(HttpEntity.class), eq(RejisCaseList.class)))
         	.thenReturn(caseListResponse);
 		when(restTemplate.exchange(any(URI.class), eq(HttpMethod.GET), any(HttpEntity.class), eq(RejisFullCitation.class)))
-        	.thenReturn(fullCaseResponse);
-		when(mockRejisConfiguration.getRootUrl()).thenReturn("http://www.myUrl.com");
-		when(mockCitationTransformer.fromRejisFullCitation(any(RejisFullCitation.class), any(RejisPartialCitation.class)))
 			.thenThrow(RestClientException.class);
+		when(mockRejisConfiguration.getRootUrl()).thenReturn("http://www.myUrl.com");
+			
 		
 		List<Citation> returnedCitation = mockRejisCitationDataSource.getByCitationNumberAndDOB("123", LocalDate.parse("1996-01-02"));
 		
