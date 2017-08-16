@@ -48,9 +48,4 @@ public class RejisPartialCitation {
 	@JsonProperty
 	public boolean ShowIpaycourt;
 
-	/*
-	 *  What is this property do I need it
-	 	@JsonProperty 
-		public String? PbmStatus;
-	*/
 }

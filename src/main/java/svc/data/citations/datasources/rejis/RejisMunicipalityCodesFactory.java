@@ -35,7 +35,6 @@ public class RejisMunicipalityCodesFactory extends BaseJdbcDao {
             String sql = getSql("municipality/get-datasourceMunicipalityIdentifier-from-municipalityId.sql");
 
             if(municipalityIds.size() > 0) {
-                //NOTE: The following 2 lines could be 1 if we use Groovy
                 StringJoiner joiner  = new StringJoiner(",");
                 for(Long id : municipalityIds) { joiner.add(id.toString()); }
                 parameterMap.put("municipalities", joiner.toString());

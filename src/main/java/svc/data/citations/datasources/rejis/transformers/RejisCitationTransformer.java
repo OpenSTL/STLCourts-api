@@ -2,7 +2,6 @@ package svc.data.citations.datasources.rejis.transformers;
 
 import java.time.LocalDateTime;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,38 +26,49 @@ public class RejisCitationTransformer {
 	MunicipalityIdTransformer municipalityIdTransformer;
 
 	public Citation fromRejisFullCitation(RejisFullCitation rejisFullCitation, RejisPartialCitation rejisPartialCitation) {
-		if (rejisFullCitation == null) {
+		if (rejisFullCitation == null || rejisPartialCitation == null) {
 			return null;
 		}
 		
 		Citation genericCitation = new Citation();
 		genericCitation.citation_number = rejisFullCitation.TktNum;
-		genericCitation.first_name = rejisFullCitation.DeftName.split(" ")[0];
+		try{
+			genericCitation.first_name = rejisFullCitation.DeftName.split(" ")[0];
+		}catch (Exception e){
+			LogSystem.LogEvent("Unable to split defendant name: " + rejisFullCitation.DeftName);
+			genericCitation.first_name = rejisFullCitation.DeftName;
+		}
 		genericCitation.last_name = rejisFullCitation.LastName.substring(0, 1).toUpperCase() + rejisFullCitation.LastName.substring(1).toLowerCase();
 		genericCitation.drivers_license_number = "";
 		genericCitation.drivers_license_state = "";
 
-		if (rejisFullCitation.Dob == null) {
-			LogSystem.LogEvent("Received rejis citation with no DOB.");
-		} else {
+		try{
 			genericCitation.date_of_birth = LocalDateTime.parse(rejisFullCitation.Dob).toLocalDate();
+		}catch(Exception e){
+			LogSystem.LogEvent("Received rejis citation with no DOB.");
+			return null;
 		}
-
-		if (rejisFullCitation.ViolDttm == null) {
-			LogSystem.LogEvent("Received rejis citation with no violation date.");
-		} else {
+	
+		try{
 			genericCitation.citation_date = LocalDateTime.parse(rejisFullCitation.ViolDttm).toLocalDate();
+		}catch(Exception e){
+			LogSystem.LogEvent("Received rejis citation with no violation date.");
+			return null;
 		}
 
 		genericCitation.violations = violationTransformer.fromRejisFullCitation(rejisFullCitation, rejisPartialCitation);
 		
-		LocalDateTime NextDktDate = LocalDateTime.parse(rejisFullCitation.NextDktDate);
-		LocalDateTime OrigDktDate = LocalDateTime.parse(rejisFullCitation.OrigDktDate);
-		
-		if (NextDktDate.isBefore(OrigDktDate)){
-			genericCitation.court_dateTime = OrigDktDate;
-		}else{
-			genericCitation.court_dateTime = NextDktDate;
+		try{
+			LocalDateTime NextDktDate = LocalDateTime.parse(rejisFullCitation.NextDktDate);
+			LocalDateTime OrigDktDate = LocalDateTime.parse(rejisFullCitation.OrigDktDate);
+			if (NextDktDate.isBefore(OrigDktDate)){
+				genericCitation.court_dateTime = OrigDktDate;
+			}else{
+				genericCitation.court_dateTime = NextDktDate;
+			}
+		}catch(Exception e){
+			LogSystem.LogEvent("Error parsing Rejis NextDktDate or OrigDktDate");
+			return null;
 		}
 
 		genericCitation.court_id = courtIdTransformer.lookupCourtId(CITATION_DATASOURCE.REJIS, rejisFullCitation.AgcyId);

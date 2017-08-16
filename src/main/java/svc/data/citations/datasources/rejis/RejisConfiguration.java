@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class RejisConfiguration {
 
 	@Value("${stlcourts.citationDataSources.rejis.rootUrl}")
-	public String rootUrl;
+	private String rootUrl;
 	
 	public final String apiKey;
 	
@@ -17,5 +17,9 @@ public class RejisConfiguration {
 		String auth = username + ":" + password;
 		byte[] encodedAuth = Base64.encodeBase64(auth.getBytes());
 		apiKey = "Basic " + new String( encodedAuth );
+	}
+	
+	public String getRootUrl(){
+		return this.rootUrl;
 	}
 }

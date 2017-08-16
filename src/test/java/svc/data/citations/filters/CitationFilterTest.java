@@ -65,7 +65,101 @@ public class CitationFilterTest {
 	}
 	
 	@Test
-	public void correctlyFiltersCitations(){
+	public void correctlyFiltersByLastName(){
+		final LocalDate DOB = LocalDate.parse("2000-06-01");
+		final String LASTNAME = "someName";
+		
+		Court COURT = new Court();
+		COURT.citation_expires_after_days = 3;
+
+		Citation CITATION = new Citation();
+		CITATION.id = 3;
+		CITATION.court_id = new HashableEntity<Court>(Court.class,4L);
+		CITATION.date_of_birth = DOB;
+		CITATION.last_name = LASTNAME;
+
+		Violation VIOLATION = new Violation();
+		VIOLATION.warrant_status = true;
+
+		List<Violation> VIOLATIONS = Lists.newArrayList(VIOLATION);
+		CITATION.violations = VIOLATIONS;
+
+		String courtDateString = "09/10/2016 14:33";
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
+
+		CITATION.court_dateTime = LocalDateTime.parse(courtDateString, formatter);
+
+		List<Citation> CITATIONS = Lists.newArrayList(CITATION);
+
+		when(courtManagerMock.getCourtById(CITATION.court_id.getValue())).thenReturn(COURT);
+		assertThat(citationFilter.Filter(CITATIONS, DOB, "MyLastName").size(), is(0));
+	}
+	
+	@Test
+	public void correctlyFiltersByLastNameKeepingCitiationWhenLastNameNull(){
+		final LocalDate DOB = LocalDate.parse("2000-06-01");
+		final String LASTNAME = "someName";
+		
+		Court COURT = new Court();
+		COURT.citation_expires_after_days = 3;
+
+		Citation CITATION = new Citation();
+		CITATION.id = 3;
+		CITATION.court_id = new HashableEntity<Court>(Court.class,4L);
+		CITATION.date_of_birth = DOB;
+		CITATION.last_name = LASTNAME;
+
+		Violation VIOLATION = new Violation();
+		VIOLATION.warrant_status = true;
+
+		List<Violation> VIOLATIONS = Lists.newArrayList(VIOLATION);
+		CITATION.violations = VIOLATIONS;
+
+		String courtDateString = "09/10/2016 14:33";
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
+
+		CITATION.court_dateTime = LocalDateTime.parse(courtDateString, formatter);
+
+		List<Citation> CITATIONS = Lists.newArrayList(CITATION);
+
+		when(courtManagerMock.getCourtById(CITATION.court_id.getValue())).thenReturn(COURT);
+		assertThat(citationFilter.Filter(CITATIONS, DOB, null).size(), is(1));
+	}
+	
+	@Test
+	public void correctlyFiltersByDOB(){
+		final LocalDate DOB = LocalDate.parse("2000-06-01");
+		final String LASTNAME = "someName";
+		
+		Court COURT = new Court();
+		COURT.citation_expires_after_days = 3;
+
+		Citation CITATION = new Citation();
+		CITATION.id = 3;
+		CITATION.court_id = new HashableEntity<Court>(Court.class,4L);
+		CITATION.date_of_birth = DOB;
+		CITATION.last_name = LASTNAME;
+
+		Violation VIOLATION = new Violation();
+		VIOLATION.warrant_status = true;
+
+		List<Violation> VIOLATIONS = Lists.newArrayList(VIOLATION);
+		CITATION.violations = VIOLATIONS;
+
+		String courtDateString = "09/10/2016 14:33";
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
+
+		CITATION.court_dateTime = LocalDateTime.parse(courtDateString, formatter);
+
+		List<Citation> CITATIONS = Lists.newArrayList(CITATION);
+
+		when(courtManagerMock.getCourtById(CITATION.court_id.getValue())).thenReturn(COURT);
+		assertThat(citationFilter.Filter(CITATIONS, LocalDate.parse("1999-06-01"), LASTNAME).size(), is(0));
+	}
+	
+	
+	@Test
+	public void correctlyFiltersCitationsByCourtDate(){
 		final LocalDate DOB = LocalDate.parse("2000-06-01");
 		final String LASTNAME = "someName";
 		
