@@ -105,6 +105,7 @@ public class RejisCitationDataSource implements CitationDataSource {
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(rejisConfiguration.getRootUrl()+"/ByVehicleLic")
 				.queryParam("VehicleLicNum", dlNum)
 				.queryParam("VehicleLicState", dlState)
+				.queryParam("Dob", "")
 				.queryParam("LastName", lastName)
 				.queryParam("AgcyIdOri",getMunicipalitiesString(municipalityCodes))
 				.queryParam("PageNum", pageNumber)
