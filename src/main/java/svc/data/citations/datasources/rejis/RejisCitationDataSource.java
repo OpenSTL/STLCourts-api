@@ -90,7 +90,7 @@ public class RejisCitationDataSource implements CitationDataSource {
 		int pageNumber = 0;
 		do{
 			pageNumber++;
-			UriComponentsBuilder builder = getLicenseBuilder(pageNumber,driversLicenseNumber, driversLicenseState, lastName, municipalityCodes);
+			UriComponentsBuilder builder = getLicenseBuilder(pageNumber,driversLicenseNumber, driversLicenseState, lastName, dob, municipalityCodes);
 			rejisCaseList = performRestTemplateCall(builder.build().encode().toUri());
 			if (rejisCaseList == null){
 				return Lists.newArrayList();
@@ -101,11 +101,11 @@ public class RejisCitationDataSource implements CitationDataSource {
 		return citationFilter.Filter(getFullCitations(regisPartialCitations), dob, lastName);
 	}
 	
-	private UriComponentsBuilder getLicenseBuilder(int pageNumber, String dlNum, String dlState, String lastName, List<String> municipalityCodes){
+	private UriComponentsBuilder getLicenseBuilder(int pageNumber, String dlNum, String dlState, String lastName, LocalDate dob, List<String> municipalityCodes){
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(rejisConfiguration.getRootUrl()+"/ByVehicleLic")
 				.queryParam("VehicleLicNum", dlNum)
 				.queryParam("VehicleLicState", dlState)
-				.queryParam("Dob", "")
+				.queryParam("Dob", dob.toString())
 				.queryParam("LastName", lastName)
 				.queryParam("AgcyIdOri",getMunicipalitiesString(municipalityCodes))
 				.queryParam("PageNum", pageNumber)
