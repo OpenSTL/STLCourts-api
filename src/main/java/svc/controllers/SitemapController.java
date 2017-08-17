@@ -32,7 +32,7 @@ public class SitemapController {
 			throw new NotFoundException("Wrong XML File Found");
 		}
 		
-		Sitemap sitemap = sitemapManager.generateSitemap();
+		Sitemap sitemap = sitemapManager.generate();
 		
 		return ResponseEntity.ok(sitemap);
     }
@@ -44,7 +44,7 @@ public class SitemapController {
 			produces = MediaType.APPLICATION_XML_VALUE,
 			headers = "Accept=application/xml")
 	public ResponseEntity<?> GenerateSiteMap(){
-		Sitemap sitemap = sitemapManager.generateSitemap();
+		Sitemap sitemap = sitemapManager.generate();
 		
 		return ResponseEntity.ok(sitemap);
     }

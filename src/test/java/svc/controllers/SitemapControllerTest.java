@@ -31,7 +31,7 @@ public class SitemapControllerTest {
 	public void returnsSitemap(){
 		Sitemap SITEMAP = mock(Sitemap.class);
 	
-		when(managerMock.generateSitemap()).thenReturn(SITEMAP);
+		when(managerMock.generate()).thenReturn(SITEMAP);
 		ResponseEntity<?> response = controller.GenerateSiteMap();
 		Sitemap body = (Sitemap) response.getBody();
 		assertThat(body,equalTo(SITEMAP));
@@ -41,7 +41,7 @@ public class SitemapControllerTest {
 	public void returnsSitemapFromFileName() throws NotFoundException{
 		Sitemap SITEMAP = mock(Sitemap.class);
 	
-		when(managerMock.generateSitemap()).thenReturn(SITEMAP);
+		when(managerMock.generate()).thenReturn(SITEMAP);
 		ResponseEntity<?> response = controller.GenerateSiteMapUsingFileName("sitemap.xml");
 		Sitemap body = (Sitemap) response.getBody();
 		assertThat(body,equalTo(SITEMAP));

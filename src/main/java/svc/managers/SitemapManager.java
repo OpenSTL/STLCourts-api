@@ -1,36 +1,44 @@
 package svc.managers;
 
+import java.util.Arrays;
+import java.util.List;
+
+import javax.inject.Inject;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import svc.data.municipal.CourtDAO;
+import svc.models.Court;
 import svc.models.Sitemap;
 import svc.models.SitemapUrl;
+import svc.security.HashUtil;
 
 @Component
 public class SitemapManager {
+	@Value("${stlcourts.clientURL}")
+	String clientURL;
+
+	@Inject
+	CourtDAO courtDAO;
 	
-	public Sitemap generateSitemap() {
-		Sitemap sitemap = new Sitemap();
+	@Inject
+	HashUtil hashUtil;
+	
+	private static final List<String> staticUris = Arrays.asList("/", "/info", "/goingToCourt", "/communityService", "/help", "/smsInstructions", "/about", "/legal");
+
+	public Sitemap generate() {
+	  Sitemap sitemap = new Sitemap();
+	  for(String uri : staticUris) {
+	    sitemap.addUrl(new SitemapUrl(clientURL + uri));
+	  }
+	
+	  List<Court> courts = courtDAO.getAllCourts();
+	  for(Court court : courts){
+		SitemapUrl courtUrl = new SitemapUrl("http://www.yourstlcourts.com/court/"+hashUtil.encode(court.id.getType(), court.id.getValue()));
+		sitemap.addUrl(courtUrl);
+	  }
 		
-		SitemapUrl main = new SitemapUrl("http://www.yourstlcourts.com/");
-		sitemap.addUrl(main);
-		
-		SitemapUrl info = new SitemapUrl("http://www.yourstlcourts.com/info");
-		sitemap.addUrl(info);
-		
-		SitemapUrl goingToCourt = new SitemapUrl("http://www.yourstlcourts.com/goingToCourt");
-		sitemap.addUrl(goingToCourt);
-		
-		SitemapUrl communityService = new SitemapUrl("http://www.yourstlcourts.com/communityService");
-		sitemap.addUrl(communityService);
-		
-		SitemapUrl help = new SitemapUrl("http://www.yourstlcourts.com/help");
-		sitemap.addUrl(help);
-		
-		SitemapUrl smsInstructions = new SitemapUrl("http://www.yourstlcourts.com/smsInstructions");
-		sitemap.addUrl(smsInstructions);
-		
-		SitemapUrl about = new SitemapUrl("http://www.yourstlcourts.com/about");
-		sitemap.addUrl(about);
-		
-		return sitemap;
+	  return sitemap;
 	}
 }
