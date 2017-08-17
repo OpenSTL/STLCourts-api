@@ -35,7 +35,7 @@ public class SitemapManager {
 	
 	  List<Court> courts = courtDAO.getAllCourts();
 	  for(Court court : courts){
-		SitemapUrl courtUrl = new SitemapUrl("http://www.yourstlcourts.com/court/"+hashUtil.encode(court.id.getType(), court.id.getValue()));
+		SitemapUrl courtUrl = new SitemapUrl(clientURL+"/court/"+hashUtil.encode(court.id.getType(), court.id.getValue()));
 		sitemap.addUrl(courtUrl);
 	  }
 		
