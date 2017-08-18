@@ -29,7 +29,7 @@ public class CitationController {
 	HashUtil hashUtil;
 
 	@ResponseBody
-	@RequestMapping(method = RequestMethod.GET, produces="application/json")
+	@RequestMapping(method = RequestMethod.GET)
 	//DOB parameter must be an ISO dateString of format 'yyyy-MM-dd'  no Time on end of string
 	List<Citation> FindCitations(@RequestParam(value = "citationNumber", required = false) String citationNumber,
 			                     @RequestParam(value = "licenseNumber", required = false) String licenseNumber,

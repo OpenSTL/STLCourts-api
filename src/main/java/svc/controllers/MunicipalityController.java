@@ -32,7 +32,7 @@ public class MunicipalityController {
 	HashUtil hashUtil;
 	
 	@ResponseBody
-	@RequestMapping(method = RequestMethod.GET, value="/municipalities", produces="application/json")
+	@RequestMapping(method = RequestMethod.GET, value="/municipalities")
 	List<Municipality> GetMunicipalities(HttpServletResponse response,
 										 @RequestParam(value = "supported", required = false) Boolean supported) {
 		response.setHeader("Cache-Control", "public, max-age=86400, must-revalidate");
@@ -41,7 +41,7 @@ public class MunicipalityController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(method = RequestMethod.GET, value="/municipalities/{id}", produces="application/json")
+	@RequestMapping(method = RequestMethod.GET, value="/municipalities/{id}")
 	Municipality GetMunicipality(@PathVariable("id") String idString) throws NotFoundException {
 		long id = hashUtil.decode(Municipality.class,idString);
 		Municipality municipality = municipalityManager.GetMunicipalityById(id);
@@ -52,7 +52,7 @@ public class MunicipalityController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(method = RequestMethod.GET, value="courts/{courtId}/municipalities", produces="application/json")
+	@RequestMapping(method = RequestMethod.GET, value="courts/{courtId}/municipalities")
 	List<Municipality> GetMunicipalityByCourtId(@PathVariable("courtId") String courtIdString) throws NotFoundException {
 		long courtId = hashUtil.decode(Court.class, courtIdString);
 		return municipalityManager.GetMunicipalitiesByCourtId(courtId);

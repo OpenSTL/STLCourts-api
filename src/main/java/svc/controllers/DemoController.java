@@ -23,7 +23,7 @@ public class DemoController {
 	DemoManager demoManager;
 
 	@ResponseBody
-	@RequestMapping(method = RequestMethod.GET, value="/citations", produces="application/json")
+	@RequestMapping(method = RequestMethod.GET, value="/citations")
 	List<DemoCitation> Citations() {
 		return demoManager.createCitationsAndViolations();
 	}

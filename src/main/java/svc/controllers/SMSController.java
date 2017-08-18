@@ -48,7 +48,7 @@ public class SMSController {
 	
 	
 	@ResponseBody
-	@RequestMapping(method = RequestMethod.GET, value="/info", produces="application/json")
+	@RequestMapping(method = RequestMethod.GET, value="/info")
 	SMSInfo GetPhoneNumber(){
 		return smsManager.getInfo();
 	}
