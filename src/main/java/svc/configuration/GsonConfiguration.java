@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -26,6 +27,7 @@ import svc.types.HashableEntity;
 
 @Configuration
 @EnableWebMvc
+@Order(1)
 public class GsonConfiguration extends WebMvcConfigurerAdapter {
 	 @Inject
  	 HashUtil hashUtil;
