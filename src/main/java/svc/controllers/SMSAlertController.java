@@ -23,7 +23,7 @@ public class SMSAlertController {
 	SMSAlertManager smsAlertManager;
 	
 	@ResponseBody
-	@RequestMapping(method = RequestMethod.GET, value="/add")
+	@RequestMapping(method = RequestMethod.GET, value="/add", produces="application/json")
 	boolean Add(@RequestParam(value = "citationNumber", required = true) String citationNumber,
         @RequestParam(value = "phoneNumber", required = true) String phoneNumber,
         @RequestParam(value = "courtDateTime", required = true) @DateTimeFormat(pattern="MM/dd/yyyy HH:mm") LocalDateTime courtDateTime,
@@ -34,7 +34,7 @@ public class SMSAlertController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(method = RequestMethod.GET, value="/remove")
+	@RequestMapping(method = RequestMethod.GET, value="/remove", produces="application/json")
 	boolean Remove(@RequestParam(value = "citationNumber", required = true) String citationNumber,
         @RequestParam(value = "phoneNumber", required = true) String phoneNumber,
         @RequestParam(value = "dob", required = false) @DateTimeFormat(pattern="MM/dd/yyyy") LocalDate dob) {
