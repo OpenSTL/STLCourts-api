@@ -31,7 +31,9 @@ CREATE TABLE court (
   zip_code 				      VARCHAR(12),
   latitude 				      DOUBLE PRECISION,
   longitude 				    DOUBLE PRECISION,
-  citation_expires_after_days	SMALLINT
+  citation_expires_after_days	SMALLINT,
+  rights_type				  VARCHAR(25),
+  rights_value				  VARCHAR(250)
 );
 
 CREATE TABLE municipality (
