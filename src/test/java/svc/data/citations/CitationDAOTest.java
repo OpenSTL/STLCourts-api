@@ -66,7 +66,7 @@ public class CitationDAOTest {
 
         final List<Citation> CITATIONS = Lists.newArrayList(CITATION);
 
-        when(mockCitationDataSource.getByLicenseAndDOB(licenseNunmber, licenseState, date, lastName)).thenReturn(CITATIONS);
+        when(mockCitationDataSource.getByLicenseAndDOBAndLastName(licenseNunmber, licenseState, date, lastName)).thenReturn(CITATIONS);
         final List<CitationDataSource> SOURCES = Lists.newArrayList(mockCitationDataSource);
 
         when(citationDataSourceFactory.getAllCitationDataSources()).thenReturn(SOURCES);

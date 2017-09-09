@@ -46,7 +46,7 @@ public class MockCitationDataSource extends BaseJdbcDao implements CitationDataS
     }
 
     @Override
-    public List<Citation> getByLicenseAndDOB(String driversLicenseNumber, String driversLicenseState, LocalDate dob, String lastName) {
+    public List<Citation> getByLicenseAndDOBAndLastName(String driversLicenseNumber, String driversLicenseState, LocalDate dob, String lastName) {
         try {
             Map<String, Object> parameterMap = new HashMap<String, Object>();
             parameterMap.put("driversLicenseNumber", driversLicenseNumber);

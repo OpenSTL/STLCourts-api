@@ -6,120 +6,120 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RejisFullCitation {
 
-	@JsonProperty
-	public String CaseStatus;
+	@JsonProperty("CaseStatus")
+	public String caseStatus;
 	
-	@JsonProperty
-	public String CaseStatusDesc;
+	@JsonProperty("CaseStatusDesc")
+	public String caseStatusDesc;
 	
-	@JsonProperty
-	public String CaseNum;
+	@JsonProperty("CaseNum")
+	public String caseNumber;
 	
-	@JsonProperty
-	public String TktNum;
+	@JsonProperty("TktNum")
+	public String ticketNumber;
 	
-	@JsonProperty
-	public String Ocn;
+	@JsonProperty("Ocn")
+	public String ocn;
 	    
-	@JsonProperty
-	public String CourtName;
+	@JsonProperty("CourtName")
+	public String courtName;
 	
-	@JsonProperty
-	public String BondSetAmt;
+	@JsonProperty("BondSetAmt")
+	public String bondSetAmt;
 	
-	@JsonProperty
-	public String DeftName;
+	@JsonProperty("DeftName")
+	public String defendantName;
 	
-	@JsonProperty
-	public String Dob;
+	@JsonProperty("Dob")
+	public String dob;
 	
-	@JsonProperty
-	public String DeftAddr;
+	@JsonProperty("DeftAddr")
+	public String defendantAddress;
 	
-	@JsonProperty
-	public String ViolDttm;
+	@JsonProperty("ViolDttm")
+	public String violationDateTime;
 	
-	@JsonProperty
-	public String ViolAddr;
+	@JsonProperty("ViolAddr")
+	public String violationAddress;
 	
-	@JsonProperty
-	public String IssuingAgcy;
+	@JsonProperty("IssuingAgcy")
+	public String issuingAgency;
 	
-	@JsonProperty
-	public String ChrgCode;
+	@JsonProperty("ChrgCode")
+	public String chargeCode;
 	
-	@JsonProperty
-	public String ChrgDesc;
+	@JsonProperty("ChrgDesc")
+	public String chargeDescription;
 	
-	@JsonProperty
-	public String StateChrg;
+	@JsonProperty("StateChrg")
+	public String stateCharge;
 	
-	@JsonProperty
-	public String Statute;
+	@JsonProperty("Statute")
+	public String statute;
 	    
-	@JsonProperty
-	public String DispDate;
+	@JsonProperty("DispDate")
+	public String displayDate;
 	
-	@JsonProperty
-	public String Plea;
+	@JsonProperty("Plea")
+	public String plea;
 	
-	@JsonProperty
-	public String JudgeName;
+	@JsonProperty("JudgeName")
+	public String judgeName;
 	
-	@JsonProperty
-	public String DispDesc;
+	@JsonProperty("DispDesc")
+	public String displayDescription;
 	
-	@JsonProperty
-	public String DefAttyName;
+	@JsonProperty("DefAttyName")
+	public String defenseAttorneyName;
 	
-	@JsonProperty
-	public String DefAttyPhone;
+	@JsonProperty("DefAttyPhone")
+	public String defenseAttorneyPhone;
 	
-	@JsonProperty
-	public String DefAttyAddr;
+	@JsonProperty("DefAttyAddr")
+	public String defenseAttorneyAddress;
 	
-	@JsonProperty
-	public String FilingDate;
+	@JsonProperty("FilingDate")
+	public String filingDate;
 	
-	@JsonProperty
-	public String OrigDktDate;
+	@JsonProperty("OrigDktDate")
+	public String originalCourtDate;
 	
-	@JsonProperty
-	public String NextDktDate;
+	@JsonProperty("NextDktDate")
+	public String nextCourtDate;
 	
-	@JsonProperty
-	public String OrigDktCrtRm;
+	@JsonProperty("OrigDktCrtRm")
+	public String originalCourtRoom;
 	
-	@JsonProperty
-	public String NextDktCrtRm;
+	@JsonProperty("NextDktCrtRm")
+	public String nextCourtRoom;
 	
-	@JsonProperty
-	public double AssdAmt;
+	@JsonProperty("assdAmt")
+	public double assesedAmount;
 	
-	@JsonProperty
-	public double BalDue;
+	@JsonProperty("BalDue")
+	public double balanceDue;
 	
-	@JsonProperty
-	public String PymtUrl;
+	@JsonProperty("PymtUrl")
+	public String paymentUrl;
 	
-	@JsonProperty
-	public String CourtWebSite;
+	@JsonProperty("CourtWebSite")
+	public String courtWebSite;
 	
-	@JsonProperty
-	public String LastName;
+	@JsonProperty("LastName")
+	public String lastName;
 	
-	@JsonProperty
+	@JsonProperty("isAgcyPlus")
 	public boolean isAgcyPlus;
 	
-	@JsonProperty
-	public String AgcyId;
+	@JsonProperty("AgcyId")
+	public String agencyId;
 	
-	@JsonProperty
-	public String AgcyOri;
+	@JsonProperty("AccyOri")
+	public String agencyOri;
 	
-	@JsonProperty
-	public String DispositionMoreInfo;
+	@JsonProperty("DispositionMoreInfo")
+	public String dispositionMoreInfo;
 	
-	@JsonProperty
-	public String PymtUrlFullQueryString;
+	@JsonProperty("PymtUrlFullQueryString")
+	public String paymentUrlFullQueryString;
 }

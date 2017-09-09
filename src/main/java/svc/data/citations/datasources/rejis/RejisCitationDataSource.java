@@ -48,6 +48,24 @@ public class RejisCitationDataSource implements CitationDataSource {
 	private RejisMunicipalityCodesFactory municipalityCodesFactory;
 
 	static private DateTimeFormatter dobFormatter = DateTimeFormatter.ofPattern("uuuu");
+	
+	public static final String TICKET_NUMBER = "CaseOrTicketNum";
+	public static final String DOB = "Dob";
+	public static final String AGENCY_ID = "AgcyIdOri";
+	public static final String PAGE_NUMBER = "PageNum";
+	public static final String ROWS_PER_PAGE = "RowsPerPage";
+	public static final String COURT_ID = "court_id";
+	public static final String RESULT_FORMAT = "ResultFormat";
+	public static final String VEHICLE_LIC_NUMBER = "VehicleLicNum";
+	public static final String VEHICLE_LIC_STATE = "VehicleLicState";
+	public static final String LAST_NAME = "LastName";
+	public static final String DOB_YEAR = "DobYear";
+	public static final String CASE_NUMBER = "CaseNumber";
+	
+	public static final String BY_VEHICLE_LICENSE = "ByVehicleLic";
+	public static final String BY_TICKET = "ByTicket";
+	public static final String BY_NAME = "byName";
+	public static final String BY_CASE = "CaseView";
 
 	@Override
 	public List<Citation> getByCitationNumberAndDOB(String citationNumber, LocalDate dob) {
@@ -58,30 +76,31 @@ public class RejisCitationDataSource implements CitationDataSource {
 		int pageNumber = 0;
 		do{
 			pageNumber++;
-			UriComponentsBuilder builder = getCitationNumberBuilder(pageNumber,citationNumber, municipalityCodes);
+			UriComponentsBuilder builder = getCitationNumberBuilder(pageNumber,citationNumber, dob, municipalityCodes);
 			rejisCaseList = performRestTemplateCall(builder.build().encode().toUri());
 			if (rejisCaseList == null){
 				return Lists.newArrayList();
 			}
-			rejisPartialCitations.addAll(rejisCaseList.CaseIndexRows);
-		}while (rejisCaseList.TotalPages > pageNumber);
+			rejisPartialCitations.addAll(rejisCaseList.caseIndexRows);
+		}while (rejisCaseList.totalPages > pageNumber);
 		
 		return citationFilter.Filter(getFullCitations(rejisPartialCitations), dob, null);
 	}
 	
-	private UriComponentsBuilder getCitationNumberBuilder(int pageNumber, String citationNumber, List<String> municipalityCodes){
-		UriComponentsBuilder builder =	 UriComponentsBuilder.fromHttpUrl(rejisConfiguration.getRootUrl()+"/ByTicket")
-				.queryParam("CaseOrTicketNum", citationNumber)
-				.queryParam("AgcyIdOri",getMunicipalitiesString(municipalityCodes))
-				.queryParam("PageNum", pageNumber)
-				.queryParam("RowsPerPage", 50)
-				.queryParam("ResultFormat","json");
+	private UriComponentsBuilder getCitationNumberBuilder(int pageNumber, String citationNumber, LocalDate dob, List<String> municipalityCodes){
+		UriComponentsBuilder builder =	 UriComponentsBuilder.fromHttpUrl(rejisConfiguration.getRootUrl()+"/"+BY_TICKET)
+				.queryParam(TICKET_NUMBER, citationNumber)
+				.queryParam(DOB, dob.toString())
+				.queryParam(AGENCY_ID,getMunicipalitiesString(municipalityCodes))
+				.queryParam(PAGE_NUMBER, pageNumber)
+				.queryParam(ROWS_PER_PAGE, 50)
+				.queryParam(RESULT_FORMAT,"json");
 		
 		return builder;
 	}
 
 	@Override
-	public List<Citation> getByLicenseAndDOB(String driversLicenseNumber, String driversLicenseState, LocalDate dob, String lastName) {
+	public List<Citation> getByLicenseAndDOBAndLastName(String driversLicenseNumber, String driversLicenseState, LocalDate dob, String lastName) {
 		List<String> municipalityCodes = municipalityCodesFactory.getAllMunicipalityCodes();
 		
 		RejisCaseList rejisCaseList;
@@ -95,22 +114,22 @@ public class RejisCitationDataSource implements CitationDataSource {
 			if (rejisCaseList == null){
 				return Lists.newArrayList();
 			}
-			regisPartialCitations.addAll(rejisCaseList.CaseIndexRows);
-		}while (rejisCaseList.TotalPages > pageNumber);
+			regisPartialCitations.addAll(rejisCaseList.caseIndexRows);
+		}while (rejisCaseList.totalPages > pageNumber);
 		
 		return citationFilter.Filter(getFullCitations(regisPartialCitations), dob, lastName);
 	}
 	
 	private UriComponentsBuilder getLicenseBuilder(int pageNumber, String dlNum, String dlState, String lastName, LocalDate dob, List<String> municipalityCodes){
-		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(rejisConfiguration.getRootUrl()+"/ByVehicleLic")
-				.queryParam("VehicleLicNum", dlNum)
-				.queryParam("VehicleLicState", dlState)
-				.queryParam("Dob", dob.toString())
-				.queryParam("LastName", lastName)
-				.queryParam("AgcyIdOri",getMunicipalitiesString(municipalityCodes))
-				.queryParam("PageNum", pageNumber)
-				.queryParam("RowsPerPage", 50)
-				.queryParam("ResultFormat","json");
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(rejisConfiguration.getRootUrl()+"/"+BY_VEHICLE_LICENSE)
+				.queryParam(VEHICLE_LIC_NUMBER, dlNum)
+				.queryParam(VEHICLE_LIC_STATE, dlState)
+				.queryParam(DOB, dob.toString())
+				.queryParam(LAST_NAME, lastName)
+				.queryParam(AGENCY_ID,getMunicipalitiesString(municipalityCodes))
+				.queryParam(PAGE_NUMBER, pageNumber)
+				.queryParam(ROWS_PER_PAGE, 50)
+				.queryParam(RESULT_FORMAT,"json");
 		
 		return builder;
 	}
@@ -130,21 +149,21 @@ public class RejisCitationDataSource implements CitationDataSource {
 			if (rejisCaseList == null){
 				return Lists.newArrayList();
 			}
-			regisPartialCitations.addAll(rejisCaseList.CaseIndexRows);
-		}while (rejisCaseList.TotalPages > pageNumber);
+			regisPartialCitations.addAll(rejisCaseList.caseIndexRows);
+		}while (rejisCaseList.totalPages > pageNumber);
 		
 		return citationFilter.Filter(getFullCitations(regisPartialCitations), dob, lastName);
 	}
 	
 
 	private UriComponentsBuilder getNameBuilder(int pageNumber, String lastName, LocalDate dob, List<String> municipalityCodes){
-		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(rejisConfiguration.getRootUrl()+"/byName")
-				.queryParam("LastName", lastName)
-				.queryParam("DobYear", dob.format(dobFormatter))
-				.queryParam("AgcyIdOri",getMunicipalitiesString(municipalityCodes))
-				.queryParam("PageNum", pageNumber)
-				.queryParam("RowsPerPage", 50)
-				.queryParam("ResultFormat","json");
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(rejisConfiguration.getRootUrl()+"/"+BY_NAME)
+				.queryParam(LAST_NAME, lastName)
+				.queryParam(DOB_YEAR, dob.format(dobFormatter))
+				.queryParam(AGENCY_ID,getMunicipalitiesString(municipalityCodes))
+				.queryParam(PAGE_NUMBER, pageNumber)
+				.queryParam(ROWS_PER_PAGE, 50)
+				.queryParam(RESULT_FORMAT,"json");
 		
 		return builder;
 	}
@@ -177,9 +196,9 @@ public class RejisCitationDataSource implements CitationDataSource {
 	}
 	
 	private RejisFullCitation getFullCaseView(RejisPartialCitation partialCitation){
-		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(rejisConfiguration.getRootUrl()+"/CaseView")
-				.queryParam("AgcyIdOri",partialCitation.AgcyId)
-				.queryParam("CaseNumber", partialCitation.CaseNum);
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(rejisConfiguration.getRootUrl()+"/"+BY_CASE)
+				.queryParam(AGENCY_ID, partialCitation.agencyId)
+				.queryParam(CASE_NUMBER, partialCitation.caseNumber);
 		
 		RejisFullCitation rejisFullCitation = null;
 		

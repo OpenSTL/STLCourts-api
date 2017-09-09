@@ -6,46 +6,46 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RejisPartialCitation {
 
-	@JsonProperty
-	public String AgcyId;
+	@JsonProperty("AgcyId")
+	public String agencyId;
 
-	@JsonProperty
-	public String DefendantName;
+	@JsonProperty("DefendantName")
+	public String defendantName;
 	
-	@JsonProperty
+	@JsonProperty("lastName")
 	public String lastName;
 
-	@JsonProperty
-	public Integer BirthYear;
+	@JsonProperty("BirthYear")
+	public Integer birthYear;
 
-	@JsonProperty
-	public String CaseNum;
+	@JsonProperty("CaseNum")
+	public String caseNumber;
 	
-	@JsonProperty
-	public String TktNum;
+	@JsonProperty("TktNum")
+	public String ticketNumber;
 
-	@JsonProperty
-	public String NextDktDate;
+	@JsonProperty("NextDktDate")
+	public String nextCourtDate;
 	
-	@JsonProperty
-	public String CourtName;
+	@JsonProperty("CourtName")
+	public String courtName;
 	
-	@JsonProperty
-	public String ChargeDesc;
+	@JsonProperty("ChargeDesc")
+	public String chargeDescription;
 	
-	@JsonProperty
-	public String CaseStatus;
+	@JsonProperty("CaseStatus")
+	public String caseStatus;
 	
-	@JsonProperty
-	public String CaseStatusDesc;
+	@JsonProperty("CaseStatusDesc")
+	public String caseStatusDescription;
 	
-	@JsonProperty
-	public String AgcyOri;
+	@JsonProperty("AgcyOri")
+	public String agencyOri;
 	
-	@JsonProperty
-	public double BalDue;
+	@JsonProperty("BalDue")
+	public double balanceDue;
 	
-	@JsonProperty
-	public boolean ShowIpaycourt;
+	@JsonProperty("ShowIPaycourt")
+	public boolean showIpaycourt;
 
 }

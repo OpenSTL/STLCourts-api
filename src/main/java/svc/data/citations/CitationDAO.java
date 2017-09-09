@@ -33,7 +33,7 @@ public class CitationDAO extends BaseJdbcDao {
 
         List<Observable<Citation>> citationSearches = Lists.newArrayList();
         for(CitationDataSource source : sources) {
-            citationSearches.add(Observable.from(source.getByLicenseAndDOB(driversLicenseNumber, driversLiscenseState, dob, lastName)));
+            citationSearches.add(Observable.from(source.getByLicenseAndDOBAndLastName(driversLicenseNumber, driversLiscenseState, dob, lastName)));
         }
 
 		return Observable.merge(citationSearches).onExceptionResumeNext(Observable.just(null)).toList().toBlocking().first();

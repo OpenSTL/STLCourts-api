@@ -58,24 +58,24 @@ public class RejisCitationTransformerTest {
 
 	private RejisFullCitation generateFullRejisCitation() {
 		RejisFullCitation mockCitation = new RejisFullCitation();
-		mockCitation.TktNum = "123";
-		mockCitation.Dob = "1900-06-01T00:00:00";
-		mockCitation.ViolDttm = "1901-06-17T13:30:00";
-		mockCitation.BalDue = 4.78;
-		mockCitation.CaseStatus = "W";
-		mockCitation.DeftName = "Adam Apple";
-		mockCitation.LastName = "LastApple";
-		mockCitation.DeftAddr = "123 AnyStreet  Anytown, MO  12345";
-		mockCitation.NextDktDate = "2017-09-01T12:30:00";
-		mockCitation.OrigDktDate = "2017-08-01T12:30:00";
-		mockCitation.AgcyId = "B";
+		mockCitation.ticketNumber = "123";
+		mockCitation.dob = "1900-06-01T00:00:00";
+		mockCitation.violationDateTime = "1901-06-17T13:30:00";
+		mockCitation.balanceDue = 4.78;
+		mockCitation.caseStatus = "W";
+		mockCitation.defendantName = "Adam Apple";
+		mockCitation.lastName = "LastApple";
+		mockCitation.defendantAddress = "123 AnyStreet  Anytown, MO  12345";
+		mockCitation.nextCourtDate = "2017-09-01T12:30:00";
+		mockCitation.originalCourtDate = "2017-08-01T12:30:00";
+		mockCitation.agencyId = "B";
 		
 		return mockCitation;
 	}
 	
 	private RejisPartialCitation generatePartialRejisCitation() {
 		RejisPartialCitation mockCitation = new RejisPartialCitation();
-		mockCitation.ShowIpaycourt = false;
+		mockCitation.showIpaycourt = false;
 		return mockCitation;
 	}
 
@@ -84,24 +84,24 @@ public class RejisCitationTransformerTest {
 		RejisFullCitation rejisFullCitation = generateFullRejisCitation();
 		
 		final HashableEntity<Court> courtHashable = new HashableEntity<Court>(Court.class,5L);
-		when(courtIdTransformer.lookupCourtId(CITATION_DATASOURCE.REJIS, rejisFullCitation.AgcyId))
+		when(courtIdTransformer.lookupCourtId(CITATION_DATASOURCE.REJIS, rejisFullCitation.agencyId))
 		.thenReturn(courtHashable);
 		
 		final HashableEntity<Municipality> municipalHashable = new HashableEntity<Municipality>(Municipality.class,3L);
-		when(municipalityIdTransformer.lookupMunicipalityId(CITATION_DATASOURCE.REJIS, rejisFullCitation.AgcyId))
+		when(municipalityIdTransformer.lookupMunicipalityId(CITATION_DATASOURCE.REJIS, rejisFullCitation.agencyId))
 		.thenReturn(municipalHashable);
 		
 		Citation citation = citationTransformer.fromRejisFullCitation(rejisFullCitation, generatePartialRejisCitation());
 
 		assertNotNull(citation);
-		assertEquals(citation.citation_number, rejisFullCitation.TktNum);
+		assertEquals(citation.citation_number, rejisFullCitation.ticketNumber);
 		assertEquals(citation.first_name, "Adam");
 		assertEquals(citation.last_name, "Lastapple");
 		assertEquals(citation.drivers_license_number, "");
 		assertEquals(citation.drivers_license_state, "");
-		assertEquals(citation.date_of_birth, LocalDateTime.parse(rejisFullCitation.Dob).toLocalDate());
-		assertEquals(citation.citation_date, LocalDateTime.parse(rejisFullCitation.ViolDttm).toLocalDate());
-		assertEquals(citation.court_dateTime, LocalDateTime.parse(rejisFullCitation.NextDktDate));
+		assertEquals(citation.date_of_birth, LocalDateTime.parse(rejisFullCitation.dob).toLocalDate());
+		assertEquals(citation.citation_date, LocalDateTime.parse(rejisFullCitation.violationDateTime).toLocalDate());
+		assertEquals(citation.court_dateTime, LocalDateTime.parse(rejisFullCitation.nextCourtDate));
 		assertEquals(citation.court_id, courtHashable);
 		assertEquals(citation.municipality_id, municipalHashable);
 		assertEquals(citation.defendant_address, "123 AnyStreet");
@@ -113,7 +113,7 @@ public class RejisCitationTransformerTest {
 	public void citationTransformerReturnsNullForNoDob() {
 
 		RejisFullCitation rejisFullCitation = generateFullRejisCitation();
-		rejisFullCitation.Dob = "";
+		rejisFullCitation.dob = "";
 		Citation citation = citationTransformer.fromRejisFullCitation(rejisFullCitation, generatePartialRejisCitation());
 		
 		assertNull(citation);
@@ -123,7 +123,7 @@ public class RejisCitationTransformerTest {
 	public void citationTransformerReturnsNullForNoViolationDate() {
 
 		RejisFullCitation rejisFullCitation = generateFullRejisCitation();
-		rejisFullCitation.ViolDttm = "";
+		rejisFullCitation.violationDateTime = "";
 		Citation citation = citationTransformer.fromRejisFullCitation(rejisFullCitation, generatePartialRejisCitation());
 		
 		assertNull(citation);
@@ -133,7 +133,7 @@ public class RejisCitationTransformerTest {
 	public void citationTransformerReturnsNullForNoNextCourtDate() {
 
 		RejisFullCitation rejisFullCitation = generateFullRejisCitation();
-		rejisFullCitation.NextDktDate = "";
+		rejisFullCitation.nextCourtDate = "";
 		Citation citation = citationTransformer.fromRejisFullCitation(rejisFullCitation, generatePartialRejisCitation());
 		
 		assertNull(citation);
@@ -143,7 +143,7 @@ public class RejisCitationTransformerTest {
 	public void citationTransformerReturnsNullForNoOriginalCourtDate() {
 
 		RejisFullCitation rejisFullCitation = generateFullRejisCitation();
-		rejisFullCitation.OrigDktDate = "";
+		rejisFullCitation.originalCourtDate = "";
 		Citation citation = citationTransformer.fromRejisFullCitation(rejisFullCitation, generatePartialRejisCitation());
 		
 		assertNull(citation);
@@ -156,10 +156,10 @@ public class RejisCitationTransformerTest {
 		.thenReturn(municipalHashable);
 		
 		RejisFullCitation rejisFullCitation = generateFullRejisCitation();
-		rejisFullCitation.OrigDktDate = "2017-10-01T12:30:00";
+		rejisFullCitation.originalCourtDate = "2017-10-01T12:30:00";
 		Citation citation = citationTransformer.fromRejisFullCitation(rejisFullCitation, generatePartialRejisCitation());
 
-		assertEquals(citation.court_dateTime, LocalDateTime.parse(rejisFullCitation.OrigDktDate));
+		assertEquals(citation.court_dateTime, LocalDateTime.parse(rejisFullCitation.originalCourtDate));
 	}
 
 }

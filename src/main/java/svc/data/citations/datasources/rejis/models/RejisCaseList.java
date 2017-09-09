@@ -8,18 +8,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RejisCaseList {
 
-	@JsonProperty
-	public Integer PageNum;
+	@JsonProperty("PageNum")
+	public Integer pageNumber;
 
-	@JsonProperty
-	public Integer TotalPages;
+	@JsonProperty("TotalPages")
+	public Integer totalPages;
 	
-	@JsonProperty
-	public Integer TotalRows;
+	@JsonProperty("TotalRows")
+	public Integer totalRows;
 
-	@JsonProperty
-	public String Message;
+	@JsonProperty("Message")
+	public String message;
 
-	@JsonProperty
-	public List<RejisPartialCitation> CaseIndexRows;
+	@JsonProperty("CaseIndexRows")
+	public List<RejisPartialCitation> caseIndexRows;
 }

@@ -70,24 +70,24 @@ public class RejisCitationDataSourceTest {
 		when(mockCourtIdTransformer.lookupCourtId(CITATION_DATASOURCE.REJIS, "B")).thenReturn(new HashableEntity<Court>(Court.class, 6L));
 		
 		final RejisCaseList rejisCaseList = new RejisCaseList();
-		rejisCaseList.TotalPages = 1;
-		rejisCaseList.PageNum = 1;
+		rejisCaseList.totalPages = 1;
+		rejisCaseList.pageNumber = 1;
 		final RejisPartialCitation rejisPartialCitation = new RejisPartialCitation();
-		rejisPartialCitation.CaseNum = "123";
-		rejisCaseList.CaseIndexRows = Lists.newArrayList(rejisPartialCitation);
+		rejisPartialCitation.caseNumber = "123";
+		rejisCaseList.caseIndexRows = Lists.newArrayList(rejisPartialCitation);
 		
 		caseListResponse = new ResponseEntity<RejisCaseList>(rejisCaseList, HttpStatus.ACCEPTED);
 		
 		final RejisFullCitation rejisFullCitation = new RejisFullCitation();
-		rejisFullCitation.TktNum = "123";
-		rejisFullCitation.DeftName = "Some One";
-		rejisFullCitation.LastName = "ONE";
-		rejisFullCitation.Dob = "1996-01-02T00:00:00";
-		rejisFullCitation.ViolDttm = "2015-05-05T08:08:08";
-		rejisFullCitation.NextDktDate = "2017-08-01T12:30:00";
-		rejisFullCitation.OrigDktDate = "2017-08-01T12:30:00";
-		rejisFullCitation.AgcyId = "B";
-		rejisFullCitation.DeftAddr = "123 AnyStreet  Anytown, MO  12345";
+		rejisFullCitation.ticketNumber = "123";
+		rejisFullCitation.defendantName = "Some One";
+		rejisFullCitation.lastName = "ONE";
+		rejisFullCitation.dob = "1996-01-02T00:00:00";
+		rejisFullCitation.violationDateTime = "2015-05-05T08:08:08";
+		rejisFullCitation.nextCourtDate = "2017-08-01T12:30:00";
+		rejisFullCitation.originalCourtDate = "2017-08-01T12:30:00";
+		rejisFullCitation.agencyId = "B";
+		rejisFullCitation.defendantAddress = "123 AnyStreet  Anytown, MO  12345";
 		
 		fullCaseResponse = new ResponseEntity<RejisFullCitation>(rejisFullCitation, HttpStatus.ACCEPTED); 
 	}
@@ -138,7 +138,7 @@ public class RejisCitationDataSourceTest {
 		when(mockCitationFilter.Filter(any(List.class), any(LocalDate.class), anyString()))
 		.thenReturn(Arrays.asList(CITATION));
 		
-		List<Citation> returnedCitation = mockRejisCitationDataSource.getByLicenseAndDOB(DRIVERSLICENSENUMBER,DRIVERSLICENSESTATE, DOB,LASTNAME);
+		List<Citation> returnedCitation = mockRejisCitationDataSource.getByLicenseAndDOBAndLastName(DRIVERSLICENSENUMBER,DRIVERSLICENSESTATE, DOB,LASTNAME);
 		
 		assertThat(returnedCitation.get(0).citation_number, is("1234"));
 	}

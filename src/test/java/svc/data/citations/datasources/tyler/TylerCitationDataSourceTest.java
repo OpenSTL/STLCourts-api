@@ -99,7 +99,7 @@ public class TylerCitationDataSourceTest {
         when(mockCitationTransformer.fromTylerCitations(tylerCitations)).thenReturn(CITATIONS);
         when(mockCitationFilter.Filter(CITATIONS, DOB, LASTNAME)).thenReturn(CITATIONS);
         
-		List<Citation> citations = mockTylerCitationDataSource.getByLicenseAndDOB(DRIVERSLICENSENUMBER,DRIVERSLICENSESTATE, DOB, LASTNAME);
+		List<Citation> citations = mockTylerCitationDataSource.getByLicenseAndDOBAndLastName(DRIVERSLICENSENUMBER,DRIVERSLICENSESTATE, DOB, LASTNAME);
 		
 		assertThat(citations.get(0).id, is(3));
 	}
