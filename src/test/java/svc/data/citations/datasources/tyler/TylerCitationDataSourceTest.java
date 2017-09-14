@@ -71,7 +71,7 @@ public class TylerCitationDataSourceTest {
         .thenReturn(tylerCitationsResponseSpy);
         
         when(mockCitationTransformer.fromTylerCitations(tylerCitations)).thenReturn(CITATIONS);
-        when(mockCitationFilter.Filter(CITATIONS, DOB, null)).thenReturn(CITATIONS);
+        when(mockCitationFilter.Filter(CITATIONS, null)).thenReturn(CITATIONS);
         
 		List<Citation> citations = mockTylerCitationDataSource.getByCitationNumberAndDOB(CITATIONNUMBER, DOB);
 		
@@ -97,7 +97,7 @@ public class TylerCitationDataSourceTest {
         .thenReturn(tylerCitationsResponseSpy);
         
         when(mockCitationTransformer.fromTylerCitations(tylerCitations)).thenReturn(CITATIONS);
-        when(mockCitationFilter.Filter(CITATIONS, DOB, LASTNAME)).thenReturn(CITATIONS);
+        when(mockCitationFilter.Filter(CITATIONS, LASTNAME)).thenReturn(CITATIONS);
         
 		List<Citation> citations = mockTylerCitationDataSource.getByLicenseAndDOBAndLastName(DRIVERSLICENSENUMBER,DRIVERSLICENSESTATE, DOB, LASTNAME);
 		
@@ -122,7 +122,7 @@ public class TylerCitationDataSourceTest {
         .thenReturn(tylerCitationsResponseSpy);
         
         when(mockCitationTransformer.fromTylerCitations(tylerCitations)).thenReturn(CITATIONS);
-        when(mockCitationFilter.Filter(CITATIONS,DOB,NAME)).thenReturn(CITATIONS);
+        when(mockCitationFilter.Filter(CITATIONS,NAME)).thenReturn(CITATIONS);
         
 		List<Citation> citations = mockTylerCitationDataSource.getByNameAndMunicipalitiesAndDOB(NAME,MUNICIPALITIES,DOB);
 		

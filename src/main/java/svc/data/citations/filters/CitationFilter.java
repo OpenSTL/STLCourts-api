@@ -1,6 +1,5 @@
 package svc.data.citations.filters;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ListIterator;
@@ -20,10 +19,9 @@ public class CitationFilter {
 	@Inject
 	CourtManager courtManager;
 
-	public List<Citation> Filter(List<Citation> citations,LocalDate dob, String lastName){
+	public List<Citation> Filter(List<Citation> citations, String lastName){
 		return citations.stream()
 				 .filter(c -> courtDateFilter(c))
-				 .filter(c -> dobFilter(c,dob))
 				 .filter(c -> lastNameFilter(c,lastName))
 				 .collect(Collectors.toList());
 	}
@@ -57,14 +55,6 @@ public class CitationFilter {
 		return keepCitation;
 	}
 	
-	private boolean dobFilter(Citation citation, LocalDate dob){
-		boolean keepCitation = false;
-		if (dob.isEqual(citation.date_of_birth)){
-			keepCitation = true;
-		}
-		
-		return keepCitation;
-	}
 	
 	private boolean lastNameFilter(Citation citation, String lastName){
 		boolean keepCitation = true;

@@ -79,7 +79,7 @@ public class TylerCitationDataSource implements CitationDataSource {
 		try {
 			tylerCitationsResponse = restTemplate.exchange(uri, HttpMethod.GET, query, type);
 			tylerCitations = tylerCitationsResponse.getBody();
-			return citationFilter.Filter(citationTransformer.fromTylerCitations(tylerCitations),dob, lastName);
+			return citationFilter.Filter(citationTransformer.fromTylerCitations(tylerCitations), lastName);
 		} catch (RestClientException ex) {
 			System.out.println("Tyler datasource is down.");
 			return Lists.newArrayList();
