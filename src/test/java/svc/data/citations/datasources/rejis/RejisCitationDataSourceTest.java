@@ -3,8 +3,6 @@ package svc.data.citations.datasources.rejis;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 import java.net.URI;
@@ -23,10 +21,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.google.common.collect.Lists;
 
-import org.springframework.web.util.UriComponentsBuilder;
-
 import svc.data.citations.datasources.rejis.models.RejisCaseList;
 import svc.data.citations.datasources.rejis.models.RejisPartialCitation;
+import svc.data.citations.datasources.rejis.models.RejisQueryObject;
 import svc.data.citations.filters.CitationFilter;
 import svc.models.Citation;
 
@@ -36,7 +33,10 @@ public class RejisCitationDataSourceTest {
 	RejisCitationDataSource mockRejisCitationDataSource;
 	
 	@Mock
-	RejisCitationDataSourceUtils mockRejisCitationDataSourceUtils;
+	RejisApiCalls mockRejisApiCalls;
+	
+	@Mock
+	RejisUriBuilder mockRejisUriBuilder;
 	
 	@Mock
 	RejisMunicipalityCodesFactory mockRejisMunicipalityCodesFactory;
@@ -57,7 +57,6 @@ public class RejisCitationDataSourceTest {
 		
 	}
     
-	@SuppressWarnings("unchecked")
 	@Test
 	public void returnsCitationsGivenCitationNumberAndDOB() throws URISyntaxException{
 		final List<String> MUNICIPALITYCODES = Lists.newArrayList("A","B","C");
@@ -66,15 +65,14 @@ public class RejisCitationDataSourceTest {
 		
 		List<Citation> CITATIONS = Arrays.asList(CITATION);
 
-		String uriString = "http://www.google.com";
-		UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(uriString);
+		URI uri = URI.create("http://www.google.com");
 		
 		when(mockRejisMunicipalityCodesFactory.getAllMunicipalityCodes()).thenReturn(MUNICIPALITYCODES);
-		when(mockRejisCitationDataSourceUtils.getCitationNumberBuilder(anyInt(), anyString(), any(LocalDate.class), any(List.class))).thenReturn(uriComponentsBuilder);
+		when(mockRejisUriBuilder.createURI(any(RejisQueryObject.class))).thenReturn(uri);
 		
-		when(mockRejisCitationDataSourceUtils.performRestTemplateCall(any(URI.class))).thenReturn(rejisCaseList);
+		when(mockRejisApiCalls.getRejisCaseList(any(URI.class))).thenReturn(rejisCaseList);
 		
-		when(mockRejisCitationDataSourceUtils.getFullCitations(any())).thenReturn(CITATIONS);
+		when(mockRejisApiCalls.getFullCitations(any())).thenReturn(CITATIONS);
 		
 		when(mockCitationFilter.Filter(CITATIONS, null))
 		.thenReturn(CITATIONS);
@@ -84,7 +82,6 @@ public class RejisCitationDataSourceTest {
 		assertThat(returnedCitation.get(0).citation_number, is("1234"));
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Test
 	public void returnsCitationsGivenLicenseAndDOB(){
 		final String DRIVERSLICENSENUMBER = "ABCDE";
@@ -97,15 +94,14 @@ public class RejisCitationDataSourceTest {
 		CITATION.citation_number = "1234";
 		
 		List<Citation> CITATIONS = Arrays.asList(CITATION);
-		String uriString = "http://www.google.com";
-		UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(uriString);
+		URI uri = URI.create("http://www.google.com");
 		
 		when(mockRejisMunicipalityCodesFactory.getAllMunicipalityCodes()).thenReturn(MUNICIPALITYCODES);
-		when(mockRejisCitationDataSourceUtils.getLicenseBuilder(anyInt(), anyString(), anyString(), anyString(), any(LocalDate.class), any(List.class))).thenReturn(uriComponentsBuilder);
+		when(mockRejisUriBuilder.createURI(any(RejisQueryObject.class))).thenReturn(uri);
 		
-		when(mockRejisCitationDataSourceUtils.performRestTemplateCall(any(URI.class))).thenReturn(rejisCaseList);
+		when(mockRejisApiCalls.getRejisCaseList(any(URI.class))).thenReturn(rejisCaseList);
 		
-		when(mockRejisCitationDataSourceUtils.getFullCitations(any())).thenReturn(CITATIONS);
+		when(mockRejisApiCalls.getFullCitations(any())).thenReturn(CITATIONS);
 		
 		when(mockCitationFilter.Filter(CITATIONS, LASTNAME))
 		.thenReturn(CITATIONS);
@@ -115,7 +111,6 @@ public class RejisCitationDataSourceTest {
 		assertThat(returnedCitation.get(0).citation_number, is("1234"));
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Test
 	public void returnsCitationsGivenNameAndMunicipalitiesAndDOB(){
 		final String NAME = "Smith";
@@ -128,15 +123,14 @@ public class RejisCitationDataSourceTest {
 		CITATION.citation_number = "1234";
 		
 		List<Citation> CITATIONS = Arrays.asList(CITATION);
-		String uriString = "http://www.google.com";
-		UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(uriString);
+		URI uri = URI.create("http://www.google.com");
 		
 		when(mockRejisMunicipalityCodesFactory.getAllMunicipalityCodes()).thenReturn(MUNICIPALITYCODES);
-		when(mockRejisCitationDataSourceUtils.getNameBuilder(anyInt(), anyString(), any(LocalDate.class), any(List.class))).thenReturn(uriComponentsBuilder);
+		when(mockRejisUriBuilder.createURI(any(RejisQueryObject.class))).thenReturn(uri);
 		
-		when(mockRejisCitationDataSourceUtils.performRestTemplateCall(any(URI.class))).thenReturn(rejisCaseList);
+		when(mockRejisApiCalls.getRejisCaseList(any(URI.class))).thenReturn(rejisCaseList);
 		
-		when(mockRejisCitationDataSourceUtils.getFullCitations(any())).thenReturn(CITATIONS);
+		when(mockRejisApiCalls.getFullCitations(any())).thenReturn(CITATIONS);
 		
 		when(mockCitationFilter.Filter(CITATIONS, NAME))
 		.thenReturn(CITATIONS);

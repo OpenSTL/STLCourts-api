@@ -1,10 +1,8 @@
 package svc.data.citations.datasources.rejis;
 
 import java.net.URI;
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
-import java.util.StringJoiner;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -26,7 +24,7 @@ import svc.logging.LogSystem;
 import svc.models.Citation;
 
 @Component
-public class RejisCitationDataSourceUtils {
+public class RejisApiCalls {
 
 	@Autowired
 	private RejisConfiguration rejisConfiguration;
@@ -36,44 +34,6 @@ public class RejisCitationDataSourceUtils {
 	
 	@Autowired
 	private RestTemplate restTemplate;
-	
-	public UriComponentsBuilder getCitationNumberBuilder(int pageNumber, String citationNumber, LocalDate dob, List<String> municipalityCodes){
-		UriComponentsBuilder builder =	 UriComponentsBuilder.fromHttpUrl(rejisConfiguration.getRootUrl()+"/"+RejisConstants.BY_TICKET)
-				.queryParam(RejisConstants.TICKET_NUMBER, citationNumber)
-				.queryParam(RejisConstants.DOB, dob.toString())
-				.queryParam(RejisConstants.AGENCY_ID,getMunicipalitiesString(municipalityCodes))
-				.queryParam(RejisConstants.PAGE_NUMBER, pageNumber)
-				.queryParam(RejisConstants.ROWS_PER_PAGE, 50)
-				.queryParam(RejisConstants.RESULT_FORMAT,"json");
-		
-		return builder;
-	}
-	
-	public UriComponentsBuilder getLicenseBuilder(int pageNumber, String dlNum, String dlState, String lastName, LocalDate dob, List<String> municipalityCodes){
-		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(rejisConfiguration.getRootUrl()+"/"+RejisConstants.BY_VEHICLE_LICENSE)
-				.queryParam(RejisConstants.VEHICLE_LIC_NUMBER, dlNum)
-				.queryParam(RejisConstants.VEHICLE_LIC_STATE, dlState)
-				.queryParam(RejisConstants.DOB, dob.toString())
-				.queryParam(RejisConstants.LAST_NAME, lastName)
-				.queryParam(RejisConstants.AGENCY_ID,getMunicipalitiesString(municipalityCodes))
-				.queryParam(RejisConstants.PAGE_NUMBER, pageNumber)
-				.queryParam(RejisConstants.ROWS_PER_PAGE, 50)
-				.queryParam(RejisConstants.RESULT_FORMAT,"json");
-		
-		return builder;
-	}
-
-	public UriComponentsBuilder getNameBuilder(int pageNumber, String lastName, LocalDate dob, List<String> municipalityCodes){
-		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(rejisConfiguration.getRootUrl()+"/"+RejisConstants.BY_NAME)
-				.queryParam(RejisConstants.LAST_NAME, lastName)
-				.queryParam(RejisConstants.DOB, dob.toString())
-				.queryParam(RejisConstants.AGENCY_ID,getMunicipalitiesString(municipalityCodes))
-				.queryParam(RejisConstants.PAGE_NUMBER, pageNumber)
-				.queryParam(RejisConstants.ROWS_PER_PAGE, 50)
-				.queryParam(RejisConstants.RESULT_FORMAT,"json");
-		
-		return builder;
-	}
 
 	private HttpEntity<?> getHttpEntity(){
 		HttpHeaders headers = new HttpHeaders();
@@ -81,7 +41,7 @@ public class RejisCitationDataSourceUtils {
 		return new HttpEntity<>(headers);
 	}
 	
-	public RejisCaseList performRestTemplateCall(URI uri) {
+	public RejisCaseList getRejisCaseList(URI uri) {
 		RejisCaseList rejisCaseList = null;
 		
 		try{
@@ -128,10 +88,4 @@ public class RejisCitationDataSourceUtils {
 		return Arrays.asList(citation);
 	}
 	
-	private String getMunicipalitiesString(List<String> municipalityCodes){
-		StringJoiner joiner  = new StringJoiner(",");
-        for(String muni : municipalityCodes) { joiner.add(muni); }
-        
-        return joiner.toString();
-	}
 }
