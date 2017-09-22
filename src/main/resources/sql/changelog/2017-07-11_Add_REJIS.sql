@@ -52,6 +52,11 @@ INSERT INTO datasource_municipality_mapping (citation_datasource_id,municipality
 INSERT INTO datasource_municipality_mapping (citation_datasource_id,municipality_id,datasource_municipality_identifier) VALUES (2,45,'KW'); #Kirkwood
 INSERT INTO datasource_municipality_mapping (citation_datasource_id,municipality_id,datasource_municipality_identifier) VALUES (2,92,'SL'); #St. Louis City
 
+CREATE TABLE rejis_court_mapping(
+  court_id				        INTEGER			  NOT NULL,
+  rejis_court_identifier  VARCHAR(25)
+);
+
 INSERT INTO rejis_court_mapping (court_id,rejis_court_identifier) VALUES (3,'BN'); #Bellefontaine Neighbors
 INSERT INTO rejis_court_mapping (court_id,rejis_court_identifier) VALUES (9,'BJ'); #Black Jack
 INSERT INTO rejis_court_mapping (court_id,rejis_court_identifier) VALUES (11,'BR'); #Brentwood
