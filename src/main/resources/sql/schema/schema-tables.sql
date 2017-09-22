@@ -89,6 +89,11 @@ CREATE TABLE tyler_court_mapping(
   tyler_court_identifier VARCHAR(25)
 );
 
+CREATE TABLE rejis_court_mapping(
+  court_id				INTEGER			NOT NULL,
+  rejis_court_identifier VARCHAR(25)
+);
+
 CREATE TABLE datasource_municipality_mapping(
 	citation_datasource_id	INTEGER,
 	municipality_id			INTEGER,

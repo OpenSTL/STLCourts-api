@@ -19,9 +19,10 @@ public class CitationFilter {
 	@Inject
 	CourtManager courtManager;
 
-	public List<Citation> Filter(List<Citation> citations){
+	public List<Citation> Filter(List<Citation> citations, String lastName){
 		return citations.stream()
 				 .filter(c -> courtDateFilter(c))
+				 .filter(c -> lastNameFilter(c,lastName))
 				 .collect(Collectors.toList());
 	}
 
@@ -51,6 +52,18 @@ public class CitationFilter {
 			}
 		}
 
+		return keepCitation;
+	}
+	
+	
+	private boolean lastNameFilter(Citation citation, String lastName){
+		boolean keepCitation = true;
+		if (lastName != null  && !lastName.isEmpty()){
+			if (!lastName.equals(citation.last_name)){
+				keepCitation = false;
+			}
+		}
+		
 		return keepCitation;
 	}
 }

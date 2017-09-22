@@ -31,7 +31,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import svc.data.citations.datasources.tyler.models.TylerCitation;
-import svc.data.citations.datasources.tyler.transformers.CitationTransformer;
+import svc.data.citations.datasources.tyler.transformers.TylerCitationTransformer;
 import svc.data.citations.filters.CitationFilter;
 import svc.models.Citation;
 
@@ -47,7 +47,7 @@ public class TylerCitationDataSourceTest {
 	@Mock
     RestTemplate restTemplate;
 	@Mock
-	CitationTransformer mockCitationTransformer;
+	TylerCitationTransformer mockCitationTransformer;
 	@Mock
 	CitationFilter mockCitationFilter;
 	
@@ -71,7 +71,7 @@ public class TylerCitationDataSourceTest {
         .thenReturn(tylerCitationsResponseSpy);
         
         when(mockCitationTransformer.fromTylerCitations(tylerCitations)).thenReturn(CITATIONS);
-        when(mockCitationFilter.Filter(CITATIONS)).thenReturn(CITATIONS);
+        when(mockCitationFilter.Filter(CITATIONS, null)).thenReturn(CITATIONS);
         
 		List<Citation> citations = mockTylerCitationDataSource.getByCitationNumberAndDOB(CITATIONNUMBER, DOB);
 		
@@ -84,6 +84,7 @@ public class TylerCitationDataSourceTest {
 		final String DRIVERSLICENSENUMBER = "ABCDE";
 		final String DRIVERSLICENSESTATE = "AZ";
 		final LocalDate DOB = LocalDate.parse("2000-06-01");
+		final String LASTNAME = "someName";
 		mockTylerConfiguration.rootUrl = "http://myURL.com";
 		mockTylerConfiguration.apiKey = "1234";
 		final Citation CITATION = new Citation();
@@ -96,9 +97,9 @@ public class TylerCitationDataSourceTest {
         .thenReturn(tylerCitationsResponseSpy);
         
         when(mockCitationTransformer.fromTylerCitations(tylerCitations)).thenReturn(CITATIONS);
-        when(mockCitationFilter.Filter(CITATIONS)).thenReturn(CITATIONS);
+        when(mockCitationFilter.Filter(CITATIONS, LASTNAME)).thenReturn(CITATIONS);
         
-		List<Citation> citations = mockTylerCitationDataSource.getByLicenseAndDOB(DRIVERSLICENSENUMBER,DRIVERSLICENSESTATE, DOB);
+		List<Citation> citations = mockTylerCitationDataSource.getByLicenseAndDOBAndLastName(DRIVERSLICENSENUMBER,DRIVERSLICENSESTATE, DOB, LASTNAME);
 		
 		assertThat(citations.get(0).id, is(3));
 	}
@@ -121,7 +122,7 @@ public class TylerCitationDataSourceTest {
         .thenReturn(tylerCitationsResponseSpy);
         
         when(mockCitationTransformer.fromTylerCitations(tylerCitations)).thenReturn(CITATIONS);
-        when(mockCitationFilter.Filter(CITATIONS)).thenReturn(CITATIONS);
+        when(mockCitationFilter.Filter(CITATIONS,NAME)).thenReturn(CITATIONS);
         
 		List<Citation> citations = mockTylerCitationDataSource.getByNameAndMunicipalitiesAndDOB(NAME,MUNICIPALITIES,DOB);
 		

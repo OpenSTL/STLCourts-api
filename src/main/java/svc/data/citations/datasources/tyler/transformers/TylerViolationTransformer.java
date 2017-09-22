@@ -13,7 +13,7 @@ import svc.logging.LogSystem;
 import svc.models.Violation;
 
 @Component
-public class ViolationTransformer {
+public class TylerViolationTransformer {
 
 	public List<Violation> fromTylerCitation(TylerCitation tylerCitation) {
 		if (tylerCitation.violations != null) {

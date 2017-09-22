@@ -1,4 +1,4 @@
-package svc.data.citations.datasources.tyler.transformers;
+package svc.data.citations.datasources.transformers;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
