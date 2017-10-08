@@ -32,10 +32,10 @@ public class RejisUriBuilder {
 			.queryParam(RejisConstants.ROWS_PER_PAGE, 50)
 			.queryParam(RejisConstants.RESULT_FORMAT,"json");
 			break;
-		case RejisConstants.BY_VEHICLE_LICENSE:
+		case RejisConstants.BY_DRIVERS_LICENSE:
 			builder
-			.queryParam(RejisConstants.VEHICLE_LIC_NUMBER, rejisQueryObject.getDriversLicenseNumber())
-			.queryParam(RejisConstants.VEHICLE_LIC_STATE, rejisQueryObject.getDriversLicenseState())
+			.queryParam(RejisConstants.DRIVERS_LICENSE, rejisQueryObject.getDriversLicenseNumber())
+			.queryParam(RejisConstants.DRIVERS_LICENSE_STATE, rejisQueryObject.getDriversLicenseState())
 			.queryParam(RejisConstants.DOB, rejisQueryObject.getDob())
 			.queryParam(RejisConstants.LAST_NAME, rejisQueryObject.getLastName())
 			.queryParam(RejisConstants.AGENCY_ID,rejisQueryObject.getMunicipalityCodes())

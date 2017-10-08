@@ -37,7 +37,7 @@ public class RejisQueryObject {
 		this.dob = dob.toString();
 		this.municipalityCodes = this.getMunicipalitiesString(municipalityCodes);
 		
-		this.queryType = RejisConstants.BY_VEHICLE_LICENSE;
+		this.queryType = RejisConstants.BY_DRIVERS_LICENSE;
 		
 		return this;
 	}

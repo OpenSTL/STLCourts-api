@@ -59,7 +59,7 @@ public class CitationFilter {
 	private boolean lastNameFilter(Citation citation, String lastName){
 		boolean keepCitation = true;
 		if (lastName != null  && !lastName.isEmpty()){
-			if (!lastName.equals(citation.last_name)){
+			if (!lastName.toLowerCase().equals(citation.last_name.toLowerCase())){
 				keepCitation = false;
 			}
 		}
