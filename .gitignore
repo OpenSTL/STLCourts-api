@@ -45,6 +45,5 @@ testdb.script
 /.apt_generated/
 .factorypath
 bin/
-Procfile
 .springBeans
 .classpath
