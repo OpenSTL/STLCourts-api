@@ -70,9 +70,9 @@ public class RejisUriBuilderTest {
 		
 		URI uri = mockRejisUriBuilder.createURI(rejisQueryObject);
 		
-		assertTrue(uri.toString().contains("http://www.myUrl.com/"+RejisConstants.BY_VEHICLE_LICENSE));
-		assertTrue(uri.toString().contains(RejisConstants.VEHICLE_LIC_NUMBER+'='+dlNum));
-		assertTrue(uri.toString().contains(RejisConstants.VEHICLE_LIC_STATE+'='+dlState));
+		assertTrue(uri.toString().contains("http://www.myUrl.com/"+RejisConstants.BY_DRIVERS_LICENSE));
+		assertTrue(uri.toString().contains(RejisConstants.DRIVERS_LICENSE+'='+dlNum));
+		assertTrue(uri.toString().contains(RejisConstants.DRIVERS_LICENSE_STATE+'='+dlState));
 		assertTrue(uri.toString().contains(RejisConstants.DOB+'='+dob));
 		assertTrue(uri.toString().contains(RejisConstants.LAST_NAME+'='+lastName));
 		assertTrue(uri.toString().contains(RejisConstants.AGENCY_ID+'='+"A,B,C"));
