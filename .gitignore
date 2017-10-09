@@ -44,3 +44,7 @@ testdb.script
 *.iml
 /.apt_generated/
 .factorypath
+bin/
+Procfile
+.springBeans
+.classpath
