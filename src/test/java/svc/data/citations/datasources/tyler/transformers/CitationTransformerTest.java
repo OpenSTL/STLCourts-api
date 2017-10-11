@@ -21,26 +21,26 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.google.common.collect.Lists;
 
-import svc.data.citations.datasources.CITATION_DATASOURCE;
-import svc.data.citations.datasources.transformers.CourtIdTransformer;
-import svc.data.citations.datasources.transformers.MunicipalityIdTransformer;
 import svc.data.citations.datasources.tyler.models.TylerCitation;
 import svc.data.citations.datasources.tyler.models.TylerViolation;
+import svc.data.citations.datasources.tyler.transformers.CitationTransformer;
+import svc.data.citations.datasources.tyler.transformers.CourtIdTransformer;
+import svc.data.citations.datasources.tyler.transformers.ViolationTransformer;
 import svc.models.Citation;
 import svc.models.Municipality;
 import svc.types.HashableEntity;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TylerCitationTransformerTest {
+public class CitationTransformerTest {
 
 	@Mock
-	TylerViolationTransformer violationTransformer;
+	ViolationTransformer violationTransformer;
 
 	@Mock
 	CourtIdTransformer courtIdTransformer;
 
 	@InjectMocks
-	TylerCitationTransformer citationTransformer;
+	CitationTransformer citationTransformer;
 
 	@Mock
 	MunicipalityIdTransformer municipalityIdTransformer;
@@ -127,6 +127,6 @@ public class TylerCitationTransformerTest {
 		assertEquals(genericCitation.municipality_id, municipalHashable);
 
 		verify(violationTransformer).fromTylerCitation(tylerCitation);
-		verify(courtIdTransformer).lookupCourtId(CITATION_DATASOURCE.TYLER,"A");
+		verify(courtIdTransformer).lookupCourtId("A");
 	}
 }

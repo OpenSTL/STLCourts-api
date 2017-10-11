@@ -1,0 +1,28 @@
+ALTER TABLE court ADD rights_type varchar(25) NOT NULL AFTER citation_expires_after_days;
+ALTER TABLE court ADD rights_value varchar(250) NOT NULL AFTER rights_type;
+
+UPDATE court SET rights_type = 'PDF', rights_value = '' WHERE court_id > 0;
+UPDATE court SET rights_value = 'BelNor_General_Court_Information.pdf' WHERE court_id = 5;
+UPDATE court SET rights_value = 'Clayton_Rights.pdf' WHERE court_id = 17;
+UPDATE court SET rights_value = 'Cool_Valley_Rights.pdf' WHERE court_id = 18;
+UPDATE court SET rights_value = 'Crestwood_Rights.pdf' WHERE court_id = 21;
+UPDATE court SET rights_value = 'Des_Peres_Rights.pdf' WHERE court_id = 25;
+UPDATE court SET rights_value = 'Ellisville_Rights.pdf' WHERE court_id = 27;
+UPDATE court SET rights_value = 'Fenton_Rights.pdf' WHERE court_id = 29;
+UPDATE court SET rights_value = 'Hazelwood_Rights.pdf' WHERE court_id = 37;
+UPDATE court SET rights_value = 'Kirkwood_Rights.pdf' WHERE court_id = 41;
+UPDATE court SET rights_value = 'Ladue_Rights.pdf' WHERE court_id = 42;
+UPDATE court SET rights_value = 'Manchester_Rights.pdf' WHERE court_id = 45;
+UPDATE court SET rights_value = 'Moline_Acres_Rights.pdf' WHERE court_id = 49;
+UPDATE court SET rights_value = 'Overland_Rights.pdf' WHERE court_id = 54;
+UPDATE court SET rights_value = 'Riverview_Rights.pdf' WHERE court_id = 61;
+UPDATE court SET rights_value = 'Rock_Hill_Rights.pdf' WHERE court_id = 62;
+UPDATE court SET rights_value = 'St_Ann_Rights.pdf' WHERE court_id = 63;
+UPDATE court SET rights_value = 'Town_and_Country_Rights.pdf' WHERE court_id = 20;
+UPDATE court SET rights_value = 'Vinita_Park_Rights.pdf' WHERE court_id = 71;
+UPDATE court SET rights_value = 'Woodson_Terrace_Rights.pdf' WHERE court_id = 78;
+UPDATE court SET rights_value = 'Shrewsbury_Rights.pdf' WHERE court_id = 44;
+UPDATE court SET rights_value = 'Notice_of_Rights_7_1_17.pdf' WHERE court_id = 79;
+UPDATE court SET rights_value = 'Notice_of_Rights_7_1_17.pdf' WHERE court_id = 80;
+UPDATE court SET rights_value = 'Notice_of_Rights_7_1_17.pdf' WHERE court_id = 35;
+UPDATE court SET rights_value = 'Notice_of_Rights_7_1_17.pdf' WHERE court_id = 51;

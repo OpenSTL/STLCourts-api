@@ -46,14 +46,13 @@ public class MockCitationDataSource extends BaseJdbcDao implements CitationDataS
     }
 
     @Override
-    public List<Citation> getByLicenseAndDOBAndLastName(String driversLicenseNumber, String driversLicenseState, LocalDate dob, String lastName) {
+    public List<Citation> getByLicenseAndDOB(String driversLicenseNumber, String driversLicenseState, LocalDate dob) {
         try {
             Map<String, Object> parameterMap = new HashMap<String, Object>();
             parameterMap.put("driversLicenseNumber", driversLicenseNumber);
             parameterMap.put("driversLicenseState", driversLicenseState);
             parameterMap.put("dob", Date.valueOf(dob));
-            parameterMap.put("lastName", lastName);
-            String sql = "SELECT * FROM citations WHERE date_of_birth = :dob AND drivers_license_number = :driversLicenseNumber AND drivers_license_state = :driversLicenseState AND last_name = :lastName";
+            String sql = "SELECT * FROM citations WHERE date_of_birth = :dob AND drivers_license_number = :driversLicenseNumber AND drivers_license_state = :driversLicenseState";
             List<Citation> citations = jdbcTemplate.query(sql, parameterMap, new CitationSQLMapper());
 
             return populateViolations(citations);

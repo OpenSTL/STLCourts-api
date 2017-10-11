@@ -20,4 +20,6 @@ public class Court {
 	public BigDecimal longitude;
 	public List<Judge> judges;
 	public int citation_expires_after_days;
+	public String rights_type;
+	public String rights_value;
 }

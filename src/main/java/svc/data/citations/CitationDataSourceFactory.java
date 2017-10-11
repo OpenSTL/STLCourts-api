@@ -25,9 +25,6 @@ public class CitationDataSourceFactory extends BaseJdbcDao {
 
     @Inject
     private CitationDataSource tylerCitationDataSource;
-    
-    @Inject
-    private CitationDataSource rejisCitationDataSource;
 
     public List<CitationDataSource> getAllCitationDataSources() {
         return getDataSources();
@@ -66,9 +63,6 @@ public class CitationDataSourceFactory extends BaseJdbcDao {
                 case TYLER:
                     dataSources.add(tylerCitationDataSource);
                     break;
-                case REJIS:
-                	dataSources.add(rejisCitationDataSource);
-                	break;
                 default:
                     LogSystem.LogCitationDataSourceException("Source '" + source.toString() + "' is not supported");
             }

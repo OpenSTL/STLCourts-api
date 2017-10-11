@@ -43,9 +43,8 @@ public class MockCitationDataSourceIntegrationTest {
         String dateString = "05/18/1987";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         LocalDate date = LocalDate.parse(dateString,formatter);
-        
 
-        List<Citation> citations = mockCitationDataSource.getByLicenseAndDOBAndLastName("S878479512","MO", date, "Peterson");
+        List<Citation> citations = mockCitationDataSource.getByLicenseAndDOB("S878479512","MO", date);
         assertThat(citations, is(notNullValue()));
         assertThat(citations.size(), is(3));
         assertThat(citations.get(0).first_name, is("Brenda"));
@@ -71,12 +70,12 @@ public class MockCitationDataSourceIntegrationTest {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         LocalDate date = LocalDate.parse(dateString,formatter);
 
-        List<Citation> citations = mockCitationDataSource.getByLicenseAndDOBAndLastName("N806453191", "MO",date, "Burke");
+        List<Citation> citations = mockCitationDataSource.getByLicenseAndDOB("N806453191", "MO",date);
         assertThat(citations.get(0).citation_date, is(nullValue()));
 
         dateString = "11/21/1994";
         date = LocalDate.parse(dateString,formatter);
-        citations = mockCitationDataSource.getByLicenseAndDOBAndLastName("E501444452","MO", date, "Ramirez");
+        citations = mockCitationDataSource.getByLicenseAndDOB("E501444452","MO", date);
         assertThat(citations.get(0).court_dateTime, is(nullValue()));
     }
 }

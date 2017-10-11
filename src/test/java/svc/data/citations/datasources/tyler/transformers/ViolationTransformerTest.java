@@ -22,9 +22,9 @@ import svc.models.VIOLATION_STATUS;
 import svc.models.Violation;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TylerViolationTransformerTest {
+public class ViolationTransformerTest {
 	@InjectMocks
-	TylerViolationTransformer mockViolationTransformer;
+	ViolationTransformer mockViolationTransformer;
 	
 	TylerCitation tylerCitation;
 	TylerViolation tylerViolation;

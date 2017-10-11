@@ -22,8 +22,8 @@ public class CitationManager {
 		}
 		
 		// DOB & License No
-		if (criteria.dateOfBirth != null && criteria.driversLicenseNumber != null && criteria.driversLicenseState != null && criteria.lastName != null) {
-			return citationDAO.getByLicenseAndDOB(criteria.driversLicenseNumber, criteria.driversLicenseState, criteria.dateOfBirth, criteria.lastName);
+		if (criteria.dateOfBirth != null && criteria.driversLicenseNumber != null && criteria.driversLicenseState != null) {
+			return citationDAO.getByLicenseAndDOB(criteria.driversLicenseNumber, criteria.driversLicenseState, criteria.dateOfBirth);
 		}
 		
 		// DOB & Name & Municipality

@@ -11,17 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import svc.data.citations.datasources.CITATION_DATASOURCE;
-import svc.data.citations.datasources.transformers.CourtIdTransformer;
-import svc.data.citations.datasources.transformers.MunicipalityIdTransformer;
 import svc.data.citations.datasources.tyler.models.TylerCitation;
 import svc.logging.LogSystem;
 import svc.models.Citation;
 
 @Component
-public class TylerCitationTransformer {
+public class CitationTransformer {
 
 	@Autowired
-	TylerViolationTransformer violationTransformer;
+	ViolationTransformer violationTransformer;
 
 	@Autowired
 	CourtIdTransformer courtIdTransformer;
@@ -93,7 +91,7 @@ public class TylerCitationTransformer {
 			genericCitation.violations = violationTransformer.fromTylerCitation(tylerCitation);
 
 			String tylerCourtIdentifier = getTylerCourtIdentifier(tylerCitation);
-			genericCitation.court_id = courtIdTransformer.lookupCourtId(CITATION_DATASOURCE.TYLER, tylerCourtIdentifier);
+			genericCitation.court_id = courtIdTransformer.lookupCourtId(tylerCourtIdentifier);
 			genericCitation.municipality_id = municipalityIdTransformer.lookupMunicipalityId(CITATION_DATASOURCE.TYLER,"County");
 		}
 

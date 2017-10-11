@@ -39,8 +39,8 @@ public class TylerCitationDataSourceIntegrationTest {
 
 	@Test
 	public void testDriversLicense() {
-		List<Citation> citations = tylerCitationDataSource.getByLicenseAndDOBAndLastName("","",
-				LocalDate.parse(""), "");
+		List<Citation> citations = tylerCitationDataSource.getByLicenseAndDOB("","",
+				LocalDate.parse(""));
 
 		assertNotEquals(citations.size(), 0);
 		assertEquals(citations.get(0).citation_number, "120499230");

@@ -25,7 +25,7 @@ public class SitemapManager {
 	@Inject
 	HashUtil hashUtil;
 	
-	private static final List<String> staticUris = Arrays.asList("/", "/goingToCourt", "/communityService", "/help", "/smsInstructions", "/about", "/legal");
+	private static final List<String> staticUris = Arrays.asList("/", "/info", "/goingToCourt", "/communityService", "/help", "/smsInstructions", "/about", "/legal");
 
 	public Sitemap generate() {
 	  Sitemap sitemap = new Sitemap();
