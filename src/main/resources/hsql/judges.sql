@@ -76,6 +76,7 @@ INSERT INTO judges(id,judge,court_id) VALUES (75,'Wesley Bell (City website)',69
 INSERT INTO judges(id,judge,court_id) VALUES (76,'Raphael Norris (State)',69);
 INSERT INTO judges(id,judge,court_id) VALUES (77,'Thomas Flach',70);
 INSERT INTO judges(id,judge,court_id) VALUES (78,'William Goldstein',71);
+INSERT INTO judges(id,judge,court_id) VALUES (79,'Daniel Chartrand',72);
 INSERT INTO judges(id,judge,court_id) VALUES (80,'John Lord III',73);
 INSERT INTO judges(id,judge,court_id) VALUES (81,'James Whitney',74);
 INSERT INTO judges(id,judge,court_id) VALUES (82,'Charles Kirksey',75);
