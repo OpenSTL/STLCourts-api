@@ -30,6 +30,9 @@ public class RejisCitationDataSource implements CitationDataSource {
 	
 	@Autowired
 	private RejisUriBuilder rejisUriBuilder;
+	
+	@Autowired
+	private RejisCitationFilter rejisCitationFilter;
 
 	
 	@Override
@@ -46,7 +49,7 @@ public class RejisCitationDataSource implements CitationDataSource {
 			if (rejisCaseList == null){
 				return Lists.newArrayList();
 			}
-			rejisPartialCitations.addAll(rejisCaseList.caseIndexRows);
+			rejisPartialCitations.addAll(rejisCitationFilter.Filter(rejisCaseList.caseIndexRows));
 		}while (rejisCaseList.totalPages > pageNumber);
 	
 		return citationFilter.Filter(rejisApiCalls.getFullCitations(rejisPartialCitations), null);
@@ -67,7 +70,7 @@ public class RejisCitationDataSource implements CitationDataSource {
 			if (rejisCaseList == null){
 				return Lists.newArrayList();
 			}
-			regisPartialCitations.addAll(rejisCaseList.caseIndexRows);
+			regisPartialCitations.addAll(rejisCitationFilter.Filter(rejisCaseList.caseIndexRows));
 		}while (rejisCaseList.totalPages > pageNumber);
 		
 		return citationFilter.Filter(rejisApiCalls.getFullCitations(regisPartialCitations), lastName);
@@ -88,7 +91,7 @@ public class RejisCitationDataSource implements CitationDataSource {
 			if (rejisCaseList == null){
 				return Lists.newArrayList();
 			}
-			regisPartialCitations.addAll(rejisCaseList.caseIndexRows);
+			regisPartialCitations.addAll(rejisCitationFilter.Filter(rejisCaseList.caseIndexRows));
 		}while (rejisCaseList.totalPages > pageNumber);
 		
 		return citationFilter.Filter(rejisApiCalls.getFullCitations(regisPartialCitations), lastName);

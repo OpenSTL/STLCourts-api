@@ -42,6 +42,9 @@ public class RejisCitationDataSourceTest {
 	RejisMunicipalityCodesFactory mockRejisMunicipalityCodesFactory;
 	
 	@Mock
+	RejisCitationFilter mockRejisCitationFilter;
+	
+	@Mock
 	CitationFilter mockCitationFilter;
 	
 	final RejisCaseList rejisCaseList = new RejisCaseList();
@@ -53,6 +56,7 @@ public class RejisCitationDataSourceTest {
 		rejisCaseList.pageNumber = 1;
 		final RejisPartialCitation rejisPartialCitation = new RejisPartialCitation();
 		rejisPartialCitation.caseNumber = "123";
+		rejisPartialCitation.caseStatus = "A";
 		rejisCaseList.caseIndexRows = Lists.newArrayList(rejisPartialCitation);
 		
 	}
@@ -73,6 +77,8 @@ public class RejisCitationDataSourceTest {
 		when(mockRejisApiCalls.getRejisCaseList(any(URI.class))).thenReturn(rejisCaseList);
 		
 		when(mockRejisApiCalls.getFullCitations(any())).thenReturn(CITATIONS);
+		
+		when(mockRejisCitationFilter.Filter(any(List.class))).thenReturn(rejisCaseList.caseIndexRows);
 		
 		when(mockCitationFilter.Filter(CITATIONS, null))
 		.thenReturn(CITATIONS);
@@ -100,6 +106,7 @@ public class RejisCitationDataSourceTest {
 		when(mockRejisUriBuilder.createURI(any(RejisQueryObject.class))).thenReturn(uri);
 		
 		when(mockRejisApiCalls.getRejisCaseList(any(URI.class))).thenReturn(rejisCaseList);
+		when(mockRejisCitationFilter.Filter(any(List.class))).thenReturn(rejisCaseList.caseIndexRows);
 		
 		when(mockRejisApiCalls.getFullCitations(any())).thenReturn(CITATIONS);
 		
@@ -129,6 +136,7 @@ public class RejisCitationDataSourceTest {
 		when(mockRejisUriBuilder.createURI(any(RejisQueryObject.class))).thenReturn(uri);
 		
 		when(mockRejisApiCalls.getRejisCaseList(any(URI.class))).thenReturn(rejisCaseList);
+		when(mockRejisCitationFilter.Filter(any(List.class))).thenReturn(rejisCaseList.caseIndexRows);
 		
 		when(mockRejisApiCalls.getFullCitations(any())).thenReturn(CITATIONS);
 		
