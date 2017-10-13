@@ -78,7 +78,6 @@ INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (78,'Velda City','http://www.ipaycourt.com/frmCitationSearch.aspx?ori=VeldaCity');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (79,'Velda Village Hills','https://www.ncourt.com/x-press/x-onlinepayments.aspx?juris=52b8647d-bda2-442a-b37f-26e37ab2c3de&affiliateID=5a40673b-2993-44c8-a3f3-5bd0f8764b70');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (80,'Vinita Park','https://www.ncourt.com/x-press/x-onlinepayments.aspx?juris=CAE1DBD2-0E64-4A7C-9A97-0531AC73A456');
-INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (81,'Vinita Terrace','');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (82,'Warson Woods','http://www.ipaycourt.com/frmCitationSearch.aspx?ori=WarsonWoods');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (83,'Webster Groves','https://trafficpayment.com/InvoiceInfo.aspx?csdId=320');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (84,'Wellston','https://www.ncourt.com/x-press/x-onlinepayments.aspx?juris=0e38dc67-b15c-4261-9a10-b014177dd301');
