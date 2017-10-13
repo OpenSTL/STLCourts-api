@@ -17,13 +17,7 @@ public class RejisCitationFilter {
 	}
 
 	private boolean statusFilter(RejisPartialCitation partialCitation){
-		boolean keepCitation = false;
-
-		if (!partialCitation.caseStatus.equals("C")){
-			keepCitation = true;
-		}
-		
-		return keepCitation;
+		return !partialCitation.caseStatus.equals("C");
 	}
 	
 }
