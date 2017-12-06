@@ -78,7 +78,6 @@ INSERT INTO municipality_court(municipality_id, court_id) VALUES (77, 68);
 INSERT INTO municipality_court(municipality_id, court_id) VALUES (78, 69);
 INSERT INTO municipality_court(municipality_id, court_id) VALUES (79, 70);
 INSERT INTO municipality_court(municipality_id, court_id) VALUES (80, 71);
-INSERT INTO municipality_court(municipality_id, court_id) VALUES (81, 72);
 INSERT INTO municipality_court(municipality_id, court_id) VALUES (82, 73);
 INSERT INTO municipality_court(municipality_id, court_id) VALUES (83, 74);
 INSERT INTO municipality_court(municipality_id, court_id) VALUES (84, 75);
@@ -88,6 +87,7 @@ INSERT INTO municipality_court(municipality_id, court_id) VALUES (87, 76);
 INSERT INTO municipality_court(municipality_id, court_id) VALUES (88, 77);
 INSERT INTO municipality_court(municipality_id, court_id) VALUES (89, 78);
 INSERT INTO municipality_court(municipality_id, court_id) VALUES (91, 48);
+INSERT INTO municipality_court(municipality_id, court_id) VALUES (92, 81);
 
 -- County (1 municipality to many courts)
 INSERT INTO municipality_court(municipality_id, court_id) VALUES (90, 79);

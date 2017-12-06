@@ -1,0 +1,2 @@
+UPDATE court SET address = '8425 Airport Road', latitude = '38.7504757', longitude = '-90.3327254' WHERE court_id = 7;
+UPDATE court SET address = '1140 Dielman Road', latitude = '38.6759433', longitude = '-90.3761334' WHERE court_id = 53;

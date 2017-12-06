@@ -11,7 +11,6 @@ INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (11,'Brentwood','http://www.ipaycourt.com/frmCitationSearch.aspx?ori=Brentwood');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (12,'Bridgeton','http://www.ipaycourt.com/frmCitationSearch.aspx?ori=Bridgeton');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (13,'Calverton Park','https://www.ncourt.com/x-press/x-onlinepayments.aspx?juris=ad56e943-7d08-45eb-93d6-8cb300610c40&affiliateID=2');
-INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (91,'Champ','');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (14,'Charlack','');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (15,'Chesterfield','https://trafficpayment.com/InvoiceInfo.aspx?csdId=324');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (16,'Clarkson Valley','http://www.ipaycourt.com/frmCitationSearch.aspx?ori=ClarksonValley');
@@ -79,7 +78,6 @@ INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (78,'Velda City','http://www.ipaycourt.com/frmCitationSearch.aspx?ori=VeldaCity');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (79,'Velda Village Hills','https://www.ncourt.com/x-press/x-onlinepayments.aspx?juris=52b8647d-bda2-442a-b37f-26e37ab2c3de&affiliateID=5a40673b-2993-44c8-a3f3-5bd0f8764b70');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (80,'Vinita Park','https://www.ncourt.com/x-press/x-onlinepayments.aspx?juris=CAE1DBD2-0E64-4A7C-9A97-0531AC73A456');
-INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (81,'Vinita Terrace','');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (82,'Warson Woods','http://www.ipaycourt.com/frmCitationSearch.aspx?ori=WarsonWoods');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (83,'Webster Groves','https://trafficpayment.com/InvoiceInfo.aspx?csdId=320');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (84,'Wellston','https://www.ncourt.com/x-press/x-onlinepayments.aspx?juris=0e38dc67-b15c-4261-9a10-b014177dd301');
@@ -89,3 +87,5 @@ INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (88,'Winchester','http://www.ipaycourt.com/frmCitationSearch.aspx?ori=Winchester');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (89,'Woodson Terrace','http://www.ipaycourt.com/frmCitationSearch.aspx?ori=WoodsonTerrace');
 INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (90,'St. Louis County Municipal','https://www.municipalonlinepayments.com/stlouiscountymo/court/search');
+INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (91,'Champ','');
+INSERT INTO municipality(municipality_id,municipality_name,payment_url) VALUES (92,'St. Louis City','https://www.ipaycourt.com/frmCaseSearchCont.aspx?ori=StlCityCourt');

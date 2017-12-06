@@ -31,7 +31,9 @@ CREATE TABLE court (
   zip_code 				      VARCHAR(12),
   latitude 				      DOUBLE PRECISION,
   longitude 				    DOUBLE PRECISION,
-  citation_expires_after_days	SMALLINT
+  citation_expires_after_days	SMALLINT,
+  rights_type				  VARCHAR(25),
+  rights_value				  VARCHAR(250)
 );
 
 CREATE TABLE municipality (
@@ -87,6 +89,11 @@ CREATE TABLE citation_datasource_municipality (
 CREATE TABLE tyler_court_mapping(
   court_id				INTEGER			NOT NULL,
   tyler_court_identifier VARCHAR(25)
+);
+
+CREATE TABLE rejis_court_mapping(
+  court_id				INTEGER			NOT NULL,
+  rejis_court_identifier VARCHAR(25)
 );
 
 CREATE TABLE datasource_municipality_mapping(

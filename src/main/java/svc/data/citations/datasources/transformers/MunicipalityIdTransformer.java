@@ -1,4 +1,4 @@
-package svc.data.citations.datasources.tyler.transformers;
+package svc.data.citations.datasources.transformers;
 
 import java.sql.ResultSet;
 import java.util.HashMap;

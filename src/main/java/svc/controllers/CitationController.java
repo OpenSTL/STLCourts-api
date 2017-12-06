@@ -34,7 +34,6 @@ public class CitationController {
 	List<Citation> FindCitations(@RequestParam(value = "citationNumber", required = false) String citationNumber,
 			                     @RequestParam(value = "licenseNumber", required = false) String licenseNumber,
 			                     @RequestParam(value = "licenseState", required = false) String licenseState,
-			                     @RequestParam(value = "firstName", required = false) String firstName,
 			                     @RequestParam(value = "lastName", required = false) String lastName,
 			                     @RequestParam(value = "municipalityIds", required = false) List<String> municipalityIds,
 			                     @RequestParam(value = "dob", required = false) LocalDate dob) {
@@ -46,24 +45,21 @@ public class CitationController {
 		if (dob != null) {
 			criteria.dateOfBirth = dob;
 		}
+		
+		if (lastName != null){
+			criteria.lastName = lastName;
+		}
 
 		if (licenseNumber != null && licenseState != null) {
 			criteria.driversLicenseNumber = licenseNumber;
 			criteria.driversLicenseState = licenseState;
 		}
 
-		if (lastName != null && municipalityIds != null && municipalityIds.size() != 0) {
-			criteria.lastName = lastName;
+		if (municipalityIds != null && municipalityIds.size() != 0) {
 			criteria.municipalities = new ArrayList<Long>();
 			for(String municipalityId : municipalityIds){
 				criteria.municipalities.add(hashUtil.decode(Municipality.class,municipalityId));
 			}
-		}
-
-		if (firstName != null && lastName != null && licenseNumber != null) {
-			criteria.firstName = firstName;
-			criteria.lastName = lastName;
-			criteria.driversLicenseNumber = licenseNumber;
 		}
 		
 		return citationManager.findCitations(criteria);

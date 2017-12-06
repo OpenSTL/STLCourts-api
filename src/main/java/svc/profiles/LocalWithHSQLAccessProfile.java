@@ -30,6 +30,7 @@ public class LocalWithHSQLAccessProfile {
 				.addScript("hsql/citation-datasource-municipality.sql")
 				.addScript("hsql/citation-datasource.sql")
 				.addScript("hsql/courtMappers/tyler-court-mapper.sql")
+				.addScript("hsql/courtMappers/rejis-court-mapper.sql")
 				.addScript("hsql/datasource-municipality-mapping.sql")
 				.build();
 	}
