@@ -44,6 +44,24 @@ public class CourtIdTransformer extends BaseJdbcDao {
 			return null;
 		}
 	}
+	
+	public HashableEntity<Court> lookupCourtIdFromMunicipalityId(Long municipalityId){
+		if (municipalityId != null){
+			try{
+				Map<String, Object> parameterMap = new HashMap<String, Object>();
+				parameterMap.put("municipalityId", municipalityId);
+				String sql = this.getSql("citation/datasources/transformers/imported-courtTransformer.sql");
+				Long courtId = jdbcTemplate.queryForObject(sql, parameterMap, new CourtIdSQLMapper());
+				return new HashableEntity<Court>(Court.class, courtId);
+				
+			} catch (Exception e) {
+				LogSystem.LogDBException(e);
+				return null;
+			}
+		}else{
+			return null;
+		}
+	}
 
 	private class CourtIdSQLMapper implements RowMapper<Long> {
 		public Long mapRow(ResultSet rs, int i) {

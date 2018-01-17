@@ -16,6 +16,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import svc.Application;
+import svc.data.citations.datasources.imported.TylerCitationDataSource;
 import svc.models.Citation;
 
 @Ignore

@@ -96,6 +96,11 @@ CREATE TABLE rejis_court_mapping(
   rejis_court_identifier VARCHAR(25)
 );
 
+CREATE TABLE imported_court_mapping(
+  court_id				INTEGER			NOT NULL,
+  imported_court_identifier VARCHAR(25)
+);
+
 CREATE TABLE datasource_municipality_mapping(
 	citation_datasource_id	INTEGER,
 	municipality_id			INTEGER,
