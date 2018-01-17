@@ -4,6 +4,7 @@ import java.net.URI;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -21,6 +22,7 @@ import com.google.common.collect.Lists;
 import svc.data.citations.CitationDataSource;
 import svc.data.citations.datasources.imported.models.ImportedCitation;
 import svc.data.citations.datasources.imported.transformers.ImportedCitationTransformer;
+import svc.data.citations.datasources.transformers.CourtIdTransformer;
 import svc.data.citations.filters.CitationFilter;
 import svc.models.Citation;
 
@@ -32,6 +34,9 @@ public class ImportedCitationDataSource implements CitationDataSource {
 
 	@Autowired
 	private ImportedCitationTransformer citationTransformer;
+	
+	@Autowired
+	private CourtIdTransformer courtIdTransformer;
 	
 	@Autowired
 	private CitationFilter citationFilter;
@@ -61,8 +66,11 @@ public class ImportedCitationDataSource implements CitationDataSource {
 
 	@Override
 	public List<Citation> getByNameAndMunicipalitiesAndDOB(String lastName, List<Long> municipalities, LocalDate dob) {
+		
+		List<Long> courtIds = courtIdTransformer.getCourtIdsFromMunicipalityIds(municipalities);
+		List<String> courtIds_string = courtIds.stream().map(Object::toString).collect(Collectors.toList());
 		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(importedConfiguration.rootUrl)
-				.queryParam("lastName", lastName).queryParam("dob", dob.format(dobFormatter));
+				.queryParam("lastName", lastName).queryParam("dob", dob.format(dobFormatter)).queryParam("courtIds",String.join(",",courtIds_string));
 
 		return performRestTemplateCall(builder.build().encode().toUri(), dob, lastName);
 	}
@@ -83,7 +91,6 @@ public class ImportedCitationDataSource implements CitationDataSource {
 			System.out.println("Imported datasource is down.");
 			return Lists.newArrayList();
 		}
-
-		
 	}
+	
 }

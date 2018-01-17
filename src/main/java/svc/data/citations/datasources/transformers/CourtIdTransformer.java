@@ -2,6 +2,7 @@ package svc.data.citations.datasources.transformers;
 
 import java.sql.ResultSet;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.jdbc.core.RowMapper;
@@ -43,6 +44,23 @@ public class CourtIdTransformer extends BaseJdbcDao {
 		} else {
 			return null;
 		}
+	}
+	
+	public List<Long> getCourtIdsFromMunicipalityIds(List<Long>municipalityIds){
+		if (municipalityIds != null){
+			try{
+				 Map<String, Object> parameterMap = new HashMap<>();
+	            parameterMap.put("municipalities", municipalityIds);
+				List<Long> courtIds = jdbcTemplate.query(getSql("court/get-courtIds-from-municipalityIds.sql"), parameterMap, new CourtIdSQLMapper());
+				return courtIds;
+			}catch (Exception e){
+				LogSystem.LogDBException(e);
+				return null;
+			}
+		}else {
+			return null;
+		}
+	
 	}
 
 	private class CourtIdSQLMapper implements RowMapper<Long> {
