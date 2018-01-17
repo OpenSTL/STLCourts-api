@@ -14,7 +14,7 @@ import svc.data.citations.datasources.transformers.CourtIdTransformer;
 import svc.data.citations.datasources.transformers.MunicipalityIdTransformer;
 import svc.logging.LogSystem;
 import svc.models.Citation;
-import svc.models.Municipality;
+import svc.models.Court;
 import svc.types.HashableEntity;
 
 @Component
@@ -70,9 +70,9 @@ public class ImportedCitationTransformer {
 
 			genericCitation.violations = violationTransformer.fromImportedCitation(importedCitation);
 
-			genericCitation.court_id = courtIdTransformer.lookupCourtIdFromMunicipalityId(importedCitation.municipalityId);
-			genericCitation.municipality_id = new HashableEntity<Municipality>(Municipality.class, importedCitation.municipalityId); 
-			
+			genericCitation.court_id = new HashableEntity<Court>(Court.class, importedCitation.courtId); 
+			//returns first municipality associated with the court
+			genericCitation.municipality_id = municipalityIdTransformer.lookupMunicipalityIdFromCourtId(importedCitation.courtId);
 		}
 
 		genericCitation.defendant_address = importedCitation.defendantAddress;

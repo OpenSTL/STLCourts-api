@@ -32,6 +32,24 @@ public class MunicipalityIdTransformer extends BaseJdbcDao {
 			return null;
 		}
 	}
+	
+	public HashableEntity<Municipality> lookupMunicipalityIdFromCourtId(Long courtId){
+		if (courtId != null){
+			try{
+				Map<String, Object> parameterMap = new HashMap<String, Object>();
+				parameterMap.put("courtId", courtId);
+				String sql = this.getSql("municipality/get-municipalityId-from-courtId.sql");
+				Long municipalityId = jdbcTemplate.queryForObject(sql, parameterMap, new MunicipalityIdSQLMapper());
+				return new HashableEntity<Municipality>(Municipality.class, municipalityId);
+				
+			} catch (Exception e) {
+				LogSystem.LogDBException(e);
+				return null;
+			}
+		}else{
+			return null;
+		}
+	}
 
 	private class MunicipalityIdSQLMapper implements RowMapper<Long> {
 		public Long mapRow(ResultSet rs, int i) {

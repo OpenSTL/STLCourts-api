@@ -1,1 +1,0 @@
-SELECT court_id FROM municipality_court WHERE municipality_id = :municipalityId

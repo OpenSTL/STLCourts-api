@@ -44,8 +44,8 @@ public class ImportedCitation {
 	@JsonProperty("court_dateTime")
 	public String courtDateTime;
 
-	@JsonProperty("municipality_id")
-	public Long municipalityId;
+	@JsonProperty("court_id")
+	public Long courtId;
 
 	@JsonProperty
 	public List<ImportedViolation> violations;
