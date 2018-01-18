@@ -66,8 +66,12 @@ public class ImportedCitationTransformer {
 		if (importedCitation.violations == null) {
 			LogSystem.LogEvent("No violations received with imported citation. Skipping fields that require them.");
 		} else {
-			genericCitation.court_dateTime = LocalDateTime.parse(importedCitation.courtDateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-
+			if (importedCitation.courtDateTime == null){
+				LogSystem.LogEvent("received imported citation with no court date or time");
+			} else {
+				genericCitation.court_dateTime = LocalDateTime.parse(importedCitation.courtDateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+			}
+			
 			genericCitation.violations = violationTransformer.fromImportedCitation(importedCitation);
 
 			genericCitation.court_id = new HashableEntity<Court>(Court.class, importedCitation.courtId); 
