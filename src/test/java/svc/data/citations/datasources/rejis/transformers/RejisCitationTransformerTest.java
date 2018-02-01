@@ -156,10 +156,15 @@ public class RejisCitationTransformerTest {
 		.thenReturn(municipalHashable);
 		
 		RejisFullCitation rejisFullCitation = generateFullRejisCitation();
-		rejisFullCitation.originalCourtDate = "2017-10-01T12:30:00";
+		rejisFullCitation.originalCourtDate = "2017-08-01T12:30:00";
 		Citation citation = citationTransformer.fromRejisFullCitation(rejisFullCitation, generatePartialRejisCitation());
 
-		assertEquals(citation.court_dateTime, LocalDateTime.parse(rejisFullCitation.originalCourtDate));
+		assertEquals(citation.court_dateTime, LocalDateTime.parse(rejisFullCitation.nextCourtDate));
+		
+		rejisFullCitation.originalCourtDate = "2017-10-01T12:30:00";
+		citation = citationTransformer.fromRejisFullCitation(rejisFullCitation, generatePartialRejisCitation());
+		
+		assertNull(citation.court_dateTime);
 	}
 
 }
