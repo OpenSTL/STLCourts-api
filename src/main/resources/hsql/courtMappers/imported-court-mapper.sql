@@ -1,1 +1,0 @@
-INSERT INTO imported_court_mapping (court_id,imported_court_identifier) VALUES (48,'MH'); /*Maryland Heights*/

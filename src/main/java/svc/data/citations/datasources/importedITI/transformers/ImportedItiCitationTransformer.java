@@ -1,4 +1,4 @@
-package svc.data.citations.datasources.imported.transformers;
+package svc.data.citations.datasources.importedITI.transformers;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import svc.data.citations.datasources.imported.models.ImportedCitation;
+import svc.data.citations.datasources.importedITI.models.ImportedItiCitation;
 import svc.data.citations.datasources.transformers.CourtIdTransformer;
 import svc.data.citations.datasources.transformers.MunicipalityIdTransformer;
 import svc.logging.LogSystem;
@@ -18,10 +18,10 @@ import svc.models.Court;
 import svc.types.HashableEntity;
 
 @Component
-public class ImportedCitationTransformer {
+public class ImportedItiCitationTransformer {
 
 	@Autowired
-	ImportedViolationTransformer violationTransformer;
+	ImportedItiViolationTransformer violationTransformer;
 
 	@Autowired
 	CourtIdTransformer courtIdTransformer;
@@ -29,17 +29,17 @@ public class ImportedCitationTransformer {
 	@Autowired
 	MunicipalityIdTransformer municipalityIdTransformer;
 
-	public List<Citation> fromImportedCitations(List<ImportedCitation> importedCitations) {
-		if (importedCitations != null) {
-			return importedCitations.stream()
-					.map(importedCitation -> fromImportedCitation(importedCitation))
+	public List<Citation> fromImportedItiCitations(List<ImportedItiCitation> importedItiCitations) {
+		if (importedItiCitations != null) {
+			return importedItiCitations.stream()
+					.map(importedItiCitation -> fromImportedItiCitation(importedItiCitation))
 					.collect(Collectors.toList());
 		}
 		return null;
 	}
 
 
-	public Citation fromImportedCitation(ImportedCitation importedCitation) {
+	public Citation fromImportedItiCitation(ImportedItiCitation importedCitation) {
 		if (importedCitation == null) {
 			return null;
 		}

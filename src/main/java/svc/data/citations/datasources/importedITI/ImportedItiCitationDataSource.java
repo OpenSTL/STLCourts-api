@@ -1,4 +1,4 @@
-package svc.data.citations.datasources.imported;
+package svc.data.citations.datasources.importedITI;
 
 import java.net.URI;
 import java.time.LocalDate;
@@ -20,20 +20,20 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.google.common.collect.Lists;
 
 import svc.data.citations.CitationDataSource;
-import svc.data.citations.datasources.imported.models.ImportedCitation;
-import svc.data.citations.datasources.imported.transformers.ImportedCitationTransformer;
+import svc.data.citations.datasources.importedITI.models.ImportedItiCitation;
+import svc.data.citations.datasources.importedITI.transformers.ImportedItiCitationTransformer;
 import svc.data.citations.datasources.transformers.CourtIdTransformer;
 import svc.data.citations.filters.CitationFilter;
 import svc.models.Citation;
 
 @Repository
-public class ImportedCitationDataSource implements CitationDataSource {
+public class ImportedItiCitationDataSource implements CitationDataSource {
 
 	@Autowired
-	private ImportedConfiguration importedConfiguration;
+	private ImportedItiConfiguration importedItiConfiguration;
 
 	@Autowired
-	private ImportedCitationTransformer citationTransformer;
+	private ImportedItiCitationTransformer citationTransformer;
 	
 	@Autowired
 	private CourtIdTransformer courtIdTransformer;
@@ -49,7 +49,7 @@ public class ImportedCitationDataSource implements CitationDataSource {
 	@Override
 	public List<Citation> getByCitationNumberAndDOB(String citationNumber, LocalDate dob) {
 
-		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(importedConfiguration.rootUrl)
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(importedItiConfiguration.rootUrl)
 				.queryParam("citationNumber", citationNumber).queryParam("dob", dob.format(dobFormatter));
 
 		return performRestTemplateCall(builder.build().encode().toUri(), dob, null);
@@ -57,7 +57,7 @@ public class ImportedCitationDataSource implements CitationDataSource {
 
 	@Override
 	public List<Citation> getByLicenseAndDOBAndLastName(String driversLicenseNumber, String driversLicenseState, LocalDate dob, String lastName) {
-		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(importedConfiguration.rootUrl)
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(importedItiConfiguration.rootUrl)
 				.queryParam("licenseNumber", driversLicenseNumber).queryParam("dob", dob.format(dobFormatter))
 				.queryParam("licenseState", driversLicenseState).queryParam("lastName", lastName);
 
@@ -69,7 +69,7 @@ public class ImportedCitationDataSource implements CitationDataSource {
 		
 		List<Long> courtIds = courtIdTransformer.getCourtIdsFromMunicipalityIds(municipalities);
 		List<String> courtIds_string = courtIds.stream().map(Object::toString).collect(Collectors.toList());
-		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(importedConfiguration.rootUrl)
+		UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(importedItiConfiguration.rootUrl)
 				.queryParam("lastName", lastName).queryParam("dob", dob.format(dobFormatter)).queryParam("courtIds",String.join(",",courtIds_string));
 
 		return performRestTemplateCall(builder.build().encode().toUri(), dob, lastName);
@@ -78,17 +78,17 @@ public class ImportedCitationDataSource implements CitationDataSource {
 	private List<Citation> performRestTemplateCall(URI uri, LocalDate dob, String lastName) {
 		HttpHeaders headers = new HttpHeaders();
 		HttpEntity<?> query = new HttpEntity<>(headers);
-		ResponseEntity<List<ImportedCitation>> importedCitationsResponse = null;
-		ParameterizedTypeReference<List<ImportedCitation>> type = new ParameterizedTypeReference<List<ImportedCitation>>() {
+		ResponseEntity<List<ImportedItiCitation>> importedCitationsResponse = null;
+		ParameterizedTypeReference<List<ImportedItiCitation>> type = new ParameterizedTypeReference<List<ImportedItiCitation>>() {
 		};
 
-		List<ImportedCitation> importedCitations = null;
+		List<ImportedItiCitation> importedItiCitations = null;
 		try {
 			importedCitationsResponse = restTemplate.exchange(uri, HttpMethod.GET, query, type);
-			importedCitations = importedCitationsResponse.getBody();
-			return citationFilter.Filter(citationTransformer.fromImportedCitations(importedCitations), lastName);
+			importedItiCitations = importedCitationsResponse.getBody();
+			return citationFilter.Filter(citationTransformer.fromImportedItiCitations(importedItiCitations), lastName);
 		} catch (RestClientException ex) {
-			System.out.println("Imported datasource is down.");
+			System.out.println("Imported ITI datasource is down.");
 			return Lists.newArrayList();
 		}
 	}

@@ -1,4 +1,4 @@
-package svc.data.citations.datasources.imported.models;
+package svc.data.citations.datasources.importedITI.models;
 
 import java.math.BigDecimal;
 
@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ImportedViolation {
+public class ImportedItiViolation {
 	
 	@JsonProperty("citation_number")
 	public String citationNumber;

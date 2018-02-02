@@ -1,4 +1,4 @@
-package svc.data.citations.datasources.imported.models;
+package svc.data.citations.datasources.importedITI.models;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ImportedCitation {
+public class ImportedItiCitation {
 	
 	@JsonProperty("citation_number")
 	public String citationNumber;
@@ -48,5 +48,5 @@ public class ImportedCitation {
 	public Long courtId;
 
 	@JsonProperty
-	public List<ImportedViolation> violations;
+	public List<ImportedItiViolation> violations;
 }

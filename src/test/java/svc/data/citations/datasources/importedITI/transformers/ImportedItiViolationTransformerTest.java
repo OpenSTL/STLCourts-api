@@ -1,4 +1,4 @@
-package svc.data.citations.datasources.imported.transformers;
+package svc.data.citations.datasources.importedITI.transformers;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -16,34 +16,34 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.google.common.collect.Lists;
 
-import svc.data.citations.datasources.imported.models.ImportedCitation;
-import svc.data.citations.datasources.imported.models.ImportedViolation;
+import svc.data.citations.datasources.importedITI.models.ImportedItiCitation;
+import svc.data.citations.datasources.importedITI.models.ImportedItiViolation;
 import svc.models.Violation;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ImportedViolationTransformerTest {
+public class ImportedItiViolationTransformerTest {
 	@InjectMocks
-	ImportedViolationTransformer mockViolationTransformer;
+	ImportedItiViolationTransformer mockViolationTransformer;
 	
-	ImportedCitation importedCitation;
-	ImportedViolation importedViolation;
+	ImportedItiCitation importedItiCitation;
+	ImportedItiViolation importedItiViolation;
 	
 	@Before
 	public void setUp(){
-		importedCitation = new ImportedCitation();
-		importedViolation = new ImportedViolation();
-		importedCitation.citationNumber = "F123";
-		importedViolation.violationNumber = "V123";
-		importedViolation.violationDescription = "ABC";
-		importedViolation.warrantStatus = true;
-		importedViolation.warrantNumber = "W123";
-		importedViolation.fineAmount = new BigDecimal("23.00");
-		importedViolation.canPayOnline = true;
+		importedItiCitation = new ImportedItiCitation();
+		importedItiViolation = new ImportedItiViolation();
+		importedItiCitation.citationNumber = "F123";
+		importedItiViolation.violationNumber = "V123";
+		importedItiViolation.violationDescription = "ABC";
+		importedItiViolation.warrantStatus = true;
+		importedItiViolation.warrantNumber = "W123";
+		importedItiViolation.fineAmount = new BigDecimal("23.00");
+		importedItiViolation.canPayOnline = true;
 	}
 	
 	@Test
-	public void returnsGenericViolationFromTylerViolation(){
-		Violation violation = mockViolationTransformer.fromImportedViolation(importedCitation, importedViolation);
+	public void returnsGenericViolationFromImportedItiViolation(){
+		Violation violation = mockViolationTransformer.fromImportedItiViolation(importedItiCitation, importedItiViolation);
 		
 		assertThat(violation.citation_number,is("F123"));
 		assertThat(violation.violation_number,is("V123"));
@@ -56,9 +56,9 @@ public class ImportedViolationTransformerTest {
 	}
 	
 	@Test
-	public void returnsGenericViolationListFromTylerCitation(){
-		importedCitation.violations = Lists.newArrayList(importedViolation);
-		List<Violation> violations = mockViolationTransformer.fromImportedCitation(importedCitation);
+	public void returnsGenericViolationListFromImportedItiCitation(){
+		importedItiCitation.violations = Lists.newArrayList(importedItiViolation);
+		List<Violation> violations = mockViolationTransformer.fromImportedCitation(importedItiCitation);
 		
 		assertNotNull(violations);
 		assertThat(violations.size(),is(1));

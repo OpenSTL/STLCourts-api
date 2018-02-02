@@ -31,7 +31,7 @@ public class CitationDataSourceFactory extends BaseJdbcDao {
     private CitationDataSource rejisCitationDataSource;
     
     @Inject
-    private CitationDataSource importedCitationDataSource;
+    private CitationDataSource importedItiCitationDataSource;
 
     public List<CitationDataSource> getAllCitationDataSources() {
         return getDataSources();
@@ -73,8 +73,8 @@ public class CitationDataSourceFactory extends BaseJdbcDao {
                 case REJIS:
                 	dataSources.add(rejisCitationDataSource);
                 	break;
-                case IMPORTED:
-                	dataSources.add(importedCitationDataSource);
+                case IMPORTEDITI:
+                	dataSources.add(importedItiCitationDataSource);
                 	break;
                 default:
                     LogSystem.LogCitationDataSourceException("Source '" + source.toString() + "' is not supported");

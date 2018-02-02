@@ -1,4 +1,4 @@
-package svc.data.citations.datasources.imported;
+package svc.data.citations.datasources.importedITI;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -30,52 +30,52 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import svc.data.citations.datasources.imported.models.ImportedCitation;
-import svc.data.citations.datasources.imported.transformers.ImportedCitationTransformer;
+import svc.data.citations.datasources.importedITI.models.ImportedItiCitation;
+import svc.data.citations.datasources.importedITI.transformers.ImportedItiCitationTransformer;
 import svc.data.citations.datasources.transformers.CourtIdTransformer;
 import svc.data.citations.filters.CitationFilter;
 import svc.models.Citation;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ImportedCitationDataSourceTest {
+public class ImportedItiCitationDataSourceTest {
 	@InjectMocks
-	ImportedCitationDataSource mockImportedCitationDataSource;
+	ImportedItiCitationDataSource mockImportedItiCitationDataSource;
 	
 	@Mock
-	ImportedConfiguration mockImportedConfiguration;
+	ImportedItiConfiguration mockImportedItiConfiguration;
 	@Mock
     UriComponentsBuilder mockUriComponentsBuilder;
 	@Mock
     RestTemplate restTemplate;
 	@Mock
-	ImportedCitationTransformer mockCitationTransformer;
+	ImportedItiCitationTransformer mockCitationTransformer;
 	@Mock
 	CitationFilter mockCitationFilter;
 	@Mock
 	CourtIdTransformer mockCourtIdTransformer;
 	
 	@Spy
-	ResponseEntity<List<ImportedCitation>> importedCitationsResponseSpy = new ResponseEntity<List<ImportedCitation>>(HttpStatus.ACCEPTED);
+	ResponseEntity<List<ImportedItiCitation>> importedItiCitationsResponseSpy = new ResponseEntity<List<ImportedItiCitation>>(HttpStatus.ACCEPTED);
     
 	@SuppressWarnings("unchecked")
 	@Test
 	public void returnsCitationsGivenCitationNumberAndDOB(){
 		final String CITATIONNUMBER = "F3453";
 		final LocalDate DOB = LocalDate.parse("2000-06-01");
-		mockImportedConfiguration.rootUrl = "http://myURL.com";
+		mockImportedItiConfiguration.rootUrl = "http://myURL.com";
 		final Citation CITATION = new Citation();
         CITATION.id = 3;
         final List<Citation> CITATIONS = Lists.newArrayList(CITATION);
-        final List<ImportedCitation> importedCitations = Lists.newArrayList();
-        Mockito.doReturn(importedCitations).when(importedCitationsResponseSpy).getBody();
+        final List<ImportedItiCitation> importedItiCitations = Lists.newArrayList();
+        Mockito.doReturn(importedItiCitations).when(importedItiCitationsResponseSpy).getBody();
         
         when(restTemplate.exchange(any(URI.class), eq(HttpMethod.GET), any(HttpEntity.class), any(ParameterizedTypeReference.class)))
-        .thenReturn(importedCitationsResponseSpy);
+        .thenReturn(importedItiCitationsResponseSpy);
         
-        when(mockCitationTransformer.fromImportedCitations(importedCitations)).thenReturn(CITATIONS);
+        when(mockCitationTransformer.fromImportedItiCitations(importedItiCitations)).thenReturn(CITATIONS);
         when(mockCitationFilter.Filter(CITATIONS, null)).thenReturn(CITATIONS);
         
-		List<Citation> citations = mockImportedCitationDataSource.getByCitationNumberAndDOB(CITATIONNUMBER, DOB);
+		List<Citation> citations = mockImportedItiCitationDataSource.getByCitationNumberAndDOB(CITATIONNUMBER, DOB);
 		
 		assertThat(citations.get(0).id, is(3));
 	}
@@ -87,21 +87,21 @@ public class ImportedCitationDataSourceTest {
 		final String DRIVERSLICENSESTATE = "AZ";
 		final LocalDate DOB = LocalDate.parse("2000-06-01");
 		final String LASTNAME = "someName";
-		mockImportedConfiguration.rootUrl = "http://myURL.com";
+		mockImportedItiConfiguration.rootUrl = "http://myURL.com";
 		
 		final Citation CITATION = new Citation();
         CITATION.id = 3;
         final List<Citation> CITATIONS = Lists.newArrayList(CITATION);
-        final List<ImportedCitation> importedCitations = Lists.newArrayList();
-        Mockito.doReturn(importedCitations).when(importedCitationsResponseSpy).getBody();
+        final List<ImportedItiCitation> importedItiCitations = Lists.newArrayList();
+        Mockito.doReturn(importedItiCitations).when(importedItiCitationsResponseSpy).getBody();
         
         when(restTemplate.exchange(any(URI.class), eq(HttpMethod.GET), any(HttpEntity.class), any(ParameterizedTypeReference.class)))
-        .thenReturn(importedCitationsResponseSpy);
+        .thenReturn(importedItiCitationsResponseSpy);
         
-        when(mockCitationTransformer.fromImportedCitations(importedCitations)).thenReturn(CITATIONS);
+        when(mockCitationTransformer.fromImportedItiCitations(importedItiCitations)).thenReturn(CITATIONS);
         when(mockCitationFilter.Filter(CITATIONS, LASTNAME)).thenReturn(CITATIONS);
         
-		List<Citation> citations = mockImportedCitationDataSource.getByLicenseAndDOBAndLastName(DRIVERSLICENSENUMBER,DRIVERSLICENSESTATE, DOB, LASTNAME);
+		List<Citation> citations = mockImportedItiCitationDataSource.getByLicenseAndDOBAndLastName(DRIVERSLICENSENUMBER,DRIVERSLICENSESTATE, DOB, LASTNAME);
 		
 		assertThat(citations.get(0).id, is(3));
 	}
@@ -112,24 +112,24 @@ public class ImportedCitationDataSourceTest {
 		final String NAME = "Smith";
 		final List<Long> MUNICIPALITIES = Lists.newArrayList(5L);
 		final LocalDate DOB = LocalDate.parse("2000-06-01");
-		mockImportedConfiguration.rootUrl = "http://myURL.com";
+		mockImportedItiConfiguration.rootUrl = "http://myURL.com";
 		
 		final Citation CITATION = new Citation();
         CITATION.id = 3;
         final List<Citation> CITATIONS = Lists.newArrayList(CITATION);
-        final List<ImportedCitation> importedCitations = Lists.newArrayList();
-        Mockito.doReturn(importedCitations).when(importedCitationsResponseSpy).getBody();
+        final List<ImportedItiCitation> importedItiCitations = Lists.newArrayList();
+        Mockito.doReturn(importedItiCitations).when(importedItiCitationsResponseSpy).getBody();
         
         final List<Long> COURTIDS = Lists.newArrayList(1L);
         when(mockCourtIdTransformer.getCourtIdsFromMunicipalityIds(MUNICIPALITIES)).thenReturn(COURTIDS);
         
         when(restTemplate.exchange(any(URI.class), eq(HttpMethod.GET), any(HttpEntity.class), any(ParameterizedTypeReference.class)))
-        .thenReturn(importedCitationsResponseSpy);
+        .thenReturn(importedItiCitationsResponseSpy);
         
-        when(mockCitationTransformer.fromImportedCitations(importedCitations)).thenReturn(CITATIONS);
+        when(mockCitationTransformer.fromImportedItiCitations(importedItiCitations)).thenReturn(CITATIONS);
         when(mockCitationFilter.Filter(CITATIONS,NAME)).thenReturn(CITATIONS);
         
-		List<Citation> citations = mockImportedCitationDataSource.getByNameAndMunicipalitiesAndDOB(NAME,MUNICIPALITIES,DOB);
+		List<Citation> citations = mockImportedItiCitationDataSource.getByNameAndMunicipalitiesAndDOB(NAME,MUNICIPALITIES,DOB);
 		
 		assertThat(citations.get(0).id, is(3));
 	}
@@ -139,7 +139,7 @@ public class ImportedCitationDataSourceTest {
 	public void returnsEmptyCitationsOnRestTemplateError(){
 		final String CITATIONNUMBER = "F3453";
 		final LocalDate DOB = LocalDate.parse("2000-06-01");
-		mockImportedConfiguration.rootUrl = "http://myURL.com";
+		mockImportedItiConfiguration.rootUrl = "http://myURL.com";
 		
 		final Citation CITATION = new Citation();
         CITATION.id = 3;
@@ -147,7 +147,7 @@ public class ImportedCitationDataSourceTest {
         when(restTemplate.exchange(any(URI.class), eq(HttpMethod.GET), any(HttpEntity.class), any(ParameterizedTypeReference.class)))
         .thenThrow(RestClientException.class);
         
-		List<Citation> citations = mockImportedCitationDataSource.getByCitationNumberAndDOB(CITATIONNUMBER, DOB);
+		List<Citation> citations = mockImportedItiCitationDataSource.getByCitationNumberAndDOB(CITATIONNUMBER, DOB);
 		
 		assertThat(citations.size(), is(0));
 	}

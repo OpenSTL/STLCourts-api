@@ -4,5 +4,5 @@ public enum CITATION_DATASOURCE {
     MOCK,
     TYLER, 
     REJIS,
-    IMPORTED
+    IMPORTEDITI
 }
