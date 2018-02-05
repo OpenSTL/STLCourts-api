@@ -17,6 +17,7 @@ stlcourts:
       password: ${REJIS_PASSWORD}
     importedITI:
       rootUrl: ${IMPORTED_ITI_ROOT_URL}
+      apiKey: ${IMPORTED_ITI_API_KEY}
 
 logging:
   level:
