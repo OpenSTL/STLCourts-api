@@ -1,6 +1,7 @@
 package svc.data.citations.datasources.transformers;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyMap;
@@ -10,6 +11,8 @@ import static org.mockito.Mockito.when;
 import static org.springframework.core.io.ResourceLoader.CLASSPATH_URL_PREFIX;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -63,6 +66,19 @@ public class CourtIdTransformerTest {
 		assertThat(returnedCourtId.getValue(),is(5L));
 	}
 	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void returnsCourtIdsFromMunicipalityIds() throws IOException{
+		Resource resource = mock(Resource.class);
+        when(resource.getInputStream()).thenReturn(null);
+        when(resourceLoader.getResource(CLASSPATH_URL_PREFIX + "sql/court/get-courtIds-from-municipalityIds.sql")).thenReturn(resource);
+        
+         final List<Long> COURTIDS = Arrays.asList(5L,6L,7L);
+		when(mockJdbcTemplate.query(anyString(),anyMap(),Matchers.<RowMapper<Long>>any())).thenReturn(COURTIDS);
+		
+		List<Long> returnedCourtIds = mockCourtIdTransformer.getCourtIdsFromMunicipalityIds(Arrays.asList(1L,2L,3L));
+		assertEquals(COURTIDS,returnedCourtIds);
+	}
 	
 	public void returnsNullWhenInvalidCitationDatasource(){
 		

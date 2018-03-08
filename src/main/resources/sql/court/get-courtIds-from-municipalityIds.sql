@@ -1,0 +1,1 @@
+SELECT DISTINCT court_id FROM municipality_court WHERE municipality_id IN (:municipalities)

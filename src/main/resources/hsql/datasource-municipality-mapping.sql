@@ -25,3 +25,5 @@ INSERT INTO datasource_municipality_mapping (citation_datasource_id,municipality
 INSERT INTO datasource_municipality_mapping (citation_datasource_id,municipality_id,datasource_municipality_identifier) VALUES (2,43,'JN'); /*Jennings*/
 INSERT INTO datasource_municipality_mapping (citation_datasource_id,municipality_id,datasource_municipality_identifier) VALUES (2,45,'KW'); /*Kirkwood*/
 INSERT INTO datasource_municipality_mapping (citation_datasource_id,municipality_id,datasource_municipality_identifier) VALUES (2,92,'SL'); /*St. Louis City Municipal*/
+
+INSERT INTO datasource_municipality_mapping (citation_datasource_id,municipality_id,datasource_municipality_identifier) VALUES (3,52,'MH'); /*Maryland Heights*/

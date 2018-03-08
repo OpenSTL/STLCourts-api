@@ -49,5 +49,20 @@ public class MunicipalityIdTransformerTest {
 		HashableEntity<Municipality> returnedMunicipalityId = mockMunicipalityIdTransformer.lookupMunicipalityId(CITATION_DATASOURCE.TYLER,"someIdentifier");
 		assertThat(returnedMunicipalityId.getValue(),is(5L));
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void returnsMunicipalityIdFromCourtId() throws IOException{
+		Resource resource = mock(Resource.class);
+        when(resource.getInputStream()).thenReturn(null);
+        when(resourceLoader.getResource(CLASSPATH_URL_PREFIX + "sql/municipality/get-municipalityId-from-courtId.sql")).thenReturn(resource);
+
+		
+		when(mockJdbcTemplate.queryForObject(anyString(),anyMap(),Matchers.<RowMapper<Long>>any())).thenReturn(5L);
+		
+		final Long COURTID = 5L;
+		HashableEntity<Municipality> returnedMunicipalityId = mockMunicipalityIdTransformer.lookupMunicipalityIdFromCourtId(COURTID);
+		assertThat(returnedMunicipalityId.getValue(),is(COURTID));
+	}
 
 }

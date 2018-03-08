@@ -61,6 +61,7 @@ public class RejisCitationDataSourceTest {
 		
 	}
     
+	@SuppressWarnings("unchecked")
 	@Test
 	public void returnsCitationsGivenCitationNumberAndDOB() throws URISyntaxException{
 		final List<String> MUNICIPALITYCODES = Lists.newArrayList("A","B","C");
@@ -88,6 +89,7 @@ public class RejisCitationDataSourceTest {
 		assertThat(returnedCitation.get(0).citation_number, is("1234"));
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Test
 	public void returnsCitationsGivenLicenseAndDOB(){
 		final String DRIVERSLICENSENUMBER = "ABCDE";
@@ -118,6 +120,7 @@ public class RejisCitationDataSourceTest {
 		assertThat(returnedCitation.get(0).citation_number, is("1234"));
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Test
 	public void returnsCitationsGivenNameAndMunicipalitiesAndDOB(){
 		final String NAME = "Smith";

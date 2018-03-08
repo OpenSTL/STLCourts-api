@@ -32,3 +32,5 @@ INSERT INTO citation_datasource_municipality (citation_datasource_id,municipalit
 INSERT INTO citation_datasource_municipality (citation_datasource_id,municipality_id) VALUES (2,43); /*Jennings*/
 INSERT INTO citation_datasource_municipality (citation_datasource_id,municipality_id) VALUES (2,45); /*Kirkwood*/
 INSERT INTO citation_datasource_municipality (citation_datasource_id,municipality_id) VALUES (2,92); /*St. Louis City Municipal*/
+
+INSERT INTO citation_datasource_municipality (citation_datasource_id,municipality_id) VALUES (3,52); /*Maryland Heights*/

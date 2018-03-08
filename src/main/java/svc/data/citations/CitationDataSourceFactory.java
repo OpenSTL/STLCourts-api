@@ -11,6 +11,7 @@ import svc.logging.LogSystem;
 import javax.inject.Inject;
 import java.sql.ResultSet;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class CitationDataSourceFactory extends BaseJdbcDao {
@@ -28,6 +29,9 @@ public class CitationDataSourceFactory extends BaseJdbcDao {
     
     @Inject
     private CitationDataSource rejisCitationDataSource;
+    
+    @Inject
+    private CitationDataSource importedItiCitationDataSource;
 
     public List<CitationDataSource> getAllCitationDataSources() {
         return getDataSources();
@@ -69,6 +73,9 @@ public class CitationDataSourceFactory extends BaseJdbcDao {
                 case REJIS:
                 	dataSources.add(rejisCitationDataSource);
                 	break;
+                case IMPORTEDITI:
+                	dataSources.add(importedItiCitationDataSource);
+                	break;
                 default:
                     LogSystem.LogCitationDataSourceException("Source '" + source.toString() + "' is not supported");
             }
@@ -86,11 +93,8 @@ public class CitationDataSourceFactory extends BaseJdbcDao {
 
             if(municipalityIds.size() > 0) {
                 //NOTE: The following 2 lines could be 1 if we use Groovy
-                StringJoiner joiner  = new StringJoiner(",");
-                for(Long id : municipalityIds) { joiner.add(id.toString()); }
-                parameterMap.put("municipalities", joiner.toString());
-
-                sql += " WHERE cdm.municipality_id IN(:municipalities)";
+            	List<String> municipalityIds_string = municipalityIds.stream().map(Object::toString).collect(Collectors.toList());
+                sql += " WHERE cdm.municipality_id IN("+String.join(",",municipalityIds_string)+")";
             }
             sourceNames = jdbcTemplate.query(sql, parameterMap, new CitationDataSourceMapper());
         } catch (Exception e) {
