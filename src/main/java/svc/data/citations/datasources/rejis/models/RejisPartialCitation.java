@@ -45,7 +45,7 @@ public class RejisPartialCitation {
 	@JsonProperty("BalDue")
 	public double balanceDue;
 	
-	@JsonProperty("ShowIPaycourt")
+	@JsonProperty("ShowIpaycourt")
 	public boolean showIpaycourt;
 
 }

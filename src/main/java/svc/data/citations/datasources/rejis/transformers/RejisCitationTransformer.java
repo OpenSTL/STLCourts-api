@@ -62,7 +62,7 @@ public class RejisCitationTransformer {
 			LocalDateTime NextDktDate = LocalDateTime.parse(rejisFullCitation.nextCourtDate);
 			LocalDateTime OrigDktDate = LocalDateTime.parse(rejisFullCitation.originalCourtDate);
 			if (NextDktDate.isBefore(OrigDktDate)){
-				genericCitation.court_dateTime = OrigDktDate;
+				genericCitation.court_dateTime = null;
 			}else{
 				genericCitation.court_dateTime = NextDktDate;
 			}
