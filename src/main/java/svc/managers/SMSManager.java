@@ -45,39 +45,40 @@ public class SMSManager {
 	SMSAlertManager smsAlertManager;
 	@Inject
 	SMSNotifier smsNotifier;
-	
+
 	@Value("${stlcourts.clientURL}")
 	String clientURL;
-	
+
 	@Autowired
 	private TwilioConfiguration twilioConfiguration;
-	
+
 	private enum SMS_STAGE{
 		WELCOME(0),
-		READ_DOB(1),
-		READ_LICENSE(2),
-		READ_STATE(3),
-		VIEW_CITATION(4),
-		READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN(5);
-		
+		READ_LASTNAME(1),
+		READ_DOB(2),
+		READ_LICENSE(3),
+		READ_STATE(4),
+		VIEW_CITATION(5),
+		READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN(6);
+
 		private int numVal;
-		
+
 		SMS_STAGE(int numVal){
 			this.numVal =numVal;
 		}
-	
+
 		public int getNumVal() {
 			return numVal;
 		}
 	}
-	
+
 	public SMSInfo getInfo(){
 		SMSInfo info = new SMSInfo();
 		info.phoneNumber = twilioConfiguration.phoneNumber;
 		return info;
 	}
-	
-	
+
+
 	//a empty String means validDOB, otherwise a message is returned to pass on to user
 	private String validateDOBString(String dob){
 		String errMsg = "";
@@ -100,20 +101,20 @@ public class SMSManager {
 					errMsg = "You must be at least 18 years old to use www.yourSTLcourts.com";
 				}
 			}
-		}	
+		}
 		return errMsg;
 	}
-	
-	
+
+
 	private MessagingResponse createTwimlResponse(String msg){
 		Message sms = new Message.Builder().body(new Body(msg)).build();
 	    MessagingResponse twimlResponse = new MessagingResponse.Builder().message(sms).build();
 	    return twimlResponse;
 	}
-	
+
 	private SMS_STAGE getStageFromSession(HttpSession session){
 		SMS_STAGE stage;
-		
+
 		Integer stageNumber = (Integer) session.getAttribute("stage");
 		if (stageNumber == null){
 			stage = SMS_STAGE.WELCOME;
@@ -124,20 +125,30 @@ public class SMSManager {
 				stage = SMS_STAGE.WELCOME;
 			}
 		}
-		
+
 		return stage;
 	}
-	
+
 	private void setNextStageInSession(HttpSession session, SMS_STAGE nextTextStage){
 		session.setAttribute("stage", new Integer(nextTextStage.getNumVal()));
 	}
-	
+
 	private String generateWelcomeStageMessage(HttpSession session){
-		String message = "Welcome to www.yourSTLcourts.com.  Please enter your birthdate using MM/DD/YYYY";
-		setNextStageInSession(session,SMS_STAGE.READ_DOB);
+		String message = "Welcome to www.yourSTLcourts.com.  Please enter your last name";
+		setNextStageInSession(session,SMS_STAGE.READ_LASTNAME);
 		return message;
 	}
-	
+
+	private String generateReadLastNameMessage(HttpSession session, String lastName){
+		SMS_STAGE nextTextStage;
+		lastName = (lastName != null)?lastName:(String)session.getAttribute("last_name");
+		session.setAttribute("last_name", lastName);
+		String message = "Thank you.  Now please enter your birthdate using MM/DD/YYYY";
+		nextTextStage = SMS_STAGE.READ_DOB;
+		setNextStageInSession(session,nextTextStage);
+		return message;
+	}
+
 	private String generateReadDobMessage(HttpSession session, String dob){
 		SMS_STAGE nextTextStage;
 		String message = validateDOBString(dob);
@@ -152,21 +163,22 @@ public class SMSManager {
 		setNextStageInSession(session,nextTextStage);
 		return message;
 	}
-	
-	private String ListCitations(LocalDate dob, String license, String licenseState){
+
+	private String ListCitations(LocalDate dob, String license, String licenseState, String lastName){
 		CitationSearchCriteria criteria = new CitationSearchCriteria();
 		criteria.dateOfBirth = dob;
 		criteria.driversLicenseNumber = license;
 		criteria.driversLicenseState = licenseState;
+		criteria.lastName = lastName;
 		List<Citation> citations = citationManager.findCitations(criteria);
-		
+
 		ListCitationsTextMessage listCitationsTM = new ListCitationsTextMessage(citations);
-		
+
 		String message = listCitationsTM.toTextMessage();
-		
+
 		return message;
 	}
-	
+
 	private String generateReadLicenseMessage(HttpSession session, String licenseNumber){
 		SMS_STAGE nextTextStage;
 		licenseNumber = (licenseNumber != null)?licenseNumber:(String)session.getAttribute("license_number");
@@ -176,25 +188,26 @@ public class SMSManager {
 		setNextStageInSession(session,nextTextStage);
 		return message;
 	}
-	
+
 	private String generateReadStateMessage(HttpSession session){
 		String message = generateReadStateMessage(session, null);
 		return message;
 	}
-	
+
 	private String generateReadStateMessage(HttpSession session, String licenseState){
 		String message = "";
 		SMS_STAGE nextTextStage;
-		
+
 		licenseState = (licenseState != null)?licenseState:(String)session.getAttribute("license_state");
 		licenseState = licenseState.toUpperCase();
 		String licenseNumber = (String)session.getAttribute("license_number");
 		String dob = (String)session.getAttribute("dob");
-		
+		String lastName = (String)session.getAttribute("last_name");
+
 		try{
 			LocalDate date_of_birth = DatabaseUtilities.convertUSStringDateToLD(dob);
 			session.setAttribute("license_state", licenseState);
-			message = ListCitations(date_of_birth, licenseNumber,licenseState);
+			message = ListCitations(date_of_birth, licenseNumber,licenseState, lastName);
 			if (message == ""){
 				message = "No tickets were found. If you have entered your information correctly, please visit the following link for possible reasons: \n\n";
 				message += clientURL+"/tickets/error/notFound";
@@ -306,11 +319,13 @@ public class SMSManager {
 		String dob = (String)session.getAttribute("dob");
 		String license = (String)session.getAttribute("license_number");
 		String licenseState = (String)session.getAttribute("license_state");
+		String lastName = (String)session.getAttribute("last_name");
 		criteria = new CitationSearchCriteria();
 		try{
 			criteria.dateOfBirth = DatabaseUtilities.convertUSStringDateToLD(dob);
 			criteria.driversLicenseNumber = license;
 			criteria.driversLicenseState = licenseState;
+			criteria.lastName = lastName;
 			citations = citationManager.findCitations(criteria);
 			int citationNumberToView = Integer.parseInt(citationNumber) - 1;
 			if (citationNumberToView >= 0 && citationNumberToView < citations.size()){
@@ -328,7 +343,7 @@ public class SMSManager {
 				message = "Invalid entry. Please enter only the number of the ticket you would like to view.";
 				nextTextStage = SMS_STAGE.VIEW_CITATION;
 			}
-			
+
 			
 		}catch (DateTimeParseException e){
 			//something went wrong here  this shouldn't happen since dob has already been parsed
@@ -355,24 +370,27 @@ public class SMSManager {
 			session.setAttribute("phoneNumber", twimlMessageRequest.getFrom());
 			
 			switch(currentTextStage){
-			case WELCOME:
-				message = generateWelcomeStageMessage(session);
-				break;
-			case READ_DOB:
-				message = generateReadDobMessage(session, content);
-				break;
-			case READ_LICENSE:
-				message = generateReadLicenseMessage(session, content);
-				break;
-			case READ_STATE:
-				message = generateReadStateMessage(session, content);
-				break;
-			case VIEW_CITATION:
-				message = generateViewCitationMessage(session, content);
-				break;
-			case READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN:
-				message = generateViewCitationsAgainMessage(session, request, content);
-				break;
+				case WELCOME:
+					message = generateWelcomeStageMessage(session);
+					break;
+				case READ_LASTNAME:
+					message = generateReadLastNameMessage(session, content);
+					break;
+				case READ_DOB:
+					message = generateReadDobMessage(session, content);
+					break;
+				case READ_LICENSE:
+					message = generateReadLicenseMessage(session, content);
+					break;
+				case READ_STATE:
+					message = generateReadStateMessage(session, content);
+					break;
+				case VIEW_CITATION:
+					message = generateViewCitationMessage(session, content);
+					break;
+				case READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN:
+					message = generateViewCitationsAgainMessage(session, request, content);
+					break;
 			}
 		
 			twimlResponse = createTwimlResponse(message);
