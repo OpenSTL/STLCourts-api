@@ -39,7 +39,7 @@ stlcourts:
   citationDataSources:
     testEnabled: true
     liveEnabled: true
-  clientURL: http://localhost:9000
+  clientURL: http://localhost:4200
   demoMode: true
   runHeadless: true
   security:
@@ -59,7 +59,7 @@ stlcourts:
   citationDataSources:
     testEnabled: true
     liveEnabled: true
-  clientURL: http://localhost:9000
+  clientURL: http://localhost:4200
   demoMode: true
   runHeadless: false
   security:
