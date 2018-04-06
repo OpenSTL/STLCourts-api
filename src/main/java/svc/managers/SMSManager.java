@@ -54,11 +54,12 @@ public class SMSManager {
 	
 	private enum SMS_STAGE{
 		WELCOME(0),
-		READ_DOB(1),
-		READ_LICENSE(2),
-		READ_STATE(3),
-		VIEW_CITATION(4),
-		READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN(5);
+		READ_LASTNAME(1),
+		READ_DOB(2),
+		READ_LICENSE(3),
+		READ_STATE(4),
+		VIEW_CITATION(5),
+		READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN(6);
 		
 		private int numVal;
 		
@@ -133,8 +134,18 @@ public class SMSManager {
 	}
 	
 	private String generateWelcomeStageMessage(HttpSession session){
-		String message = "Welcome to www.yourSTLcourts.com.  Please enter your birthdate using MM/DD/YYYY";
-		setNextStageInSession(session,SMS_STAGE.READ_DOB);
+		String message = "Welcome to www.yourSTLcourts.com.  Please enter your last name";
+		setNextStageInSession(session,SMS_STAGE.READ_LASTNAME);
+		return message;
+	}
+	
+	private String generateReadLastNameMessage(HttpSession session, String lastName){
+		SMS_STAGE nextTextStage;
+		lastName = (lastName != null)?lastName:(String)session.getAttribute("last_name");
+		session.setAttribute("last_name", lastName);
+		String message = "Thank you.  Now please enter your birthdate using MM/DD/YYYY";
+		nextTextStage = SMS_STAGE.READ_DOB;
+		setNextStageInSession(session,nextTextStage);
 		return message;
 	}
 	
@@ -153,11 +164,12 @@ public class SMSManager {
 		return message;
 	}
 	
-	private String ListCitations(LocalDate dob, String license, String licenseState){
+	private String ListCitations(LocalDate dob, String license, String licenseState, String lastName){
 		CitationSearchCriteria criteria = new CitationSearchCriteria();
 		criteria.dateOfBirth = dob;
 		criteria.driversLicenseNumber = license;
 		criteria.driversLicenseState = licenseState;
+		criteria.lastName = lastName;
 		List<Citation> citations = citationManager.findCitations(criteria);
 		
 		ListCitationsTextMessage listCitationsTM = new ListCitationsTextMessage(citations);
@@ -190,11 +202,12 @@ public class SMSManager {
 		licenseState = licenseState.toUpperCase();
 		String licenseNumber = (String)session.getAttribute("license_number");
 		String dob = (String)session.getAttribute("dob");
+		String lastName = (String)session.getAttribute("last_name");
 		
 		try{
 			LocalDate date_of_birth = DatabaseUtilities.convertUSStringDateToLD(dob);
 			session.setAttribute("license_state", licenseState);
-			message = ListCitations(date_of_birth, licenseNumber,licenseState);
+			message = ListCitations(date_of_birth, licenseNumber,licenseState, lastName);
 			if (message == ""){
 				message = "No tickets were found. If you have entered your information correctly, please visit the following link for possible reasons: \n\n";
 				message += clientURL+"/tickets/error/notFound";
@@ -306,11 +319,13 @@ public class SMSManager {
 		String dob = (String)session.getAttribute("dob");
 		String license = (String)session.getAttribute("license_number");
 		String licenseState = (String)session.getAttribute("license_state");
+		String lastName = (String)session.getAttribute("last_name");
 		criteria = new CitationSearchCriteria();
 		try{
 			criteria.dateOfBirth = DatabaseUtilities.convertUSStringDateToLD(dob);
 			criteria.driversLicenseNumber = license;
 			criteria.driversLicenseState = licenseState;
+			criteria.lastName = lastName;
 			citations = citationManager.findCitations(criteria);
 			int citationNumberToView = Integer.parseInt(citationNumber) - 1;
 			if (citationNumberToView >= 0 && citationNumberToView < citations.size()){
@@ -357,6 +372,9 @@ public class SMSManager {
 			switch(currentTextStage){
 			case WELCOME:
 				message = generateWelcomeStageMessage(session);
+				break;
+			case READ_LASTNAME:
+				message = generateReadLastNameMessage(session, content);
 				break;
 			case READ_DOB:
 				message = generateReadDobMessage(session, content);
