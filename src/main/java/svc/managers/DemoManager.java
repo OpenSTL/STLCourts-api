@@ -45,6 +45,7 @@ public class DemoManager {
 				}
 			}
 			DemoCitation demoCitation = new DemoCitation();
+			demoCitation.lastName = citation.last_name;
 			demoCitation.citationNumber = citation.citation_number;
 			demoCitation.dob = citation.date_of_birth;
 			demoCitation.driversLicenseNumber = citation.drivers_license_number;
