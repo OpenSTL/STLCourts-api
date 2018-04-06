@@ -66,7 +66,7 @@ public class SMSAlertManager {
 			criteria.citationNumber = dailyAlert.citationNumber;
 			List<Citation> citations = citationManager.findCitations(criteria);
 			Court court = courtManager.getCourtById(citations.get(0).court_id.getValue());
-			String link = clientURL+"/citations/"+citations.get(0).citation_number;
+			String link = clientURL+"/tickets/"+citations.get(0).citation_number+"/info";
 			
 			boolean canSendMessage = true;
 			if (!isAlertDateStillCurrent(dailyAlert.courtDate,citations.get(0))){
