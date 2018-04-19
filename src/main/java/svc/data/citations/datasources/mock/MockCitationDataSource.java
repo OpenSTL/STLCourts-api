@@ -1,9 +1,11 @@
 package svc.data.citations.datasources.mock;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import svc.data.citations.CitationDataSource;
 import svc.data.jdbc.BaseJdbcDao;
+import svc.data.transformer.CitationDateTimeTransformer;
 import svc.logging.LogSystem;
 import svc.managers.ViolationManager;
 import svc.models.Citation;
@@ -28,6 +30,8 @@ import javax.inject.Inject;
 public class MockCitationDataSource extends BaseJdbcDao implements CitationDataSource {
 	@Inject
 	private ViolationManager violationManager;
+	@Autowired
+	private CitationDateTimeTransformer citationDateTimeTransformer;
 
     @Override
     public List<Citation> getByCitationNumberAndDOB(String citationNumber, LocalDate dob) {
@@ -97,7 +101,7 @@ public class MockCitationDataSource extends BaseJdbcDao implements CitationDataS
  	            parameterMap.put("state", c.defendant_state);
  	            parameterMap.put("driversLicenseNumber", c.drivers_license_number);
  	            parameterMap.put("driversLicenseState", c.drivers_license_state);
- 	            parameterMap.put("courtDate", DatabaseUtilities.convertLocalDateTimeToDatabaseDateString(c.court_dateTime));
+ 	            parameterMap.put("courtDate", DatabaseUtilities.convertZonedDateTimeToDatabaseDateString(c.court_dateTime));
  	            parameterMap.put("courtId", c.court_id.getValue());
  	            jdbcTemplate.update(getSql("citation/insert-citation.sql"), parameterMap); 
  	            newCitationNumbers.add(c.citation_number);
@@ -139,15 +143,18 @@ public class MockCitationDataSource extends BaseJdbcDao implements CitationDataS
                 citation.defendant_state = rs.getString("defendant_state");
                 citation.drivers_license_number = rs.getString("drivers_license_number");
                 citation.drivers_license_state = rs.getString("drivers_license_state");
+                
+                citation.court_id = new HashableEntity<Court>(Court.class,rs.getLong("court_id"));
+                citation.municipality_id = new HashableEntity<Municipality>(Municipality.class,rs.getLong("municipality_id"));
+                
                 LocalDate courtDate = DatabaseUtilities.getDatabaseLocalDate(rs.getDate("court_date"));
                 LocalTime courtTime = DatabaseUtilities.getDatabaseLocalTime(rs.getTime("court_date"));
                 if (courtDate==null || courtTime==null){
                     citation.court_dateTime = null;
                 }else{
-                    citation.court_dateTime = LocalDateTime.of(courtDate, courtTime);
+                	citation.court_dateTime = citationDateTimeTransformer.transformLocalDateTime(LocalDateTime.of(courtDate, courtTime), citation.court_id);
                 }
-                citation.court_id = new HashableEntity<Court>(Court.class,rs.getLong("court_id"));
-                citation.municipality_id = new HashableEntity<Municipality>(Municipality.class,rs.getLong("municipality_id"));
+                
             } catch (Exception e) {
                 LogSystem.LogDBException(e);
                 return null;

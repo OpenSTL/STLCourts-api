@@ -3,11 +3,14 @@ package svc.data.citations.datasources.rejis.transformers;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +23,7 @@ import svc.data.citations.datasources.rejis.models.RejisFullCitation;
 import svc.data.citations.datasources.rejis.models.RejisPartialCitation;
 import svc.data.citations.datasources.transformers.CourtIdTransformer;
 import svc.data.citations.datasources.transformers.MunicipalityIdTransformer;
+import svc.data.transformer.CitationDateTimeTransformer;
 import svc.models.Citation;
 import svc.models.Court;
 import svc.models.Municipality;
@@ -39,6 +43,9 @@ public class RejisCitationTransformerTest {
 
 	@Mock
 	MunicipalityIdTransformer municipalityIdTransformer;
+	
+	@Mock
+	CitationDateTimeTransformer citationDateTimeTransformer;
 	
 	@Test
 	public void citationTransformerReturnsNullForNullFullCitation() {
@@ -91,6 +98,9 @@ public class RejisCitationTransformerTest {
 		when(municipalityIdTransformer.lookupMunicipalityId(CITATION_DATASOURCE.REJIS, rejisFullCitation.agencyId))
 		.thenReturn(municipalHashable);
 		
+		ZonedDateTime zonedCourtDateTime = ZonedDateTime.of(LocalDateTime.parse(rejisFullCitation.nextCourtDate), ZoneId.of("America/Chicago"));
+		when(citationDateTimeTransformer.transformLocalDateTime(any(), any())).thenReturn(zonedCourtDateTime);
+		
 		Citation citation = citationTransformer.fromRejisFullCitation(rejisFullCitation, generatePartialRejisCitation());
 
 		assertNotNull(citation);
@@ -101,7 +111,7 @@ public class RejisCitationTransformerTest {
 		assertEquals(citation.drivers_license_state, "");
 		assertEquals(citation.date_of_birth, LocalDateTime.parse(rejisFullCitation.dob).toLocalDate());
 		assertEquals(citation.citation_date, LocalDateTime.parse(rejisFullCitation.violationDateTime).toLocalDate());
-		assertEquals(citation.court_dateTime, LocalDateTime.parse(rejisFullCitation.nextCourtDate));
+		assertEquals(citation.court_dateTime, zonedCourtDateTime);
 		assertEquals(citation.court_id, courtHashable);
 		assertEquals(citation.municipality_id, municipalHashable);
 		assertEquals(citation.defendant_address, "123 AnyStreet");
@@ -156,10 +166,14 @@ public class RejisCitationTransformerTest {
 		.thenReturn(municipalHashable);
 		
 		RejisFullCitation rejisFullCitation = generateFullRejisCitation();
+		
+		ZonedDateTime zonedCourtDateTime = ZonedDateTime.of(LocalDateTime.parse(rejisFullCitation.nextCourtDate), ZoneId.of("America/Chicago"));
+		when(citationDateTimeTransformer.transformLocalDateTime(any(), any())).thenReturn(zonedCourtDateTime);
+		
 		rejisFullCitation.originalCourtDate = "2017-08-01T12:30:00";
 		Citation citation = citationTransformer.fromRejisFullCitation(rejisFullCitation, generatePartialRejisCitation());
 
-		assertEquals(citation.court_dateTime, LocalDateTime.parse(rejisFullCitation.nextCourtDate));
+		assertEquals(citation.court_dateTime, zonedCourtDateTime);
 		
 		rejisFullCitation.originalCourtDate = "2017-10-01T12:30:00";
 		citation = citationTransformer.fromRejisFullCitation(rejisFullCitation, generatePartialRejisCitation());

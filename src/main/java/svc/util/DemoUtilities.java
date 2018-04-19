@@ -1,6 +1,8 @@
 package svc.util;
 
 import java.math.BigDecimal;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,7 +31,7 @@ public class DemoUtilities {
 		citation0.defendant_state = "MO";
 		citation0.drivers_license_number = "STLDL"+demoRandomizer.encode(11L);
 		citation0.drivers_license_state = "MO";
-		citation0.court_dateTime = DatabaseUtilities.getCurrentDateTime().plusDays(1);
+		citation0.court_dateTime = ZonedDateTime.of(DatabaseUtilities.getCurrentDateTime().plusDays(1), ZoneId.of("America/Chicago"));
 		citation0.court_id = new HashableEntity<Court>(Court.class,2L);
 		citation0.municipality_id = new HashableEntity<Municipality>(Municipality.class,2L);
 		
@@ -44,7 +46,7 @@ public class DemoUtilities {
 		citation1.defendant_state = "MO";
 		citation1.drivers_license_number = "STLDL"+demoRandomizer.encode(22L);
 		citation1.drivers_license_state = "MO";
-		citation1.court_dateTime = DatabaseUtilities.getCurrentDateTime().plusDays(7);
+		citation1.court_dateTime = ZonedDateTime.of(DatabaseUtilities.getCurrentDateTime().plusDays(7), ZoneId.of("America/Chicago"));
 		citation1.court_id = new HashableEntity<Court>(Court.class,37L);
 		citation1.municipality_id = new HashableEntity<Municipality>(Municipality.class,40L);
 		
@@ -59,7 +61,7 @@ public class DemoUtilities {
 		citation2.defendant_state = "MO";
 		citation2.drivers_license_number = "STLDL"+demoRandomizer.encode(33L);
 		citation2.drivers_license_state = "MO";
-		citation2.court_dateTime = DatabaseUtilities.getCurrentDateTime().plusDays(5);
+		citation2.court_dateTime = ZonedDateTime.of(DatabaseUtilities.getCurrentDateTime().plusDays(5), ZoneId.of("America/Chicago"));
 		citation2.court_id = new HashableEntity<Court>(Court.class,79L);
 		citation2.municipality_id = new HashableEntity<Municipality>(Municipality.class,90L);
 		
@@ -74,7 +76,7 @@ public class DemoUtilities {
 		citation3.defendant_state = "MO";
 		citation3.drivers_license_number = "STLDL"+demoRandomizer.encode(44L);
 		citation3.drivers_license_state = "MO";
-		citation3.court_dateTime = DatabaseUtilities.getCurrentDateTime().plusDays(14);
+		citation3.court_dateTime = ZonedDateTime.of(DatabaseUtilities.getCurrentDateTime().plusDays(14), ZoneId.of("America/Chicago"));
 		citation3.court_id = new HashableEntity<Court>(Court.class,1L);
 		citation3.municipality_id = new HashableEntity<Municipality>(Municipality.class,1L);
 		
@@ -89,7 +91,7 @@ public class DemoUtilities {
 		citation4.defendant_state = "MO";
 		citation4.drivers_license_number = "STLDL"+demoRandomizer.encode(55L);
 		citation4.drivers_license_state = "MO";
-		citation4.court_dateTime = DatabaseUtilities.getCurrentDateTime().plusDays(12);
+		citation4.court_dateTime = ZonedDateTime.of(DatabaseUtilities.getCurrentDateTime().plusDays(12), ZoneId.of("America/Chicago"));
 		citation4.court_id = new HashableEntity<Court>(Court.class,6L);
 		citation4.municipality_id = new HashableEntity<Municipality>(Municipality.class,6L);
 		
@@ -104,7 +106,7 @@ public class DemoUtilities {
 		citation5.defendant_state = "MO";
 		citation5.drivers_license_number = "STLDL"+demoRandomizer.encode(55L);
 		citation5.drivers_license_state = "MO";
-		citation5.court_dateTime = DatabaseUtilities.getCurrentDateTime().plusDays(4);
+		citation5.court_dateTime = ZonedDateTime.of(DatabaseUtilities.getCurrentDateTime().plusDays(4), ZoneId.of("America/Chicago"));
 		citation5.court_id = new HashableEntity<Court>(Court.class,23L);
 		citation5.municipality_id = new HashableEntity<Municipality>(Municipality.class,23L);
 		

@@ -1,1 +1,1 @@
-INSERT INTO sms_alerts (citation_number,court_date,phone_number,date_of_birth) VALUES (:citationNumber,:courtDateTime,:phoneNumber,:dob)
+INSERT INTO sms_alerts (citation_number,court_date,zone_id,phone_number,date_of_birth) VALUES (:citationNumber,:courtDateTime,:zoneId,:phoneNumber,:dob)

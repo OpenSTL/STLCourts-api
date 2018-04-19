@@ -34,6 +34,7 @@ public class CourtDAO extends BaseJdbcDao {
     public static final String COURT_CITATION_EXPIRES_DAYS = "citation_expires_after_days";
     public static final String COURT_RIGHTS_TYPE = "rights_type";
     public static final String COURT_RIGHTS_VALUE = "rights_value";
+    public static final String COURT_ZONE_ID = "zone_id";
 	
 	public Court getCourtById(Long courtId){
 		try{
@@ -124,6 +125,8 @@ public class CourtDAO extends BaseJdbcDao {
             court.citation_expires_after_days = rs.getInt(COURT_CITATION_EXPIRES_DAYS);
             court.rights_type = rs.getString(COURT_RIGHTS_TYPE);
             court.rights_value = rs.getString(COURT_RIGHTS_VALUE);
+            court.zone_id = rs.getString(COURT_ZONE_ID);
+            
             court.judges = Lists.newArrayList();
 
             return court;

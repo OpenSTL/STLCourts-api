@@ -5,6 +5,8 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -47,7 +49,8 @@ public class CitationFilterTest {
 		String courtDateString = "09/10/2016 14:33";
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
 
-		CITATION.court_dateTime = LocalDateTime.parse(courtDateString, formatter);
+		LocalDateTime localDateTime = LocalDateTime.parse(courtDateString, formatter);
+		CITATION.court_dateTime = ZonedDateTime.of(localDateTime, ZoneId.of("America/Chicago"));
 
 		List<Citation> CITATIONS = Lists.newArrayList(CITATION);
 
@@ -55,7 +58,7 @@ public class CitationFilterTest {
 		assertThat(citationFilter.Filter(CITATIONS, LASTNAME).size(), is(1));
 
 		COURT.citation_expires_after_days = 4;
-		CITATION.court_dateTime = LocalDateTime.now().plusDays(1);
+		CITATION.court_dateTime = ZonedDateTime.now().plusDays(1);
 
 		CITATIONS = Lists.newArrayList(CITATION);
 		assertThat(citationFilter.Filter(CITATIONS, LASTNAME).size(), is(1));
@@ -82,7 +85,8 @@ public class CitationFilterTest {
 		String courtDateString = "09/10/2016 14:33";
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
 
-		CITATION.court_dateTime = LocalDateTime.parse(courtDateString, formatter);
+		LocalDateTime localDateTime = LocalDateTime.parse(courtDateString, formatter);
+		CITATION.court_dateTime = ZonedDateTime.of(localDateTime, ZoneId.of("America/Chicago"));
 
 		List<Citation> CITATIONS = Lists.newArrayList(CITATION);
 
@@ -111,7 +115,8 @@ public class CitationFilterTest {
 		String courtDateString = "09/10/2016 14:33";
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
 
-		CITATION.court_dateTime = LocalDateTime.parse(courtDateString, formatter);
+		LocalDateTime localDateTime = LocalDateTime.parse(courtDateString, formatter);
+		CITATION.court_dateTime = ZonedDateTime.of(localDateTime, ZoneId.of("America/Chicago"));
 
 		List<Citation> CITATIONS = Lists.newArrayList(CITATION);
 
@@ -137,7 +142,8 @@ public class CitationFilterTest {
 		String courtDateString = "09/10/2016 14:33";
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
 
-		CITATION.court_dateTime = LocalDateTime.parse(courtDateString, formatter);
+		LocalDateTime localDateTime = LocalDateTime.parse(courtDateString, formatter);
+		CITATION.court_dateTime = ZonedDateTime.of(localDateTime, ZoneId.of("America/Chicago"));
 
 		List<Citation> CITATIONS = Lists.newArrayList(CITATION);
 		when(courtManagerMock.getCourtById(CITATION.court_id.getValue())).thenReturn(COURT);
@@ -166,7 +172,8 @@ public class CitationFilterTest {
 		String courtDateString = "09/10/2016 14:33";
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
 
-		CITATION.court_dateTime = LocalDateTime.parse(courtDateString, formatter);
+		LocalDateTime localDateTime = LocalDateTime.parse(courtDateString, formatter);
+		CITATION.court_dateTime = ZonedDateTime.of(localDateTime, ZoneId.of("America/Chicago"));
 
 		List<Citation> CITATIONS = Lists.newArrayList(CITATION);
 

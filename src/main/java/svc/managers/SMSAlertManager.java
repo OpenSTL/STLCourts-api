@@ -4,6 +4,7 @@ package svc.managers;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,8 +36,8 @@ public class SMSAlertManager {
 	@Value("${stlcourts.clientURL}")
 	String clientURL;
 	
-	public boolean add(String citationNumber, LocalDateTime courtDateTime, String phoneNumber, LocalDate dob){
-		return smsAlertsDAO.add(citationNumber, courtDateTime, phoneNumber, dob);
+	public boolean add(String citationNumber, LocalDateTime courtDateTime, String zoneId, String phoneNumber, LocalDate dob){
+		return smsAlertsDAO.add(citationNumber, courtDateTime, zoneId, phoneNumber, dob);
 	}
 	
 	public boolean remove(String citationNumber, String phoneNumber, LocalDate dob){
@@ -83,11 +84,11 @@ public class SMSAlertManager {
 		return notificationsToSend;
 	}
 	
-	private boolean isAlertDateStillCurrent(LocalDateTime alertDate, Citation citation){
+	private boolean isAlertDateStillCurrent(ZonedDateTime alertDate, Citation citation){
 		return alertDate.toString().equals(citation.court_dateTime.toString());
 	}
 	
-	private void updateSMSAlertWithUpdatedCourtDate(SMSAlert dailyAlert, LocalDateTime updatedCourtDate){
+	private void updateSMSAlertWithUpdatedCourtDate(SMSAlert dailyAlert, ZonedDateTime updatedCourtDate){
 		dailyAlert.courtDate = updatedCourtDate;
 		smsAlertsDAO.updateSMSAlertWithUpdatedCourtDate(dailyAlert);
 	}

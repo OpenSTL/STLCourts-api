@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 import svc.logging.LogSystem;
@@ -42,7 +43,23 @@ public class DatabaseUtilities {
 		}
 	}
 	
+	public static String convertDatabaseDateToUS(ZonedDateTime databaseDate){
+		if (databaseDate != null){
+			return databaseDate.format(DateTimeFormatter.ofPattern("MM/dd/YYYY"));
+		}else{
+			return "";
+		}
+	}
+	
 	public static String convertDatabaseDateToUSTime(LocalDateTime databaseDate){
+		if (databaseDate != null){
+			return databaseDate.format(DateTimeFormatter.ofPattern("hh:mm a"));
+		}else{
+			return "";
+		}
+	}
+	
+	public static String convertDatabaseDateToUSTime(ZonedDateTime databaseDate){
 		if (databaseDate != null){
 			return databaseDate.format(DateTimeFormatter.ofPattern("hh:mm a"));
 		}else{
@@ -92,15 +109,19 @@ public class DatabaseUtilities {
 		return localDateTime.format(formatter);
 	}
 	
+	public static String convertZonedDateTimeToDatabaseDateString(ZonedDateTime zonedDateTime){
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		return zonedDateTime.format(formatter);
+	}
+	
 	public static String convertLocalDateToDatabaseDateString(LocalDate localDate){
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		return localDate.format(formatter);
 	}
 	
 	public static LocalDateTime getFromDatabase(ResultSet rs, String fieldName){
-		LocalDate date;
 		try {
-			date = DatabaseUtilities.getDatabaseLocalDate(rs.getDate(fieldName));
+			LocalDate date = DatabaseUtilities.getDatabaseLocalDate(rs.getDate(fieldName));
 			LocalTime time = DatabaseUtilities.getDatabaseLocalTime(rs.getTime(fieldName));
 			if (date==null || time==null){
 				return null;
@@ -112,4 +133,23 @@ public class DatabaseUtilities {
 			return null;
 		}
 	}
+	
+	public static ZonedDateTime getFromDatabase(ResultSet rs, String fieldName, String zoneId){
+		try {
+			LocalDate date = DatabaseUtilities.getDatabaseLocalDate(rs.getDate(fieldName));
+			LocalTime time = DatabaseUtilities.getDatabaseLocalTime(rs.getTime(fieldName));
+			if (date==null || time==null){
+				return null;
+			}else{
+				if (zoneId == null || zoneId == "") {
+					zoneId = "America/Chicago";
+				}
+				return ZonedDateTime.of(LocalDateTime.of(date, time), ZoneId.of(zoneId));
+			}
+		} catch (SQLException e) {
+			LogSystem.LogDBException(e);
+			return null;
+		}
+	}
+	
 }

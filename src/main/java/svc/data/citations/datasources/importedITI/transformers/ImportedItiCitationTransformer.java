@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import svc.data.citations.datasources.importedITI.models.ImportedItiCitation;
 import svc.data.citations.datasources.transformers.CourtIdTransformer;
 import svc.data.citations.datasources.transformers.MunicipalityIdTransformer;
+import svc.data.transformer.CitationDateTimeTransformer;
 import svc.logging.LogSystem;
 import svc.models.Citation;
 import svc.models.Court;
@@ -28,6 +29,9 @@ public class ImportedItiCitationTransformer {
 	
 	@Autowired
 	MunicipalityIdTransformer municipalityIdTransformer;
+	
+	@Autowired
+	CitationDateTimeTransformer citationDateTimeTransformer;
 
 	public List<Citation> fromImportedItiCitations(List<ImportedItiCitation> importedItiCitations) {
 		if (importedItiCitations != null) {
@@ -66,17 +70,18 @@ public class ImportedItiCitationTransformer {
 		if (importedCitation.violations == null) {
 			LogSystem.LogEvent("No violations received with imported citation. Skipping fields that require them.");
 		} else {
-			if (importedCitation.courtDateTime == null){
-				LogSystem.LogEvent("received imported citation with no court date or time");
-			} else {
-				genericCitation.court_dateTime = LocalDateTime.parse(importedCitation.courtDateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-			}
-			
 			genericCitation.violations = violationTransformer.fromImportedCitation(importedCitation);
 
 			genericCitation.court_id = new HashableEntity<Court>(Court.class, importedCitation.courtId); 
 			//returns first municipality associated with the court
 			genericCitation.municipality_id = municipalityIdTransformer.lookupMunicipalityIdFromCourtId(importedCitation.courtId);
+			
+			if (importedCitation.courtDateTime == null){
+				LogSystem.LogEvent("received imported citation with no court date or time");
+			} else {
+				LocalDateTime localCourtDateTime = LocalDateTime.parse(importedCitation.courtDateTime, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+				genericCitation.court_dateTime = citationDateTimeTransformer.transformLocalDateTime(localCourtDateTime, genericCitation.court_id);
+			}
 		}
 
 		genericCitation.defendant_address = importedCitation.defendantAddress;
