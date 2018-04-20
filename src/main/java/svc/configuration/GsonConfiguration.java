@@ -122,7 +122,7 @@ public class GsonConfiguration extends WebMvcConfigurerAdapter {
 		@Override
 		public void write(JsonWriter out, ZonedDateTime value) throws IOException {
 			if (value !=null){
-				out.value(value.toString().replaceAll("\\[(.*)\\]", ""));
+				out.value(value.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
 			}else{
 				out.value("");
 			}
