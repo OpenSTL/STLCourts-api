@@ -12,6 +12,8 @@ import svc.models.Violation;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -31,7 +33,8 @@ public class CitationTextMessageTest {
 		Citation CITATION = new Citation();
 		CITATION.id = 5;
 		CITATION.citation_date = LocalDate.parse(ticketDateString, formatter);
-		CITATION.court_dateTime = LocalDateTime.parse(courtDateString, formatter2);
+		LocalDateTime localDateTime = LocalDateTime.parse(courtDateString, formatter2);
+		CITATION.court_dateTime = ZonedDateTime.of(localDateTime, ZoneId.of("America/Chicago"));
 		CITATION.citation_number = "123";
 		
 		Court COURT = new Court();

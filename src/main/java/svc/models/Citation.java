@@ -1,7 +1,7 @@
 package svc.models;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import svc.types.HashableEntity;
@@ -18,7 +18,7 @@ public class Citation {
 	public String defendant_state;
 	public String drivers_license_number;
 	public String drivers_license_state;
-	public LocalDateTime court_dateTime;
+	public ZonedDateTime court_dateTime;
 
 	public List<Violation> violations;
 	public HashableEntity<Court> court_id;

@@ -3,6 +3,7 @@ package svc.data.citations.datasources.tyler.transformers;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -11,6 +12,8 @@ import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import org.junit.Test;
@@ -26,6 +29,7 @@ import svc.data.citations.datasources.transformers.CourtIdTransformer;
 import svc.data.citations.datasources.transformers.MunicipalityIdTransformer;
 import svc.data.citations.datasources.tyler.models.TylerCitation;
 import svc.data.citations.datasources.tyler.models.TylerViolation;
+import svc.data.transformer.CitationDateTimeTransformer;
 import svc.models.Citation;
 import svc.models.Municipality;
 import svc.types.HashableEntity;
@@ -44,6 +48,9 @@ public class TylerCitationTransformerTest {
 
 	@Mock
 	MunicipalityIdTransformer municipalityIdTransformer;
+	
+	@Mock
+	CitationDateTimeTransformer citationDateTimeTransformer;
 	
 	@Test
 	public void citationTransformerReturnsNullForEmptyLists() {
@@ -114,6 +121,9 @@ public class TylerCitationTransformerTest {
 		when(municipalityIdTransformer.lookupMunicipalityId(anyObject(),anyString()))
 		.thenReturn(municipalHashable);
 		
+		ZonedDateTime zonedCourtDateTime = ZonedDateTime.of(LocalDateTime.parse("1902-06-17T19:00:00.000"),ZoneId.of("America/Chicago"));
+		when(citationDateTimeTransformer.transformLocalDateTime(any(), any())).thenReturn(zonedCourtDateTime);
+		
 		Citation genericCitation = citationTransformer.fromTylerCitation(tylerCitation);
 
 		assertNotNull(genericCitation);
@@ -123,7 +133,7 @@ public class TylerCitationTransformerTest {
 		assertEquals(genericCitation.drivers_license_number, tylerCitation.driversLicenseNumber);
 		assertEquals(genericCitation.date_of_birth, LocalDate.parse("1900-06-17"));
 		assertEquals(genericCitation.citation_date, LocalDate.parse("1901-06-17"));
-		assertEquals(genericCitation.court_dateTime, LocalDateTime.parse("1902-06-17T19:00:00.000"));
+		assertEquals(genericCitation.court_dateTime, zonedCourtDateTime);
 		assertEquals(genericCitation.municipality_id, municipalHashable);
 
 		verify(violationTransformer).fromTylerCitation(tylerCitation);

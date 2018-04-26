@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 import org.springframework.context.annotation.Configuration;
@@ -43,6 +44,7 @@ public class GsonConfiguration extends WebMvcConfigurerAdapter {
 									.registerTypeHierarchyAdapter(HashableEntity.class, new HashIdJsonAdapter())
 									.registerTypeAdapter(LocalDate.class, new LocalDateJsonAdapter())
 									.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeJsonAdapter())
+									.registerTypeAdapter(ZonedDateTime.class, new ZonedDateTimeJsonAdapter())
 									.create();
 
         GsonHttpMessageConverter gsonConverter = new GsonHttpMessageConverter();
@@ -110,6 +112,25 @@ public class GsonConfiguration extends WebMvcConfigurerAdapter {
 			if (dateTimeString != "" && dateTimeString != null)
 				return LocalDateTime.parse(dateTimeString,DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 			else
+				return null;
+		}
+
+	}
+	
+	private class ZonedDateTimeJsonAdapter extends TypeAdapter<ZonedDateTime>{
+
+		@Override
+		public void write(JsonWriter out, ZonedDateTime value) throws IOException {
+			if (value !=null){
+				out.value(value.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+			}else{
+				out.value("");
+			}
+			
+		}
+
+		@Override
+		public ZonedDateTime read(JsonReader in) throws IOException {
 				return null;
 		}
 

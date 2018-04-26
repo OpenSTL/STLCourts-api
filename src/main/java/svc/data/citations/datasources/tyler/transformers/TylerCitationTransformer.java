@@ -14,6 +14,7 @@ import svc.data.citations.datasources.CITATION_DATASOURCE;
 import svc.data.citations.datasources.transformers.CourtIdTransformer;
 import svc.data.citations.datasources.transformers.MunicipalityIdTransformer;
 import svc.data.citations.datasources.tyler.models.TylerCitation;
+import svc.data.transformer.CitationDateTimeTransformer;
 import svc.logging.LogSystem;
 import svc.models.Citation;
 
@@ -28,6 +29,9 @@ public class TylerCitationTransformer {
 	
 	@Autowired
 	MunicipalityIdTransformer municipalityIdTransformer;
+	
+	@Autowired
+	CitationDateTimeTransformer citationDateTimeTransformer;
 
 	private DateTimeFormatter localDateFormatter = DateTimeFormatter.ofPattern("MM/dd/uuuu");
 
@@ -88,13 +92,18 @@ public class TylerCitationTransformer {
 					.distinct()
 					.map(this::parseViolationCourtDate)
 					.collect(Collectors.toList());
-			genericCitation.court_dateTime = violationCourtDates.size() > 0 ? violationCourtDates.get(0) : null;
 
 			genericCitation.violations = violationTransformer.fromTylerCitation(tylerCitation);
 
 			String tylerCourtIdentifier = getTylerCourtIdentifier(tylerCitation);
 			genericCitation.court_id = courtIdTransformer.lookupCourtId(CITATION_DATASOURCE.TYLER, tylerCourtIdentifier);
 			genericCitation.municipality_id = municipalityIdTransformer.lookupMunicipalityId(CITATION_DATASOURCE.TYLER,"County");
+			
+			if (violationCourtDates.size() > 0) {
+				genericCitation.court_dateTime = citationDateTimeTransformer.transformLocalDateTime(violationCourtDates.get(0), genericCitation.court_id);
+			} else {
+				genericCitation.court_dateTime = null;
+			}
 		}
 
 		// These could probably be added to the Tyler API

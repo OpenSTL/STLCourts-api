@@ -27,9 +27,10 @@ public class SMSAlertController {
 	boolean Add(@RequestParam(value = "citationNumber", required = true) String citationNumber,
         @RequestParam(value = "phoneNumber", required = true) String phoneNumber,
         @RequestParam(value = "courtDateTime", required = true) @DateTimeFormat(pattern="MM/dd/yyyy HH:mm") LocalDateTime courtDateTime,
+        @RequestParam(value = "zoneId", required = true) String zoneId,
         @RequestParam(value = "dob", required = true) @DateTimeFormat(pattern="MM/dd/yyyy") LocalDate dob) {
 		
-		smsAlertManager.add(citationNumber, courtDateTime, phoneNumber, dob);
+		smsAlertManager.add(citationNumber, courtDateTime, zoneId, phoneNumber, dob);
 		return true;
 	}
 	

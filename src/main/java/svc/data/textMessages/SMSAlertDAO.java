@@ -33,13 +33,14 @@ public class SMSAlertDAO extends BaseJdbcDao {
 		}
 	}
 	
-	public boolean add(String citationNumber, LocalDateTime courtDateTime, String phoneNumber, LocalDate dob){
+	public boolean add(String citationNumber, LocalDateTime courtDateTime, String zoneId, String phoneNumber, LocalDate dob){
 		if (!doesAlertExist(citationNumber,phoneNumber)){
 			Map<String, Object> parameterMap = new HashMap<String, Object>();
 			parameterMap.put("citationNumber", citationNumber);
 			parameterMap.put("courtDateTime", DatabaseUtilities.convertLocalDateTimeToDatabaseDate(courtDateTime));
 			parameterMap.put("phoneNumber", phoneNumber);
 			parameterMap.put("dob", DatabaseUtilities.convertLocalDateToDatabaseDate(dob));
+			parameterMap.put("zoneId", zoneId);
 			try{
 				int rowsAffected = jdbcTemplate.update(getSql("SMSAlert/insert-SMSAlert.sql"), parameterMap); 
 				if (rowsAffected==1){
@@ -129,7 +130,7 @@ public class SMSAlertDAO extends BaseJdbcDao {
 	
 	public boolean updateSMSAlertWithUpdatedCourtDate(SMSAlert dailyAlert){
 		Map<String, Object> parameterMap = new HashMap<String, Object>();
-		parameterMap.put("courtDate", DatabaseUtilities.convertLocalDateTimeToDatabaseDate(dailyAlert.courtDate));
+		parameterMap.put("courtDate", DatabaseUtilities.convertZonedDateTimeToDatabaseDateString(dailyAlert.courtDate));
 		parameterMap.put("smsAlertId", dailyAlert.id);
 		try{
 			jdbcTemplate.update(getSql("SMSAlert/update-SMSAlert-courtDate.sql"), parameterMap); 
@@ -147,7 +148,7 @@ public class SMSAlertDAO extends BaseJdbcDao {
 				smsAlert.id = rs.getInt("id");
 				smsAlert.citationNumber = rs.getString("citation_number");
 				smsAlert.dob = DatabaseUtilities.getDatabaseLocalDate(rs.getDate("date_of_birth"));
-				smsAlert.courtDate = DatabaseUtilities.getFromDatabase(rs, "court_date");
+				smsAlert.courtDate = DatabaseUtilities.getFromDatabase(rs, "court_date", rs.getString("zone_id"));
 				smsAlert.defendantPhoneNumber = rs.getString("phone_number");
 			} catch (Exception e) {
 				LogSystem.LogDBException(e);

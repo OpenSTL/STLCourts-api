@@ -1,6 +1,6 @@
 package svc.data.citations.filters;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.stream.Collectors;
@@ -41,7 +41,7 @@ public class CitationFilter {
 		if (!keepCitation){
 			Court court = courtManager.getCourtById(citation.court_id.getValue());
 			if (court.citation_expires_after_days >= 0){
-				LocalDateTime today = LocalDateTime.now();
+				ZonedDateTime today = ZonedDateTime.now();
 				if (citation.court_dateTime.isBefore(today.minusDays(court.citation_expires_after_days))){
 					keepCitation = false;
 				}else{ //citation has not expired yet

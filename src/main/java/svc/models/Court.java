@@ -22,4 +22,5 @@ public class Court {
 	public int citation_expires_after_days;
 	public String rights_type;
 	public String rights_value;
+	public String zone_id;
 }

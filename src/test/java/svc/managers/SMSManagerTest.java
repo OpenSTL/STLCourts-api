@@ -23,6 +23,8 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -165,7 +167,8 @@ public class SMSManagerTest {
 		citation.citation_date = LocalDate.parse("02/03/1990", formatter);
 		citation.citation_number = "a1234";
 		DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
-		citation.court_dateTime = LocalDateTime.parse("11/20/2015 04:22", formatter2);
+		LocalDateTime localDateTime = LocalDateTime.parse("11/20/2015 04:22", formatter2);
+		citation.court_dateTime = ZonedDateTime.of(localDateTime, ZoneId.of("America/Chicago"));
 		citation.court_id = new HashableEntity<Court>(Court.class,1L);
 		List<Citation> citations = new ArrayList<Citation>();
 		citations.add(citation);

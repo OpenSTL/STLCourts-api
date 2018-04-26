@@ -251,6 +251,7 @@ public class SMSManager {
 		String courtDateTime = (String)session.getAttribute("courtDateTime");
 		String phoneNumber = (String)session.getAttribute("phoneNumber");
 		String dob = (String)session.getAttribute("dob");
+		String zoneId = (String)session.getAttribute("zoneId");
 		
 		switch(menuChoice){
 			case "1":
@@ -265,7 +266,7 @@ public class SMSManager {
 				setNextStageInSession(session,SMS_STAGE.READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN);
 				break;
 			case "3":
-				if (smsAlertManager.add(citationNumber, LocalDateTime.parse(courtDateTime), phoneNumber,DatabaseUtilities.convertUSStringDateToLD(dob))){
+				if (smsAlertManager.add(citationNumber, LocalDateTime.parse(courtDateTime), zoneId, phoneNumber,DatabaseUtilities.convertUSStringDateToLD(dob))){
 					//if a demo citation was created automatically send out an sms alert in 1 minute.
 					if (citationNumber.startsWith("STLC")){
 						Timer timer = new Timer();
@@ -336,7 +337,8 @@ public class SMSManager {
 				message = citationTextMessage.toTextMessage();
 				message += replyWithAdditionalViewingOptions();
 				session.setAttribute("citationNumber", citationToView.citation_number);
-				session.setAttribute("courtDateTime", citationToView.court_dateTime.toString());
+				session.setAttribute("courtDateTime", citationToView.court_dateTime.toLocalDateTime().toString());
+				session.setAttribute("zoneId", court.zone_id);
 				nextTextStage = SMS_STAGE.READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN;
 				
 			}else{

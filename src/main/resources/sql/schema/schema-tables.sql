@@ -33,7 +33,8 @@ CREATE TABLE court (
   longitude 				    DOUBLE PRECISION,
   citation_expires_after_days	SMALLINT,
   rights_type				  VARCHAR(25),
-  rights_value				  VARCHAR(250)
+  rights_value				  VARCHAR(250),
+  zone_id					  VARCHAR(100)
 );
 
 CREATE TABLE municipality (
@@ -72,6 +73,7 @@ CREATE TABLE sms_alerts
 	id 						INTEGER 		IDENTITY PRIMARY KEY,
     citation_number 		VARCHAR(25),
     court_date 				DATETIME,
+    zone_id					VARCHAR(100),
     phone_number			VARCHAR(25),
     date_of_birth 			DATE     						NULL
  );

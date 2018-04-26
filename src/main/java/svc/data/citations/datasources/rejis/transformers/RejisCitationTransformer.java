@@ -10,6 +10,7 @@ import svc.data.citations.datasources.rejis.models.RejisFullCitation;
 import svc.data.citations.datasources.rejis.models.RejisPartialCitation;
 import svc.data.citations.datasources.transformers.CourtIdTransformer;
 import svc.data.citations.datasources.transformers.MunicipalityIdTransformer;
+import svc.data.transformer.CitationDateTimeTransformer;
 import svc.logging.LogSystem;
 import svc.models.Citation;
 
@@ -24,6 +25,9 @@ public class RejisCitationTransformer {
 	
 	@Autowired
 	MunicipalityIdTransformer municipalityIdTransformer;
+	
+	@Autowired
+	CitationDateTimeTransformer citationDateTimeTransformer;
 
 	public Citation fromRejisFullCitation(RejisFullCitation rejisFullCitation, RejisPartialCitation rejisPartialCitation) {
 		if (rejisFullCitation == null || rejisPartialCitation == null) {
@@ -58,21 +62,21 @@ public class RejisCitationTransformer {
 
 		genericCitation.violations = violationTransformer.fromRejisFullCitation(rejisFullCitation, rejisPartialCitation);
 		
+		genericCitation.court_id = courtIdTransformer.lookupCourtId(CITATION_DATASOURCE.REJIS, rejisFullCitation.agencyId);
+		genericCitation.municipality_id = municipalityIdTransformer.lookupMunicipalityId(CITATION_DATASOURCE.REJIS,rejisFullCitation.agencyId);
+		
 		try{
 			LocalDateTime NextDktDate = LocalDateTime.parse(rejisFullCitation.nextCourtDate);
 			LocalDateTime OrigDktDate = LocalDateTime.parse(rejisFullCitation.originalCourtDate);
 			if (NextDktDate.isBefore(OrigDktDate)){
 				genericCitation.court_dateTime = null;
 			}else{
-				genericCitation.court_dateTime = NextDktDate;
+				genericCitation.court_dateTime = citationDateTimeTransformer.transformLocalDateTime(NextDktDate, genericCitation.court_id);
 			}
 		}catch(Exception e){
 			LogSystem.LogEvent("Error parsing Rejis NextDktDate or OrigDktDate");
 			return null;
 		}
-
-		genericCitation.court_id = courtIdTransformer.lookupCourtId(CITATION_DATASOURCE.REJIS, rejisFullCitation.agencyId);
-		genericCitation.municipality_id = municipalityIdTransformer.lookupMunicipalityId(CITATION_DATASOURCE.REJIS,rejisFullCitation.agencyId);
 		
 		String[] addressParts = rejisFullCitation.defendantAddress.split(" {2,}");
 		genericCitation.defendant_address = addressParts[0].trim();
