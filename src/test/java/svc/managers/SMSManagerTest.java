@@ -60,7 +60,7 @@ public class SMSManagerTest {
 		READ_STATE(4),
 		VIEW_CITATION(5),
 		READ_MENU_CHOICE_VIEW_CITATIONS_AGAIN(6);
-		
+
 		private int numVal;
 		
 		SMS_STAGE(int numVal){
@@ -105,7 +105,7 @@ public class SMSManagerTest {
 		MessagingResponse twimlResponse = manager.getTwimlResponse(twimlMessageRequest,requestMock, session);
 		assertEquals(createTwimlResponse(message).toXml(),twimlResponse.toXml());
 	}
-	
+
 	@Test
 	public void lastNameReadMessageGetsGenerated() throws TwiMLException{
 		setStageInSession(session,SMS_STAGE.READ_LASTNAME);
