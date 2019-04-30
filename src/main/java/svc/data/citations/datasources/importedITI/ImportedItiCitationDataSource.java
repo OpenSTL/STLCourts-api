@@ -77,6 +77,7 @@ public class ImportedItiCitationDataSource implements CitationDataSource {
 
 	private List<Citation> performRestTemplateCall(URI uri, LocalDate dob, String lastName) {
 		HttpHeaders headers = new HttpHeaders();
+		headers.add("apikey", importedItiConfiguration.apiKey);
 		HttpEntity<?> query = new HttpEntity<>(headers);
 		ResponseEntity<List<ImportedItiCitation>> importedCitationsResponse = null;
 		ParameterizedTypeReference<List<ImportedItiCitation>> type = new ParameterizedTypeReference<List<ImportedItiCitation>>() {
